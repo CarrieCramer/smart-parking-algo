@@ -11,9 +11,9 @@ Lot::Lot() { // default constructor
 	this->world = NULL;
 }
 
-Lot::Lot(int ID, LatLng location, int totalSpots, AllocationSystem * as) {
+Lot::Lot(int ID, Location loc, int totalSpots, Grid * as) {
 	this->id = ID;
-	this->location = location;
+	this->location = loc;
 	this->maximumSpots = totalSpots;
 	this->numFree = maximumSpots;
 	this->world = as;

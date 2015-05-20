@@ -9,8 +9,10 @@
 class Lot { // the ID of a location 
 	public:
 		Lot();
-		Lot(int, LatLng, int, Grid *);
+		Lot(int, Location, int, Grid *);
+		
 		int numFree; // total number of spots
+		
 		int getID(); // return ID
 		Location getLocation(); // return location
 		double getCost(double); // get cost to use parking lot
@@ -20,7 +22,6 @@ class Lot { // the ID of a location
 		Location location; // location of lot
 		int capacity; // can be 1 for individual or total for parking lots
 		double cost;
-		
 		Grid * world; // full allocation system
 };
 

@@ -16,6 +16,6 @@ vector<int> Grid::allocateParking() {
 	}
 }
 
-vector<Resource> getAllResources() {
-	return allResources;
+vector<Lot> getAllLots() {
+	return allLots;
 }

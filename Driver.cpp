@@ -18,6 +18,10 @@ Location Driver::getLocation() {
 	return location;
 }
 
+bool Driver::accept(Lot) { // returns true if accepted, false if refused
+	return true; // returns true by default, may be changed
+}
+
 void Driver::findLots() {
 	// locates resources in a specific radius
 	// then gets their specific weights

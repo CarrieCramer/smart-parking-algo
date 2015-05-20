@@ -2,8 +2,8 @@
 #define GRID_H
 
 #include <vector>
-#include "User.h"
-#include "Resource.h"
+#include "Driver.h"
+#include "Lot.h"
 using namespace std;
 
 class Grid {
@@ -13,16 +13,16 @@ class Grid {
 		vector<int> allocateParking(); // allocate parking for all waiting and reserved users
 		bool update(); // update time and statuses
 		voic showStatus();
-		void addUser(User);
-		void addResource(Resource);
-		vector<Resource> getAllResources();
+		void addUser(Driver);
+		void addResource(Lot);
+		vector<Lot> getAllResources();
 	private:
 		double size; // length of one side of the square grid
 		double time; // decision point
-		vector<User> allUsers;
-		vector<User> allWaiting;
-		vector<User> allReserved;
-		vector<Resource> allResources;
+		vector<Driver> allUsers;
+		vector<Driver> allWaiting;
+		vector<Driver> allReserved;
+		vector<Lot> allResources;
 		vector<int> allSpacesLeft;
 };
 
