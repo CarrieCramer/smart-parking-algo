@@ -1,0 +1,42 @@
+#ifndef DRIVER_H
+#define DRIVER_H
+
+#include <iostream>
+#include <vector>
+#include "Location.h"
+#include "Lot.h"
+#include "Grid.h"
+using namespace std;
+
+class Driver {
+	public:
+		Driver();
+		Driver(int, double, Location, Grid *); // creates user
+		Lot * reserved; // lot which the driver has reserved
+		double speed; // speed the driver travels at
+		vector<int> feasLot; // lists all lots available for the driver
+		vector<double> lotDist; // distance from each lot to destination
+		vector<double> lotCost; // how much it costs to stay there
+		Destination * dest;
+		
+		int getID(); // return id
+		LatLng getLocation(); // return location
+		bool update(); // update location
+		bool accept(Lot); // choose to accept the lot
+		Lot * makeReservation();
+		double getDistToDest(); // return distance from driver to destination
+	private:
+		int id;
+		double speed; // driving speed
+		Location location; // gets location on map (GPS realistically)
+		double importanceWeight; // between 0 and 1: used to determine balance between walking and cost
+		double timeInReserve; // time spent in reserve queue. 0 if not in it
+		int reserveSpot; // 0 or -1 if not reserved, else ID of reserved spot
+		double maxWalkDist; // longest distance able to walk to get to destination
+		double maxCost; // largest amount able to pay to park
+		Grid * world; // full allocation system
+		
+		void findLots(); // finds the best lots for the drivers
+};
+
+#endif
