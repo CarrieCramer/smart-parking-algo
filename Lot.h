@@ -6,6 +6,8 @@
 #include "Location.h"
 #include "Grid.h"
 
+class Grid;
+
 class Lot { // the ID of a location 
 	public:
 		Lot();

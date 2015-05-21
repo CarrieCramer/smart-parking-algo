@@ -4,9 +4,14 @@
 #include <iostream>
 #include <vector>
 #include "Location.h"
+#include "Destination.h"
 #include "Lot.h"
 #include "Grid.h"
 using namespace std;
+
+class Grid;
+class Destination;
+class Lot;
 
 class Driver {
 	public:
@@ -14,7 +19,7 @@ class Driver {
 		Driver(int, double, Location, Grid *); // creates user
 		Lot * reserved; // lot which the driver has reserved
 		double speed; // speed the driver travels at
-		vector<Lot *> feasLot; // lists all lots available for the driver
+		vector<Lot *> feasLots; // lists all lots available for the driver
 		vector<double> lotDist; // distance from each lot to destination
 		vector<double> lotCost; // how much it costs to stay there
 		Destination * dest;
@@ -22,7 +27,7 @@ class Driver {
 		int getID(); // return id
 		Location getLocation(); // return location
 		bool accept(Lot); // choose to accept the lot
-		Lot * makeReservation();
+		Lot * makeReservation(); // makes reservation. If not satisfied, then will try to find a better one
 		double getDistToDest(); // return distance from driver to destination
 	private:
 		int id;
@@ -34,7 +39,7 @@ class Driver {
 		double maxCost; // largest amount able to pay to park
 		Grid * world; // full allocation system
 		
-		void findLots(); // Calculates feasLot and lotDist
+		vector<Lot *> findLots(); // Calculates feasLot and lotDist
 		Lot * findOptLot(); // Calculates lotCost
 };
 

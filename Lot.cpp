@@ -6,7 +6,7 @@
 Lot::Lot() { // default constructor
 	this->id = 0;
 	this->location = Location(0,0);
-	this->maximumSpots = 0;
+	this->capacity = 0;
 	this->numFree = 0;
 	this->world = NULL;
 }
@@ -14,7 +14,7 @@ Lot::Lot() { // default constructor
 Lot::Lot(int ID, Location loc, int totalSpots, Grid * as) {
 	this->id = ID;
 	this->location = loc;
-	this->maximumSpots = totalSpots;
+	this->capacity = totalSpots;
 	this->numFree = maximumSpots;
 	this->world = as;
 }

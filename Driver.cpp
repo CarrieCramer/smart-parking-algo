@@ -1,10 +1,20 @@
 // Driver.cpp
 
 #include "Driver.h"
+#include <iostream>
+using namespace std;
 
-Driver::Driver(int ID, double weightScale, LatLng loc, AllocationSystem * as) {
+Driver::Driver(int ID, double weightScale, Location loc, Grid * as) {
 	this->id = ID;
-	this->importanceWeight = weightScale; // between 0 and 1
+	try {
+		if (weightScale < 0 || weightScale > 1) {
+			throw weightScale
+		} else {
+			this->importanceWeight = weightScale; // between 0 and 1
+		}
+	} catch (double e) {
+		cout << "Weight" << e << "must be between 0 and 1 inclusive" << endl;
+	}
 	this->location = loc;
 	this->reserveSpot = -1;
 	this->world = as;
@@ -22,13 +32,21 @@ bool Driver::accept(Lot) { // returns true if accepted, false if refused
 	return true; // returns true by default, may be changed
 }
 
-void Driver::findLots() {
-	// locates resources in a specific radius
-	// then gets their specific weights
-	/*
-	vector<Resource> allLots = world->getAllResources();
+Lot * Driver::makeReservation() { // finds potential lots
+	
+}
+
+vector<Lot *> Driver::findLots(double timeToPark) {
+	feasLots.clear(); // resets the lots available
+	vector<Lot> allLots = world->getAllLots();
 	for (int ii = 0; ii < allLots.size(); ii++) {
-		getDistance(allLots.getLocation(), this->location);
+		if (allLots[ii].numFree != 0) { // won't add lot that has no spaces available
+			if (dist(allLots[ii].getLocation(), dest->getLocation()) <= this->maxWalkDist) {
+				if (allLots[ii].getCost(timeToPark) <= this->maxCost) {
+					feasLots.push_back(&allLots[ii]);
+				}
+			}
+		}
 	}
-	*/
+	return feasLots;
 }

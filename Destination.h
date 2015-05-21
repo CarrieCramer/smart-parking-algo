@@ -8,6 +8,8 @@ class Destination {
 		Destination(int, Location);
 		int id; // id of the destination
 		int atDest; // number of people at destination
+		
+		Location getLocation();
 		double getRate(); // get rate of people entering to calculate costs
 	private:
 		Location location;
