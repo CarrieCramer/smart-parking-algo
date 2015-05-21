@@ -15,7 +15,7 @@ Lot::Lot(int ID, Location loc, int totalSpots, Grid * as) {
 	this->id = ID;
 	this->location = loc;
 	this->capacity = totalSpots;
-	this->numFree = maximumSpots;
+	this->numFree = capacity;
 	this->world = as;
 }
 

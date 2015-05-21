@@ -21,7 +21,8 @@ class Driver {
 		double speed; // speed the driver travels at
 		vector<Lot *> feasLots; // lists all lots available for the driver
 		vector<double> lotDist; // distance from each lot to destination
-		vector<double> lotCost; // how much it costs to stay there
+		vector<double> lotCharge; // how much it costs to stay there
+		vector<double> lotCost; // cost function of using the parking lot
 		Destination * dest;
 		
 		int getID(); // return id
@@ -36,10 +37,10 @@ class Driver {
 		double timeInReserve; // time spent in reserve queue. 0 if not in it
 		int reserveSpot; // 0 or -1 if not reserved, else ID of reserved spot
 		double maxWalkDist; // longest distance able to walk to get to destination
-		double maxCost; // largest amount able to pay to park
+		double maxCharge; // largest amount able to pay to park
 		Grid * world; // full allocation system
 		
-		vector<Lot *> findLots(); // Calculates feasLot and lotDist
+		vector<Lot *> findLots(double); // Calculates feasLot and lotDist
 		Lot * findOptLot(); // Calculates lotCost
 };
 

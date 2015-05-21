@@ -17,7 +17,7 @@ int Grid::getTime() {
 	return this->time;
 }
 
-vector<int> Grid::allocateParking() {
+vector<int> Grid::allocateParking() { // Called once each driver has a list of potential parking spaces.
 	double minSum;
 	for (int ii = 0; ii < allWaiting.size(); ii++) {
 		for (int jj = 0; jj < allWaiting[ii].feasLots.size(); jj++) {
