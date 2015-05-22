@@ -32,12 +32,34 @@ bool Driver::accept(Lot) { // returns true if accepted, false if refused
 	return true; // returns true by default, may be changed
 }
 
-Lot * Driver::makeReservation() { // finds potential lots
-	
+bool Driver::isInIA() {
+	if (this->getDistToDest() <= world->timeIncrement*speed) {
+		return true;
+	} else return false;
 }
 
-vector<Lot *> Driver::findLots(double timeToPark) {
-	feasLots.clear(); // resets the lots available
+Lot * Driver::makeReservation(double timeAtPark) { // finds potential lots
+	// Currently based on the best option given at the time.
+	// Later we plan to utilize it better.
+	feasLots = findLots(double timeAtPark); // time taken to park
+	int lotVectSize = feasLots.size();
+	int bestLotAt;
+	Lot * bestLot;
+	double minCost = 10000; // arbitrarily large number. All costs are less than this.
+	for (int ii = 0; ii < lotVectSize; ii++) {
+		if (lotCost[ii] < minCost) {
+			minCost = lotCost[ii];
+			bestLot = feasLots[ii];
+			bestLotAt = ii;
+		}
+	}
+	cout << "Minimum lot at ID " << bestLot->getID() << "." << endl;
+	cout << "Distance: " << lotDist[bestLotAt] << ". Charge: " << lotCharge[bestLotAt] << endl;
+	return bestLot;
+}
+
+vector<Lot *> Driver::findLots(double timeAtPark) {
+	vector<Lot *> lotsAvailable;
 	double distance;
 	double charge;
 	double cost;
@@ -48,7 +70,7 @@ vector<Lot *> Driver::findLots(double timeToPark) {
 			if (distance <= this->maxWalkDist) {
 				charge = allLots[ii].getCost(timeToPark);
 				if (charge <= this->maxCharge) {
-					feasLots.push_back(&allLots[ii]);
+					lotsAvailable.push_back(&allLots[ii]);
 					lotDist.push_back(dist);
 					lotCharge.push_back(charge);
 					cost = importanceWeight*(charge/maxCharge) + (1-importanceWeight)*(distance/maxWalkDist);
@@ -57,5 +79,9 @@ vector<Lot *> Driver::findLots(double timeToPark) {
 			}
 		}
 	}
-	return feasLots;
+	return lotsAvailable;
+}
+
+double Driver::getDistToDest() {
+	return dist(this->location, dest->location);
 }

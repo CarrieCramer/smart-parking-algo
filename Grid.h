@@ -13,6 +13,7 @@ class Grid {
 	public:
 		Grid();
 		Grid(double);
+		double timeIncrement;
 		int getTime(); // return time
 		vector<int> allocateParking(); // allocate parking for all waiting and reserved users
 		void addUser(Driver);
@@ -21,6 +22,7 @@ class Grid {
 	private:
 		double size; // length of one side of the square grid
 		double time; // decision point
+		
 		vector<Driver> allUsers;
 		vector<Driver> allWaiting;
 		vector<Driver> allReserved;

@@ -23,12 +23,14 @@ class Driver {
 		vector<double> lotDist; // distance from each lot to destination
 		vector<double> lotCharge; // how much it costs to stay there
 		vector<double> lotCost; // cost function of using the parking lot
+		double lowestLotCost; // measured when assigned a lot to ensure that this driver gets no worse lot
 		Destination * dest;
 		
 		int getID(); // return id
+		bool isInIA(); // checks if driver is to be allocated immediately
 		Location getLocation(); // return location
 		bool accept(Lot); // choose to accept the lot
-		Lot * makeReservation(); // makes reservation. If not satisfied, then will try to find a better one
+		Lot * makeReservation(double); // makes reservation. If not satisfied, then will try to find a better one
 		double getDistToDest(); // return distance from driver to destination
 	private:
 		int id;
