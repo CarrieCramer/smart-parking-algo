@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std;
 
-Driver::Driver(int ID, double weightScale, Location loc, Grid * as) {
+Driver::Driver(int ID, double weightScale, Location loc, double timeAtPark, Destination * toReach, Grid * as) {
 	this->id = ID;
 	try {
 		if (weightScale < 0 || weightScale > 1) {
@@ -13,18 +13,20 @@ Driver::Driver(int ID, double weightScale, Location loc, Grid * as) {
 			this->importanceWeight = weightScale; // between 0 and 1
 		}
 	} catch (double e) {
-		cout << "Weight" << e << "must be between 0 and 1 inclusive" << endl;
+		cout << "Scale value" << e << "must be between 0 and 1 inclusive" << endl;
 	}
 	this->location = loc;
+	this->dest = toReach;
 	this->reserveSpot = -1;
 	this->world = as;
+	this->parked = false;
 }
 
-int Driver::getID() {
+int Driver::getID() { // Function returns the ID value of driver
 	return this->id;
 }
 
-Location Driver::getLocation() {
+Location Driver::getLocation() { // Returns driver's exact location
 	return location;
 }
 
@@ -33,9 +35,19 @@ bool Driver::accept(Lot) { // returns true if accepted, false if refused
 }
 
 bool Driver::isInIA() {
-	if (this->getDistToDest() <= world->timeIncrement*speed) {
+	if (this->getDistToDest() <= world->timeIncrement*speed) { 
 		return true;
 	} else return false;
+}
+
+bool Driver::departLot() { // return true if parked, else return false
+	// when returns true, Grid will remove this parker from the list of parked people.
+	if (parked) {
+		this->parked = false;
+		return true;
+	} else {
+		return false;
+	}
 }
 
 Lot * Driver::makeReservation(double timeAtPark) { // finds potential lots
@@ -53,23 +65,29 @@ Lot * Driver::makeReservation(double timeAtPark) { // finds potential lots
 			bestLotAt = ii;
 		}
 	}
-	cout << "Minimum lot at ID " << bestLot->getID() << "." << endl;
-	cout << "Distance: " << lotDist[bestLotAt] << ". Charge: " << lotCharge[bestLotAt] << endl;
-	return bestLot;
+	if (lotVectSize != 0) {
+		cout << "Minimum lot at ID " << bestLot->getID() << "." << endl;
+		cout << "Distance: " << lotDist[bestLotAt] << ". Charge: " << lotCharge[bestLotAt] << endl;
+		return bestLot;
+	} else {
+		return NULL; // no lots are available
+	}
 }
 
 vector<Lot *> Driver::findLots(double timeAtPark) {
-	vector<Lot *> lotsAvailable;
+	// initialize vars
+	vector<Lot *> lotsAvailable; 
 	double distance;
 	double charge;
 	double cost;
+	
 	vector<Lot> allLots = world->getAllLots();
 	for (int ii = 0; ii < allLots.size(); ii++) {
 		if (allLots[ii].numFree != 0) { // won't add lot that has no spaces available
 			distance = dist(allLots[ii].getLocation(), dest->getLocation());
-			if (distance <= this->maxWalkDist) {
+			if (distance <= this->maxWalkDist) { // if destination within walking distance
 				charge = allLots[ii].getCost(timeToPark);
-				if (charge <= this->maxCharge) {
+				if (charge <= this->maxCharge) { // if cost within specified range
 					lotsAvailable.push_back(&allLots[ii]);
 					lotDist.push_back(dist);
 					lotCharge.push_back(charge);
@@ -78,6 +96,9 @@ vector<Lot *> Driver::findLots(double timeAtPark) {
 				}
 			}
 		}
+	}
+	if (lotsAvailable.size() == 0) { // No lots available for driver
+		cout << "No lots are available." << endl; 
 	}
 	return lotsAvailable;
 }

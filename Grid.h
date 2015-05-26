@@ -14,18 +14,21 @@ class Grid {
 		Grid();
 		Grid(double);
 		double timeIncrement;
+		
+		
 		int getTime(); // return time
 		vector<int> allocateParking(); // allocate parking for all waiting and reserved users
-		void addUser(Driver);
-		void addResource(Lot);
+		void addDriver(Driver); // add driver to allUsers
+		void addLot(Lot); // add lot to allLots
 		vector<Lot> getAllLots();
+		
 	private:
 		double size; // length of one side of the square grid
 		double time; // decision point
 		
-		vector<Driver> allUsers;
-		vector<Driver> allWaiting;
-		vector<Driver> allReserved;
+		vector<Driver> allUsers; // all drivers currently on the grid
+		vector<Driver> allWaiting; // all drivers currently waiting
+		vector<Driver> allReserved; // all drivers reserved
 		vector<Lot> allLots;
 		vector<int> allSpacesLeft; 
 };

@@ -35,6 +35,16 @@ vector<int> Grid::allocateParking() { // Called once each driver has a list of p
 	}
 }
 */
+void addDriver(Driver toAdd) {
+	allUsers.push_back(toAdd);
+	return;
+}
+
+void addLot(Lot toAdd) {
+	allLots.push_back(toAdd);
+	return;
+}
+
 vector<Lot> Grid::getAllLots() {
 	return this->allLots;
 }

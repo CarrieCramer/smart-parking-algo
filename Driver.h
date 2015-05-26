@@ -16,7 +16,7 @@ class Lot;
 class Driver {
 	public:
 		Driver();
-		Driver(int, double, Location, Grid *); // creates user
+		Driver(int, double, Location, double, Destination *, Grid *); // creates user
 		Lot * reserved; // lot which the driver has reserved
 		double speed; // speed the driver travels at
 		vector<Lot *> feasLots; // lists all lots available for the driver
@@ -32,6 +32,8 @@ class Driver {
 		bool accept(Lot); // choose to accept the lot
 		Lot * makeReservation(double); // makes reservation. If not satisfied, then will try to find a better one
 		double getDistToDest(); // return distance from driver to destination
+		bool departLot(); // if parked, leave parking lot
+	
 	private:
 		int id;
 		Location location; // gets location on map (GPS realistically)
@@ -40,7 +42,9 @@ class Driver {
 		int reserveSpot; // 0 or -1 if not reserved, else ID of reserved spot
 		double maxWalkDist; // longest distance able to walk to get to destination
 		double maxCharge; // largest amount able to pay to park
+		double timeAtPark; // how long the driver wishes to park for
 		Grid * world; // full allocation system
+		bool parked;
 		
 		vector<Lot *> findLots(double); // Calculates feasLot and lotDist
 		Lot * findOptLot(); // Calculates lotCost
