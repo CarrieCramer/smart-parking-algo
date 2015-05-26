@@ -33,7 +33,7 @@ class Driver {
 		Lot * makeReservation(double); // makes reservation. If not satisfied, then will try to find a better one
 		double getDistToDest(); // return distance from driver to destination
 		bool departLot(); // if parked, leave parking lot
-	
+		void show_status(); // shows status of driver
 	private:
 		int id;
 		Location location; // gets location on map (GPS realistically)

@@ -19,6 +19,7 @@ class Lot { // the ID of a location
 		Location getLocation(); // return location
 		double getCost(double); // get cost to use parking lot
 		bool update(); // update number of spots
+		void show_status(); // shows status of parking lot
 	private:
 		int id;
 		Location location; // location of lot

@@ -2,6 +2,8 @@
 
 #include "Lot.h"
 #include "Location.h"
+#include <iostream>
+using namespace std;
 
 Lot::Lot() { // default constructor
 	this->id = 0;
@@ -25,4 +27,12 @@ int Lot::getID() {
 
 Location Lot::getLocation() {
 	return this->location;
+}
+
+void Lot::show_status() {
+	cout << "Lot " << this->getID();
+	cout << " located at " << this->getLocation();
+	cout << " has " << numFree << " out of " << capacity;
+	cout << " spaces reserved." << endl;
+	return;
 }

@@ -106,3 +106,12 @@ vector<Lot *> Driver::findLots(double timeAtPark) {
 double Driver::getDistToDest() {
 	return dist(this->location, dest->location);
 }
+
+void Driver::show_status() { // output driver ID, location, destination, and lot if applicable
+	cout << "Driver " << this->getID();
+	cout << " is at " << this->getLocation();
+	if (this->reserved != NULL) { // notes where it's parking
+		cout << " parking at Lot " << reserved->getID();
+	} 
+	cout << " and is heading for " << dest->getLocation() << endl;
+}
