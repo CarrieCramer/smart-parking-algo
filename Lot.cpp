@@ -10,6 +10,7 @@ Lot::Lot() { // default constructor
 	this->location = Location(0,0);
 	this->capacity = 0;
 	this->numFree = 0;
+	this->numNotReserved = 0;
 	this->world = NULL;
 }
 
@@ -18,7 +19,19 @@ Lot::Lot(int ID, Location loc, int totalSpots, Grid * as) {
 	this->location = loc;
 	this->capacity = totalSpots;
 	this->numFree = capacity;
+	this->numNotReserved = capacity;
 	this->world = as;
+}
+
+double getCost(double timeParked) {
+	// SAMPLE COST FUNCTION
+	if (timeParked < 4) {
+		return 14;
+	} else if (timeParked < 5) {
+		return 20;
+	} else {
+		return 4*timeParked;
+	}
 }
 
 int Lot::getID() {

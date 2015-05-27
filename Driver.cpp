@@ -1,10 +1,11 @@
 // Driver.cpp
 
 #include "Driver.h"
+#include <cmath>
 #include <iostream>
 using namespace std;
 
-Driver::Driver(int ID, double weightScale, Location loc, double timeAtPark, Destination * toReach, Grid * as) {
+Driver::Driver(int ID, double timeOfArrival, double weightScale, Location loc, double timeAtPark, Destination * toReach, Grid * as) {
 	this->id = ID;
 	try {
 		if (weightScale < 0 || weightScale > 1) {
@@ -101,6 +102,42 @@ vector<Lot *> Driver::findLots(double timeAtPark) {
 		cout << "No lots are available." << endl; 
 	}
 	return lotsAvailable;
+}
+
+bool update() { // update driver parking
+	/*
+	 *	Updates what the driver does.
+	 *  State 'n': Driver has nowhere to park. Will drive towards destination.
+	 *  State 'd': Driver is driving to parking lot. When reached, will park.
+	 *  State 'p': Driver is parked and will stay parked until time is up.
+	 *  State 'g': Driver has finished parking and will leave list of people
+	 *  in the next state.
+	*/
+	switch(this->state) {
+		case 'n':
+			setup_destination(dest->location);
+	}
+}
+
+bool Driver::update_location() {
+	DriveVector distDiff = travelPoint-location;
+	cout << display_code << this->get_id() << ": ";
+	if (fabs(distDiff.x) <= fabs(delta.x) && fabs(distDiff.y) <= fabs(delta.y)) { // if the fish can reach destination
+		location = travelPoint; // set location to destination
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool Driver::setup_destination(Location dest) { // setup where to go
+  this->travelPoint = dest; // Destination is set to value
+  double totalDistance = cart_distance(travelPoint,location);
+  if (totalDistance != 0) { // check if destination is the same place or not
+    this->driveDirection = (travelPoint - location) * (this->speed/totalDistance); // delta equation
+  } else {
+    this->driveDirection = DriveVector(0,0);
+  }
 }
 
 double Driver::getDistToDest() {

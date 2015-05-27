@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include "Location.h"
+#include "DriveVector.h"
 #include "Destination.h"
 #include "Lot.h"
 #include "Grid.h"
@@ -16,7 +17,7 @@ class Lot;
 class Driver {
 	public:
 		Driver();
-		Driver(int, double, Location, double, Destination *, Grid *); // creates user
+		Driver(int, double, double, Location, double, Destination *, Grid *); // creates user
 		Lot * reserved; // lot which the driver has reserved
 		double speed; // speed the driver travels at
 		vector<Lot *> feasLots; // lists all lots available for the driver
@@ -33,10 +34,13 @@ class Driver {
 		Lot * makeReservation(double); // makes reservation. If not satisfied, then will try to find a better one
 		double getDistToDest(); // return distance from driver to destination
 		bool departLot(); // if parked, leave parking lot
+		
+		bool update(); // update driver data
 		void show_status(); // shows status of driver
 	private:
 		int id;
 		Location location; // gets location on map (GPS realistically)
+		char state; // state of the driver
 		double importanceWeight; // between 0 and 1: used to determine balance between walking and cost
 		double timeInReserve; // time spent in reserve queue. 0 if not in it
 		int reserveSpot; // 0 or -1 if not reserved, else ID of reserved spot
@@ -45,9 +49,13 @@ class Driver {
 		double timeAtPark; // how long the driver wishes to park for
 		Grid * world; // full allocation system
 		bool parked;
+		DriveVector driveDirection; // setup driver direction
+		Location travelPoint; // where the driver wishes to go
 		
 		vector<Lot *> findLots(double); // Calculates feasLot and lotDist
 		Lot * findOptLot(); // Calculates lotCost
+		bool update_location(); // updates where it is
+		void setup_destination(Location dest); // sets up place to go
 };
 
 #endif

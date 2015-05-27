@@ -1,5 +1,4 @@
 // Commands.h
-// PA3
 
 #ifndef __Commands__
 #define __Commands__
@@ -9,9 +8,14 @@
 
 void do_commands(char, Grid &);
 
-void do_new_driver_command(Grid &); // creates new driver
-void do_new_lot_command(Grid &);
-void do_new_destination_command(Grid &);
-void show_status(Grid &); // displays status of all drivers and lots
+void do_new_driver_command(Grid &); // input u to create new driver
+void do_new_lot_command(Grid &); // input l to create new lot
+void do_new_destination_command(Grid &); // input d to create new destination
+void display_status(Grid &); // input s to display status of all drivers and lots
 
-#endif // defined Commands
+void run_simulation(Grid &); // input r to start the simulation
+void advance_by_simulation(Grid &); // input g and then a number to advance simulation to a specific time
+
+void display_help(); // input h to display help text
+
+#endif

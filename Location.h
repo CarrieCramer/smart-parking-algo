@@ -2,6 +2,7 @@
 #define LOCATION_H
 
 #include <iostream>
+#include "DriveVector.h"
 
 class Location{
 	public:
@@ -14,5 +15,7 @@ class Location{
 std::ostream &operator << (std::ostream &, const Location &);
 
 double dist(Location, Location);
+Location operator + (const Location &, const DriveVector &); // adds vector to location
+DriveVector operator - (const Location &, const Location &);
 
 #endif

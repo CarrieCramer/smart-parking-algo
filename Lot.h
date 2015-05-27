@@ -13,7 +13,8 @@ class Lot { // the ID of a location
 		Lot();
 		Lot(int, Location, int, Grid *);
 		
-		int numFree; // total number of spots
+		int numFree; // spots not visually taken. Once car parks, this decreases.
+		int numNotReserved; // spots not reserved. Once driver reserves, this decreases.
 		
 		int getID(); // return ID
 		Location getLocation(); // return location
