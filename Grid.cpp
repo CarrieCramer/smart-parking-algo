@@ -16,9 +16,10 @@ Grid::Grid(double boardSize) {
 	this->size = boardSize;
 }
 
-int Grid::getTime() {
+double Grid::getTime() {
 	return this->time;
 }
+
 /*
 vector<int> Grid::allocateParking() { // Called once each driver has a list of potential parking spaces.
 	bool minFound = false;
@@ -35,14 +36,18 @@ vector<int> Grid::allocateParking() { // Called once each driver has a list of p
 	}
 }
 */
-void addDriver(Driver toAdd) {
+void Grid::addDriver(Driver toAdd) {
 	allUsers.push_back(toAdd);
 	return;
 }
 
-void addLot(Lot toAdd) {
+void Grid::addLot(Lot toAdd) {
 	allLots.push_back(toAdd);
 	return;
+}
+
+void Grid::addDestination (Destination toAdd) {
+	allDestinations.push_back(toAdd);
 }
 
 vector<Lot> Grid::getAllLots() {

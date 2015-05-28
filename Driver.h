@@ -49,10 +49,11 @@ class Driver {
 		double maxCharge; // largest amount able to pay to park
 		double timeArrivedAtPark; // when the car arrives at the parking lot
 		double timeAtPark; // how long the driver wishes to park for
-		Grid * world; // full allocation system
 		bool parked;
 		DriveVector driveDirection; // setup driver direction
 		Location travelPoint; // where the driver wishes to go
+		
+		Grid * world; // full allocation system
 		
 		vector<Lot *> findLots(double); // Calculates feasLot and lotDist
 		Lot * findOptLot(); // Calculates lotCost

@@ -1,5 +1,8 @@
 // Destination.h
 
+#ifndef DESTINATION_H
+#define DESTINATION_H
+
 #include "Location.h"
 
 class Destination {
@@ -17,3 +20,5 @@ class Destination {
 		double arrivalRate; // rate of entrance to destination
 		double avgDuration; // average duration at destination
 };
+
+#endif
