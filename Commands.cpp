@@ -24,9 +24,8 @@ void do_commands(char input, Grid & world) {
 	return;
 }
 
-void do_new_driver_command(Grid & world) {
+void do_new_driver_command(Grid & world) { 
 	cout << "Enter the ID of the driver." // asks for input on driver
-	
 	
 }
 
@@ -35,11 +34,12 @@ void do_new_lot_command(Grid & world) {
 	
 } 
 void do_new_destination_command(Grid & world) {
-
+	
 } // input d to create new destination
 void display_status(Grid & world) {
 	
 } // input s to display status of all drivers and lots
 void display_help() {
+	cout << "Enter u to create a new driver." << endl;
 	
 }

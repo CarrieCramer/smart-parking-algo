@@ -5,7 +5,7 @@
 #include <iostream>
 using namespace std;
 
-Driver::Driver(int ID, double timeOfArrival, double weightScale, Location loc, double timeAtPark, Destination * toReach, Grid * as) {
+Driver::Driver(int ID, double arrivalTime, double weightScale, Location loc, double timeAtPark, Destination * toReach, Grid * as) {
 	this->id = ID;
 	try {
 		if (weightScale < 0 || weightScale > 1) {
@@ -16,11 +16,17 @@ Driver::Driver(int ID, double timeOfArrival, double weightScale, Location loc, d
 	} catch (double e) {
 		cout << "Scale value" << e << "must be between 0 and 1 inclusive" << endl;
 	}
+	this->timeOfArrival = arrivalTime;
 	this->location = loc;
 	this->dest = toReach;
 	this->reserveSpot = -1;
 	this->world = as;
 	this->parked = false;
+	if (as->getTime() >= arrivalTime) { // if car is meant to arrive at the beginning
+		this->state = 'n'; // set state to drive
+	} else {
+		this->state = 'z';
+	}
 }
 
 int Driver::getID() { // Function returns the ID value of driver
@@ -84,7 +90,7 @@ vector<Lot *> Driver::findLots(double timeAtPark) {
 	
 	vector<Lot> allLots = world->getAllLots();
 	for (int ii = 0; ii < allLots.size(); ii++) {
-		if (allLots[ii].numFree != 0) { // won't add lot that has no spaces available
+		if (allLots[ii].numNotReserved != 0) { // won't add lot that has no spaces available
 			distance = dist(allLots[ii].getLocation(), dest->getLocation());
 			if (distance <= this->maxWalkDist) { // if destination within walking distance
 				charge = allLots[ii].getCost(timeToPark);
@@ -104,9 +110,10 @@ vector<Lot *> Driver::findLots(double timeAtPark) {
 	return lotsAvailable;
 }
 
-bool update() { // update driver parking
+bool update() { // update driver parking, returns true on state change
 	/*
 	 *	Updates what the driver does.
+	 *  State 'z': Driver has not yet appeared on the grid as it's not his time.
 	 *  State 'n': Driver has nowhere to park. Will drive towards destination.
 	 *  State 'd': Driver is driving to parking lot. When reached, will park.
 	 *  State 'p': Driver is parked and will stay parked until time is up.
@@ -114,19 +121,66 @@ bool update() { // update driver parking
 	 *  in the next state.
 	*/
 	switch(this->state) {
-		case 'n':
-			setup_destination(dest->location);
+		case 'z':
+			if (as->getTime() >= timeOfArrival) { // if car should arrive at this time
+				reserved = makeReservation(timeAtPark); // reserving spot
+				if (reserved == NULL) { // if reserved nothing
+					setup_destination(dest->location);
+					this->state = 'n'; // driving towards destination
+				} else {
+					setup_destination(reserved->location);
+					reserved->numNotReserved--;
+					this->state = 'd'; // driving to lot
+				}
+				return true;
+			} else {
+				return false;
+			}
+			break;
+		case 'n': // drive towards destination, but waiting for lots
+			update_location(); // move the car
+			reserved = makeReservation(timeAtPark); // try reserving a spot again
+			if (reserved != NULL) { // if reservation exists
+				setup_destination(reserved->location);
+				reserved->numNotReserved--; // decrement number of nonreserved spaces
+				this->state = 'd'; // driving to lot
+				return true;
+			}
+			return false;
+			break;
+		case 'd': // drive towards parking lot
+			if (update_location() == true) { // move car and check if arrived at parking lot
+				this->state = 'p'; // set state to "parking"
+				reserved->numFree--; // decrement number of spots available
+				timeArrivedAtPark = as->getTime(); // store time of lot arrival
+				return true;
+			} else { // driver hasn't reached parking lot
+				return false;
+			}
+			break;
+		case 'p': // parking
+			if (as->getTime() >= timeArrivedAtPark+timeAtPark) {
+				this->state = 'g'; // state is now 'leaving the area'
+				reserved->numFree++; // increment number of spots available
+				reserved->numNotReserved++;
+				return true;
+			} else {
+				return false;
+			}
+			break;
+		case 'g': // leaving parking
+			return false;
 	}
 }
 
-bool Driver::update_location() {
+bool Driver::update_location() { // Moves towards destination. Return true if reached.
 	DriveVector distDiff = travelPoint-location;
-	cout << display_code << this->get_id() << ": ";
-	if (fabs(distDiff.x) <= fabs(delta.x) && fabs(distDiff.y) <= fabs(delta.y)) { // if the fish can reach destination
+	if (fabs(distDiff.x) <= fabs(driveDirection.x) && fabs(distDiff.y) <= fabs(driveDirection.y)) { // if the fish can reach destination
 		location = travelPoint; // set location to destination
 		return true;
 	} else {
-		return false;
+		location = location + driveDirection; // move driver closer
+		return false; 
 	}
 }
 

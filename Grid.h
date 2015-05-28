@@ -15,8 +15,7 @@ class Grid {
 		Grid(double);
 		double timeIncrement;
 		
-		
-		int getTime(); // return time
+		double getTime(); // return time
 		vector<int> allocateParking(); // allocate parking for all waiting and reserved users
 		void addDriver(Driver); // add driver to allUsers
 		void addLot(Lot); // add lot to allLots
@@ -27,6 +26,7 @@ class Grid {
 		double time; // decision point
 		
 		vector<Driver> allUsers; // all drivers currently on the grid
+		// Will be used when queues are added
 		vector<Driver> allWaiting; // all drivers currently waiting
 		vector<Driver> allReserved; // all drivers reserved
 		vector<Lot> allLots;

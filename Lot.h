@@ -15,7 +15,7 @@ class Lot { // the ID of a location
 		
 		int numFree; // spots not visually taken. Once car parks, this decreases.
 		int numNotReserved; // spots not reserved. Once driver reserves, this decreases.
-		
+		// numNotReserved is always less than or equal to numFree
 		int getID(); // return ID
 		Location getLocation(); // return location
 		double getCost(double); // get cost to use parking lot

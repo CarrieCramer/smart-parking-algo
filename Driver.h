@@ -42,10 +42,12 @@ class Driver {
 		Location location; // gets location on map (GPS realistically)
 		char state; // state of the driver
 		double importanceWeight; // between 0 and 1: used to determine balance between walking and cost
+		double timeOfArrival; // exact time when the car will appear in the grid
 		double timeInReserve; // time spent in reserve queue. 0 if not in it
 		int reserveSpot; // 0 or -1 if not reserved, else ID of reserved spot
 		double maxWalkDist; // longest distance able to walk to get to destination
 		double maxCharge; // largest amount able to pay to park
+		double timeArrivedAtPark; // when the car arrives at the parking lot
 		double timeAtPark; // how long the driver wishes to park for
 		Grid * world; // full allocation system
 		bool parked;
