@@ -46,10 +46,49 @@ void Grid::addLot(Lot toAdd) {
 	return;
 }
 
+int Grid::getDestinationCount() {
+	return allDestinations.size();
+}
+
 void Grid::addDestination (Destination toAdd) {
 	allDestinations.push_back(toAdd);
 }
 
 vector<Lot> Grid::getAllLots() {
 	return this->allLots;
+}
+
+Destination * Grid::findDestinationByID(int correctID) {
+	for (int ii = 0; ii < allDestinations.size(); ii++) {
+		if (allDestinations[ii].getID() == correctID) { // correct destination found
+			return &(allDestinations[ii]);
+		}
+	}
+	return NULL; // if none are found then return null pointer
+}
+
+bool Grid::update() { // Updates all elements of the grid.
+	bool stateChanged = false;
+	this->time += timeIncrement; // increments time
+	for (int ii = 0; ii < allUsers.size(); ii++) {
+		if (allUsers[ii].update()) { // update each and every user
+			stateChanged = true;
+		} // keep updating after that
+	}
+	// possibly update lots and destinations later, but there really isn't much to update about them now
+	if (stateChanged) return true;
+	else return false;	
+}
+
+void Grid::show_status() {
+	for (int ii = 0; ii < allUsers.size(); ii++) {
+		allUsers[ii].show_status();
+	}
+	for (int jj = 0; jj < allLots.size(); jj++) {
+		allUsers[jj].show_status();
+	}
+	for (int hh = 0; hh < allDestinations.size(); hh++) {
+		allDestinations[hh].show_status();
+	}
+	return;
 }

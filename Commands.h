@@ -15,7 +15,7 @@ void display_status(Grid &); // input s to display status of all drivers and lot
 
 void run_simulation(Grid &); // input r to start the simulation
 void advance_by_simulation(Grid &); // input g and then a number to advance simulation to a specific time
-
+// Also, input q to quit.
 void display_help(); // input h to display help text
 
 #endif

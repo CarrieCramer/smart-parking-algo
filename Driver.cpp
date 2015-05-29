@@ -184,7 +184,7 @@ void Driver::setup_destination(Location dest) { // setup where to go
   this->travelPoint = dest; // Destination is set to value
   double totalDistance = dist(travelPoint,location);
   if (totalDistance != 0) { // check if destination is the same place or not
-    this->driveDirection = (travelPoint - location) * (this->speed/totalDistance); // delta equation
+    this->driveDirection = (travelPoint - location) * (this->speed/totalDistance)*world->timeIncrement; // delta equation
   } else {
     this->driveDirection = DriveVector(0,0);
   }
