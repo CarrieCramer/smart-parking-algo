@@ -27,7 +27,7 @@ void do_commands(char input, Grid & world) {
 			run_simulation(world); // run simulation
 			break;
 		case 'g':
-			advance_by_simulation(world);
+			advance_by_simulation(world); // g to advance simulation to a point
 			break;
 		case 'q':
 			break; // do nothing, exit function done in main.cpp
@@ -44,18 +44,23 @@ void do_new_driver_command(Grid & world) {
 	int destID;
 	double arrivalTime;
 	double weight;
-	double x;
-	double y;
+	double maxCharge;
+	double maxDistance;
+	double x, y;
 	double timeAtPark;
 	cout << "Enter the ID of the driver. "; // asks for input on driver
 	cin >> id;
 	if (id < 0) throw InvalidInput("ID is too small");
 	cout << "What is the ID of the destination the driver going to? ";
 	cin >> destID;
-	Destination * goal = world.findLocationByID(destID);
+	Destination * goal = world.findDestinationByID(destID);
 	if (goal == NULL) throw InvalidInput("ID does not exist");
 	cout << "Input the time when the driver is arriving. ";
 	cin >> arrivalTime;
+	cout << "How much are you willing to pay? ";
+	cin >> maxCharge;
+	cout << "How far are you willing to walk? ";
+	cin >> maxDistance;
 	cout << "Prefer closer parking or lower cost? If equal, set to 0.5." << endl;
 	cout << "Otherwise, set it closer to 0 for closer parking" << endl;
 	cout << "and closer to 1 for lower cost: ";
@@ -64,7 +69,7 @@ void do_new_driver_command(Grid & world) {
 	cin >> x >> y;
 	cout << "How long will you be parking? ";
 	cin >> timeAtPark;
-	world.addDriver(Driver(id, arrivalTime, weight, Location(x,y), timeAtPark, goal, &world));
+	world.addDriver(new Driver(id, arrivalTime, weight, maxDistance, maxCharge, Location(x,y), timeAtPark, goal, &world));
 }
 
 void do_new_lot_command(Grid & world) {
@@ -77,7 +82,7 @@ void do_new_lot_command(Grid & world) {
 	cin >> x >> y;
 	cout << "Enter the total number of spots in the lot: ";
 	cin >> totalSpots;
-	world.addLot(Lot(id, Location(x,y), totalSpots, &world));
+	world.addLot(new Lot(id, Location(x,y), totalSpots, &world));
 } 
 void do_new_destination_command(Grid & world) {
 	int id;
@@ -87,7 +92,7 @@ void do_new_destination_command(Grid & world) {
 	cin >> id;
 	cout << "Enter the destination location (ex. 4 2.3): ";
 	cin >> x >> y;
-	world.addDestination(Destination(id, Location(x,y)));
+	world.addDestination(new Destination(id, Location(x,y)));
 	return;
 } // input d to create new destination
 
@@ -96,13 +101,22 @@ void display_status(Grid & world) {
 } // input s to display status of all drivers and lots
 
 void run_simulation(Grid & world) { // run simulation to end
-	cout << "Advancing to end of simulation" << endl;
+	cout << "Advancing 1 step of simulation" << endl;
+	world.update();
+	world.show_status();
 }
 
 void advance_by_simulation(Grid & world) { // input g
 	double passTime;
+	double timePassed = 0;
+	const double timeIncrement = 1;
 	cout << "Enter the amount of time you wish to pass (recommended 1): ";
 	cin >> passTime;
+	while (timePassed < passTime) {
+		world.update(timeIncrement);
+		timePassed += timeIncrement;
+	}
+	world.show_status();
 }
 
 void display_help() {

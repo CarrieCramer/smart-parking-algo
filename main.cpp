@@ -2,7 +2,7 @@
 // Compiles with all other .cpp files
 // Usable with the command-line interface
 
-#include "Grid.cpp"
+#include "Grid.h"
 #include "Commands.h"
 #include "InputHandling.h"
 #include <iostream>
@@ -14,7 +14,7 @@ int main() {
 	Grid mainGrid(10); // initialize grid
 	char command; // command asked to enter
 	
-	while (quitLoop = false) {
+	while (quitLoop == false) {
 		cout << "Enter command: ";
 		cin >> command;
 		try {

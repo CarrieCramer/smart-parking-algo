@@ -23,12 +23,12 @@ Lot::Lot(int ID, Location loc, int totalSpots, Grid * as) {
 	this->world = as;
 }
 
-double getCost(double timeParked) {
+double Lot::getCost(double timeParked) {
 	// SAMPLE COST FUNCTION
 	if (timeParked < 4) {
-		return 14;
+		return 14.0;
 	} else if (timeParked < 5) {
-		return 20;
+		return 20.0;
 	} else {
 		return 4*timeParked;
 	}
@@ -46,6 +46,6 @@ void Lot::show_status() {
 	cout << "Lot " << this->getID();
 	cout << " located at " << this->getLocation();
 	cout << " has " << numFree << " out of " << capacity;
-	cout << " spaces reserved." << endl;
+	cout << " spaces free." << endl;
 	return;
 }

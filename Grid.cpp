@@ -36,13 +36,18 @@ vector<int> Grid::allocateParking() { // Called once each driver has a list of p
 	}
 }
 */
-void Grid::addDriver(Driver toAdd) {
+void Grid::addDriver(Driver * toAdd) {
 	allUsers.push_back(toAdd);
 	return;
 }
 
-void Grid::addLot(Lot toAdd) {
+void Grid::addLot(Lot * toAdd) {
 	allLots.push_back(toAdd);
+	return;
+}
+
+void Grid::addDestination (Destination * toAdd) {
+	allDestinations.push_back(toAdd); // add pointer to destination
 	return;
 }
 
@@ -50,28 +55,26 @@ int Grid::getDestinationCount() {
 	return allDestinations.size();
 }
 
-void Grid::addDestination (Destination toAdd) {
-	allDestinations.push_back(toAdd);
-}
-
-vector<Lot> Grid::getAllLots() {
+vector<Lot *> Grid::getAllLots() {
 	return this->allLots;
 }
 
 Destination * Grid::findDestinationByID(int correctID) {
 	for (int ii = 0; ii < allDestinations.size(); ii++) {
-		if (allDestinations[ii].getID() == correctID) { // correct destination found
-			return &(allDestinations[ii]);
+		cout << allDestinations[ii]->getID() << endl; // DEBUG FILLER, DELETE FOR FINAL RELEASE
+		if (allDestinations[ii]->getID() == correctID) { // correct destination found
+			return allDestinations[ii];
 		}
 	}
 	return NULL; // if none are found then return null pointer
 }
 
-bool Grid::update() { // Updates all elements of the grid.
+bool Grid::update(double timing) { // Updates all elements of the grid.
+	this->timeIncrement = timing;
 	bool stateChanged = false;
 	this->time += timeIncrement; // increments time
 	for (int ii = 0; ii < allUsers.size(); ii++) {
-		if (allUsers[ii].update()) { // update each and every user
+		if (allUsers[ii]->update()) { // update each and every user
 			stateChanged = true;
 		} // keep updating after that
 	}
@@ -82,13 +85,14 @@ bool Grid::update() { // Updates all elements of the grid.
 
 void Grid::show_status() {
 	for (int ii = 0; ii < allUsers.size(); ii++) {
-		allUsers[ii].show_status();
+		allUsers[ii]->show_status();
 	}
 	for (int jj = 0; jj < allLots.size(); jj++) {
-		allUsers[jj].show_status();
+		allLots[jj]->show_status();
 	}
 	for (int hh = 0; hh < allDestinations.size(); hh++) {
-		allDestinations[hh].show_status();
+		allDestinations[hh]->show_status();
 	}
+	cout << "Time: " << time << endl;
 	return;
 }

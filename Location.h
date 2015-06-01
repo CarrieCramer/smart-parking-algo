@@ -4,6 +4,8 @@
 #include <iostream>
 #include "DriveVector.h"
 
+class DriveVector;
+
 class Location{
 	public:
 		Location();

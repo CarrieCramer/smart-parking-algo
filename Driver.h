@@ -17,7 +17,7 @@ class Lot;
 class Driver {
 	public:
 		Driver();
-		Driver(int, double, double, Location, double, Destination *, Grid *); // creates user
+		Driver(int, double, double, double, double, Location, double, Destination *, Grid *); // creates user
 		Lot * reserved; // lot which the driver has reserved
 		double speed; // speed the driver travels at
 		vector<Lot *> feasLots; // lists all lots available for the driver

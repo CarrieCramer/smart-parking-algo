@@ -18,22 +18,22 @@ class Grid {
 		
 		double getTime(); // return time
 		vector<int> allocateParking(); // allocate parking for all waiting and reserved users
-		void addDriver(Driver); // add driver to allUsers
-		void addLot(Lot); // add lot to allLots
-		void addDestination(Destination);
+		void addDriver(Driver *); // add driver to allUsers
+		void addLot(Lot *); // add lot to allLots
+		void addDestination(Destination *);
 		int getDestinationCount();
-		vector<Lot> getAllLots();
+		vector<Lot *> getAllLots();
 		Destination * findDestinationByID(int);
 		
-		bool update(); // updates the entire grid
+		bool update(double timing = 1); // updates the entire grid
 		void show_status(); // shows status of all items
 	private:
 		double size; // length of one side of the square grid
 		double time; // decision point
 		
-		vector<Driver> allUsers; // all drivers currently on the grid
-		vector<Lot> allLots;
-		vector<Destination> allDestinations;
+		vector<Driver *> allUsers; // all drivers currently on the grid
+		vector<Lot *> allLots;
+		vector<Destination *> allDestinations;
 		vector<int> allSpacesLeft; 
 
 		// Will be used when queues are added
@@ -42,4 +42,4 @@ class Grid {
 
 };
 
-#endif
+#endif // defined GRID_H

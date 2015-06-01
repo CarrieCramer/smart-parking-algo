@@ -1,11 +1,14 @@
 // Driver.cpp
 
 #include "Driver.h"
+#include "Location.h"
+#include "Lot.h"
+#include "DriveVector.h"
 #include <cmath>
 #include <iostream>
 using namespace std;
 
-Driver::Driver(int ID, double arrivalTime, double weightScale, Location loc, double timeAtPark, Destination * toReach, Grid * as) {
+Driver::Driver(int ID, double arrivalTime, double weightScale, double maxDist, double maxPay, Location loc, double timeAtPark, Destination * toReach, Grid * as) {
 	this->id = ID;
 	try {
 		if (weightScale < 0 || weightScale > 1) {
@@ -17,12 +20,16 @@ Driver::Driver(int ID, double arrivalTime, double weightScale, Location loc, dou
 		cout << "Scale value" << e << "must be between 0 and 1 inclusive" << endl;
 	}
 	this->timeOfArrival = arrivalTime;
+	this->timeAtPark = timeAtPark;
+	this->maxWalkDist = maxDist;
+	this->maxCharge = maxPay;
 	this->location = loc;
 	this->dest = toReach;
 	this->reserveSpot = -1;
 	this->world = as;
 	this->parked = false;
 	this->state = 'z';
+	this->speed = 5; // set speed to 5 by default
 }
 
 int Driver::getID() { // Function returns the ID value of driver
@@ -53,45 +60,55 @@ bool Driver::departLot() { // return true if parked, else return false
 	}
 }
 
-Lot * Driver::makeReservation(double timeAtPark) { // finds potential lots
+Lot * Driver::makeReservation(double timeParking) { // finds potential lots
 	// Currently based on the best option given at the time.
 	// Later we plan to utilize it better.
-	feasLots = findLots(timeAtPark); // time taken to park
+	
+	feasLots.empty();
+	lotDist.empty();
+	lotCharge.empty();
+	lotCost.empty();
+	
+	feasLots = findLots(timeParking); // find parking lots
+	
 	int lotVectSize = feasLots.size();
 	int bestLotAt;
 	Lot * bestLot;
-	double minCost = 10000; // arbitrarily large number. All costs are less than this.
+	double minCost = 10000; // arbitrarily large number. All costs are less than 10.
 	for (int ii = 0; ii < lotVectSize; ii++) {
 		if (lotCost[ii] < minCost) {
-			minCost = lotCost[ii];
-			bestLot = feasLots[ii];
 			bestLotAt = ii;
+			minCost = lotCost[bestLotAt];
+			bestLot = feasLots[bestLotAt];
 		}
 	}
 	if (lotVectSize != 0) {
 		cout << "Minimum lot at ID " << bestLot->getID() << "." << endl;
-		cout << "Distance: " << lotDist[bestLotAt] << ". Charge: " << lotCharge[bestLotAt] << endl;
+		cout << "Distance: " << lotDist[bestLotAt] << " Charge: " << lotCharge[bestLotAt] << endl;
 		return bestLot;
 	} else {
 		return NULL; // no lots are available
 	}
 }
 
-vector<Lot *> Driver::findLots(double timeAtPark) {
+vector<Lot *> Driver::findLots(double timeParking) {
 	// initialize vars
 	vector<Lot *> lotsAvailable; 
 	double distance;
 	double charge;
 	double cost;
 	
-	vector<Lot> allLots = world->getAllLots();
+	vector<Lot *> allLots = world->getAllLots();
 	for (int ii = 0; ii < allLots.size(); ii++) {
-		if (allLots[ii].numNotReserved != 0) { // won't add lot that has no spaces available
-			distance = dist(allLots[ii].getLocation(), dest->getLocation());
+		cout << allLots[ii]->numNotReserved << endl; // FILLER
+		if (allLots[ii]->numNotReserved != 0) { // won't add lot that has no spaces available
+			distance = dist(allLots[ii]->getLocation(), dest->getLocation()); // calculate distance
+			cout << distance << endl; // FILLER
 			if (distance <= this->maxWalkDist) { // if destination within walking distance
-				charge = allLots[ii].getCost(timeAtPark);
+				charge = allLots[ii]->getCost(timeParking); // calculate cost
+				cout << charge << endl; // FILLER
 				if (charge <= this->maxCharge) { // if cost within specified range
-					lotsAvailable.push_back(&allLots[ii]);
+					lotsAvailable.push_back(allLots[ii]); // add lot to lots available
 					lotDist.push_back(distance);
 					lotCharge.push_back(charge);
 					cost = importanceWeight*(charge/maxCharge) + (1-importanceWeight)*(distance/maxWalkDist);
@@ -195,10 +212,12 @@ double Driver::getDistToDest() {
 }
 
 void Driver::show_status() { // output driver ID, location, destination, and lot if applicable
-	cout << "Driver " << this->getID();
-	cout << " is at " << this->getLocation();
-	if (this->reserved != NULL) { // notes where it's parking
-		cout << " parking at Lot " << reserved->getID();
-	} 
-	cout << " and is heading for " << dest->getLocation() << endl;
+	if (this->state != 'z' && this->state != 'g') { // if driver is on field
+		cout << "Driver " << this->getID();
+		cout << " is at " << this->getLocation();
+		if (this->reserved != NULL) { // notes where it's parking
+			cout << " parking at Lot " << reserved->getID();
+		} 
+		cout << " and its destination is " << dest->getLocation() << endl;
+	} // otherwise show nothing
 }
