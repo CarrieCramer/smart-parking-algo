@@ -61,7 +61,6 @@ vector<Lot *> Grid::getAllLots() {
 
 Destination * Grid::findDestinationByID(int correctID) {
 	for (int ii = 0; ii < allDestinations.size(); ii++) {
-		cout << allDestinations[ii]->getID() << endl; // DEBUG FILLER, DELETE FOR FINAL RELEASE
 		if (allDestinations[ii]->getID() == correctID) { // correct destination found
 			return allDestinations[ii];
 		}

@@ -100,13 +100,10 @@ vector<Lot *> Driver::findLots(double timeParking) {
 	
 	vector<Lot *> allLots = world->getAllLots();
 	for (int ii = 0; ii < allLots.size(); ii++) {
-		cout << allLots[ii]->numNotReserved << endl; // FILLER
 		if (allLots[ii]->numNotReserved != 0) { // won't add lot that has no spaces available
 			distance = dist(allLots[ii]->getLocation(), dest->getLocation()); // calculate distance
-			cout << distance << endl; // FILLER
 			if (distance <= this->maxWalkDist) { // if destination within walking distance
 				charge = allLots[ii]->getCost(timeParking); // calculate cost
-				cout << charge << endl; // FILLER
 				if (charge <= this->maxCharge) { // if cost within specified range
 					lotsAvailable.push_back(allLots[ii]); // add lot to lots available
 					lotDist.push_back(distance);
