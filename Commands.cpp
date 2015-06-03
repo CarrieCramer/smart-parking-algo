@@ -107,12 +107,12 @@ void run_simulation(Grid & world) { // run simulation to end
 }
 
 void advance_by_simulation(Grid & world) { // input g
+	const double timeIncrement = 1; // change this to change rate of update
 	double passTime;
 	double timePassed = 0;
-	const double timeIncrement = 1;
-	cout << "Enter the amount of time you wish to pass (recommended 1): ";
+	cout << "Enter the amount of time you wish to pass: ";
 	cin >> passTime;
-	while (timePassed < passTime) {
+	while (timePassed < passTime) { // updates until the correct time reached
 		world.update(timeIncrement);
 		timePassed += timeIncrement;
 	}
@@ -120,6 +120,10 @@ void advance_by_simulation(Grid & world) { // input g
 }
 
 void display_help() {
-	cout << "Enter u to create a new driver." << endl;
-	
+	cout << "Enter d to create a new destination for drivers." << endl;
+	cout << "Enter l to create a new lot." << endl;
+	cout << "Enter u to create a driver to park at these destinations and lots." << endl;
+	cout << "Enter r to advance the simulation by 1 time unit." << endl;
+	cout << "Enter g to advance the simulation by a longer time." << endl;
+	cout << "Enter q to quit." << endl;
 }

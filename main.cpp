@@ -26,11 +26,11 @@ int main() {
 					break;
 			}
 		} catch (InvalidInput& except) {
-			cout << "Invalid input:" << except.msg_ptr << endl;
-			command = ' ';
-			cin.clear();
-			cin.ignore(1000, '\n');
+			cout << "Invalid input: " << except.msg_ptr << endl; // display error message
+			command = ' '; // set command to blank space
+			cin.clear(); // reset input
+			cin.ignore(1000, '\n'); // reset input
 		}
 	}
-	return 0;
+	return 0; // end program
 }

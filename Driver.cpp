@@ -208,13 +208,24 @@ double Driver::getDistToDest() {
 	return dist(this->location, dest->getLocation());
 }
 
+char Driver::getState() {
+	return this->state;
+}
+
 void Driver::show_status() { // output driver ID, location, destination, and lot if applicable
-	if (this->state != 'z' && this->state != 'g') { // if driver is on field
-		cout << "Driver " << this->getID();
-		cout << " is at " << this->getLocation();
-		if (this->reserved != NULL) { // notes where it's parking
-			cout << " parking at Lot " << reserved->getID();
-		} 
-		cout << " and its destination is " << dest->getLocation() << endl;
-	} // otherwise show nothing
+	switch (this->state) {
+		case 'n': // seeking lots
+			cout << "Driver " << this->id << " located at " << this->location << " is seeking lots and heading for Destination " << dest->getID() << endl;
+			break;
+		case 'd': // heading to lot
+			cout << "Driver " << this->id << " located at " << this->location << " is heading to Lot " << reserved->getID() << endl;
+			break;
+		case 'p': // parking
+			cout << "Driver " << this->id << " located at " << this->location << " is parked at Lot " << reserved->getID() << endl;
+			break;
+		case 'h':
+			cout << "Driver " << this->id << " has left the map." << endl;
+		default:
+			break; // do nothing
+	}
 }

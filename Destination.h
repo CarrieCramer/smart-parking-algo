@@ -8,7 +8,7 @@
 class Destination {
 	public:
 		Destination();
-		Destination(int, Location);
+		Destination(int, double weight = 10, Location);
 		int atDest; // number of people at destination
 		
 		int getID(); // get id of destination

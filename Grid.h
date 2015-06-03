@@ -34,7 +34,7 @@ class Grid {
 		vector<Driver *> allUsers; // all drivers currently on the grid
 		vector<Lot *> allLots;
 		vector<Destination *> allDestinations;
-		vector<int> allSpacesLeft; 
+		vector<int> allSpacesLeft;  // currently unused
 
 		// Will be used when queues are added
 		vector<Driver> allWaiting; // all drivers currently waiting

@@ -75,8 +75,12 @@ bool Grid::update(double timing) { // Updates all elements of the grid.
 	for (int ii = 0; ii < allUsers.size(); ii++) {
 		if (allUsers[ii]->update()) { // update each and every user
 			stateChanged = true;
+			if (allUsers[ii]->getState() == 'h') {
+				delete allUsers[ii]; // delete pointer
+			}
 		} // keep updating after that
 	}
+	
 	// possibly update lots and destinations later, but there really isn't much to update about them now
 	if (stateChanged) return true;
 	else return false;	

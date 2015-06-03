@@ -6,8 +6,9 @@ Destination::Destination() {
 	this->location = Location(0,0);
 }
 
-Destination::Destination(int id, Location loc) {
+Destination::Destination(int id, double weight, Location loc) {
 	this->id = id;
+	this->arrivalRate = weight; // rate is determined by weight
 	this->location = loc;
 }
 
