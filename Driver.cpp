@@ -223,7 +223,7 @@ void Driver::show_status() { // output driver ID, location, destination, and lot
 		case 'p': // parking
 			cout << "Driver " << this->id << " located at " << this->location << " is parked at Lot " << reserved->getID() << endl;
 			break;
-		case 'h':
+		case 'g':
 			cout << "Driver " << this->id << " has left the map." << endl;
 		default:
 			break; // do nothing

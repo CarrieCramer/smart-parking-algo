@@ -13,6 +13,9 @@ void do_new_lot_command(Grid &); // input l to create new lot
 void do_new_destination_command(Grid &); // input d to create new destination
 void display_status(Grid &); // input s to display status of all drivers and lots
 
+void write_file(Grid &); // input w to save current state to file
+void open_file(Grid &); // input o to open a file
+
 void run_simulation(Grid &); // input r to start the simulation
 void advance_by_simulation(Grid &); // input g and then a number to advance simulation to a specific time
 // Also, input q to quit.

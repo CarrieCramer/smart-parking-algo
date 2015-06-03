@@ -75,13 +75,21 @@ bool Grid::update(double timing) { // Updates all elements of the grid.
 	for (int ii = 0; ii < allUsers.size(); ii++) {
 		if (allUsers[ii]->update()) { // update each and every user
 			stateChanged = true;
-			if (allUsers[ii]->getState() == 'h') {
+			if (allUsers[ii]->getState() == 'g') { // if set to leave map
 				delete allUsers[ii]; // delete pointer
 			}
 		} // keep updating after that
 	}
-	
-	// possibly update lots and destinations later, but there really isn't much to update about them now
+	for (int jj = 0; jj < allLots.size(); jj++) {
+		if (allLots[jj]->update()) { // update all lots
+			stateChanged = true;
+		} // keep updating after that
+	}
+	for (int hh = 0; hh < allDestinations.size(); hh++) {
+		if (allDestinations[hh]->update()) { // update all destinations
+			stateChanged = true;
+		} // keep updating after that
+	}
 	if (stateChanged) return true;
 	else return false;	
 }

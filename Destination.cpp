@@ -6,7 +6,7 @@ Destination::Destination() {
 	this->location = Location(0,0);
 }
 
-Destination::Destination(int id, double weight, Location loc) {
+Destination::Destination(int id, Location loc, double weight) {
 	this->id = id;
 	this->arrivalRate = weight; // rate is determined by weight
 	this->location = loc;
@@ -18,6 +18,10 @@ int Destination::getID() {
 
 Location Destination::getLocation() {
 	return this->location;
+}
+
+bool Destination::update() { // Possibly used to change the demand of the destination over time
+
 }
 
 void Destination::show_status() { // show destination location

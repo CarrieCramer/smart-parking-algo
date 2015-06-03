@@ -7,6 +7,8 @@
 #include "InputHandling.h"
 
 #include <iostream>
+#include <fstream>
+#include <string>
 using namespace std;
 
 void do_commands(char input, Grid & world) {
@@ -23,6 +25,14 @@ void do_commands(char input, Grid & world) {
 		case 's': // input s to show world status
 			display_status(world);
 			break;
+			
+		case 'w': // input w to save file
+			write_file(world);
+			break;
+		case 'o': // input o to open file
+			open_file(world);
+			break;
+			
 		case 'r':
 			run_simulation(world); // run simulation
 			break;
@@ -104,6 +114,18 @@ void run_simulation(Grid & world) { // run simulation to end
 	cout << "Advancing 1 step of simulation" << endl;
 	world.update();
 	world.show_status();
+}
+
+void write_file(Grid & world) { // write data to file
+	string fileName;
+	ofstream writeFile;
+	cout << "Enter the name of the file that you want to write to: " << endl;
+	getline(cin, fileName); // type your file name to get it
+	writeFile.open(fileName); // works in c++11 only
+}
+
+void open_file(Grid & world) { // read data from written file
+
 }
 
 void advance_by_simulation(Grid & world) { // input g

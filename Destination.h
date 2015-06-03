@@ -8,13 +8,14 @@
 class Destination {
 	public:
 		Destination();
-		Destination(int, double weight = 10, Location);
+		Destination(int, Location, double weight = 10);
 		int atDest; // number of people at destination
 		
 		int getID(); // get id of destination
 		Location getLocation();
 		double getRate(); // get rate of people entering to calculate costs
 		
+		bool update();
 		void show_status(); // show status of destination
 	private:
 		int id;

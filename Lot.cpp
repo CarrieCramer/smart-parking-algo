@@ -38,6 +38,10 @@ int Lot::getID() {
 	return this->id;
 }
 
+bool Lot::update() { // Updates lot information
+	
+}
+
 Location Lot::getLocation() {
 	return this->location;
 }
