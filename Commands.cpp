@@ -120,16 +120,22 @@ void write_file(Grid & world) { // write data to file
 	string fileName;
 	ofstream writeFile;
 	cout << "Enter the name of the file that you want to write to: " << endl;
+	cin.ignore();
 	getline(cin, fileName); // type your file name to get it
 	writeFile.open(fileName); // works in c++11 only
+	world.write_file(writeFile);
+	writeFile.close(); // close file
+	cout << "File has been written." << endl;
+	return;
 }
 
 void open_file(Grid & world) { // read data from written file
-
+	// Recommended to do at start of simulation
+	
 }
 
 void advance_by_simulation(Grid & world) { // input g
-	const double timeIncrement = 1; // change this to change rate of update
+	const double timeIncrement = 0.01; // change this to change rate of update
 	double passTime;
 	double timePassed = 0;
 	cout << "Enter the amount of time you wish to pass: ";

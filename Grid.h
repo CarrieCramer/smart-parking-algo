@@ -5,6 +5,8 @@
 #include "Driver.h"
 #include "Lot.h"
 #include "Destination.h"
+#include <iostream>
+#include <fstream>
 using namespace std;
 
 class Driver;
@@ -21,9 +23,13 @@ class Grid {
 		void addDriver(Driver *); // add driver to allUsers
 		void addLot(Lot *); // add lot to allLots
 		void addDestination(Destination *);
+		void setGridSize(double); // set grid size to larger
+		double getGridSize();
 		int getDestinationCount();
 		vector<Lot *> getAllLots();
 		Destination * findDestinationByID(int);
+		
+		void write_file(ofstream&); // Write file in grid
 		
 		bool update(double timing = 1); // updates the entire grid
 		void show_status(); // shows status of all items

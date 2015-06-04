@@ -15,7 +15,7 @@ Location::Location(double lat, double lon) {
 std::ostream &operator << (std::ostream &os, const Location &point) {
   os << "(";
   os << point.x;
-  os << ", ";
+  os << ",";
   os << point.y;
   os << ")";
   return os;

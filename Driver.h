@@ -33,21 +33,24 @@ class Driver {
 		bool accept(Lot); // choose to accept the lot
 		Lot * makeReservation(double); // makes reservation. If not satisfied, then will try to find a better one
 		double getDistToDest(); // return distance from driver to destination
+		double getArrivalTime(); // get arrival time
+		double getTimeAtPark(); // get time at park
 		bool departLot(); // if parked, leave parking lot
 		char getState(); // returns state of driver
 		
+		double maxWalkDist; // longest distance able to walk to get to destination
+		double maxCharge; // largest amount able to pay to park
+		double importanceWeight; // between 0 and 1: used to determine balance between walking and cost
+
 		bool update(); // update driver data
 		void show_status(); // shows status of driver
 	private:
 		int id;
 		Location location; // gets location on map (GPS realistically)
 		char state; // state of the driver
-		double importanceWeight; // between 0 and 1: used to determine balance between walking and cost
 		double timeOfArrival; // exact time when the car will appear in the grid
 		double timeInReserve; // time spent in reserve queue. 0 if not in it
 		int reserveSpot; // 0 or -1 if not reserved, else ID of reserved spot
-		double maxWalkDist; // longest distance able to walk to get to destination
-		double maxCharge; // largest amount able to pay to park
 		double timeArrivedAtPark; // when the car arrives at the parking lot
 		double timeAtPark; // how long the driver wishes to park for
 		bool parked;

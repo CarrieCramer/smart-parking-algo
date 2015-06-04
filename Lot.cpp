@@ -38,6 +38,10 @@ int Lot::getID() {
 	return this->id;
 }
 
+int Lot::getCapacity() {
+	return this->capacity;
+}
+
 bool Lot::update() { // Updates lot information
 	
 }

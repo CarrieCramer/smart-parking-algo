@@ -18,6 +18,7 @@ class Lot { // the ID of a location
 		// numNotReserved is always less than or equal to numFree
 		int getID(); // return ID
 		Location getLocation(); // return location
+		int getCapacity(); // get capacity of parking
 		double getCost(double); // get cost to use parking lot
 		bool update(); // update number of spots
 		void show_status(); // shows status of parking lot

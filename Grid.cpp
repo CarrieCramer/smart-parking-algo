@@ -2,6 +2,9 @@
 
 #include "Grid.h"
 #include <vector>
+#include <iostream>
+#include <fstream>
+using namespace std;
 
 Grid::Grid() {
 	this->time = 0;
@@ -55,6 +58,14 @@ int Grid::getDestinationCount() {
 	return allDestinations.size();
 }
 
+void Grid::setGridSize(double edgeLength) {
+	this->size = edgeLength;
+}
+
+double Grid::getGridSize() {
+	return this->size;
+}
+
 vector<Lot *> Grid::getAllLots() {
 	return this->allLots;
 }
@@ -66,6 +77,90 @@ Destination * Grid::findDestinationByID(int correctID) {
 		}
 	}
 	return NULL; // if none are found then return null pointer
+}
+
+void Grid::write_file(ofstream& writeFile) {
+	writeFile << "Grid Size:" << endl;
+	writeFile << this->size << endl;
+	writeFile << "Destination Locations:" << endl;
+	for (int ii = 0; ii < allDestinations.size(); ii++) {
+		writeFile << allDestinations[ii]->getLocation();
+		writeFile << " "; // add space
+	}
+	writeFile << endl;
+	writeFile << "Destination Probabilities: " << endl;
+	// writeFile << ; // Need to write code for these probabilities
+	writeFile << endl;
+	writeFile << "Destination Average Durations: " << endl;
+	// writeFile << ; // Write code for this
+	writeFile << endl;
+	writeFile << "Lot Locations:" << endl;
+	for (int ii = 0; ii < allLots.size(); ii++) {
+		writeFile << allLots[ii]->getLocation();
+		writeFile << " "; // add space
+	}
+	writeFile << endl;
+	writeFile << "Lot Capacities:" << endl;
+	for (int ii = 0; ii < allLots.size(); ii++) {
+		writeFile << allLots[ii]->getCapacity();
+		writeFile << " "; // add space
+	}
+	writeFile << endl;
+	writeFile << "Lot Prices:" << endl;
+	for (int ii = 0; ii < allLots.size(); ii++) {
+		writeFile << allLots[ii]->getCost(1); // cost of 1 unit of time
+		writeFile << " "; // add space
+	}
+	writeFile << endl;
+	writeFile << "Driver Arrival Locations: " << endl;
+	for (int ii = 0; ii < allUsers.size(); ii++) {
+		writeFile << allUsers[ii]->getLocation(); // cost of 1 unit of time
+		writeFile << " "; // add space
+	}
+	writeFile << endl;
+	writeFile << "Driver Destinations:" << endl;
+	for (int ii = 0; ii < allUsers.size(); ii++) {
+		writeFile << allUsers[ii]->dest->getID(); // cost of 1 unit of time
+		writeFile << " "; // add space
+	}
+	writeFile << endl;
+	writeFile << "Driver Arrival Times:" << endl;
+	for (int ii = 0; ii < allUsers.size(); ii++) {
+		writeFile << allUsers[ii]->getArrivalTime(); // cost of 1 unit of time
+		writeFile << " "; // add space
+	}
+	writeFile << endl;
+	writeFile << "Driver Durations:" << endl; // Add time it take for driver to arrive
+	for (int ii = 0; ii < allUsers.size(); ii++) {
+		writeFile << allUsers[ii]->getTimeAtPark(); // cost of 1 unit of time
+		writeFile << " "; // add space
+	}
+	writeFile << endl;
+	writeFile << "Driver Max Walking Distances:" << endl;
+	for (int ii = 0; ii < allUsers.size(); ii++) {
+		writeFile << allUsers[ii]->maxWalkDist; // cost of 1 unit of time
+		writeFile << " "; // add space
+	}
+	writeFile << endl;	
+	writeFile << "Driver Max Costs:" << endl;
+	for (int ii = 0; ii < allUsers.size(); ii++) {
+		writeFile << allUsers[ii]->maxCharge; // cost of 1 unit of time
+		writeFile << " "; // add space
+	}
+	writeFile << endl;		
+	writeFile << "Driver Importance Weight:" << endl;
+	for (int ii = 0; ii < allUsers.size(); ii++) {
+		writeFile << allUsers[ii]->importanceWeight; // cost of 1 unit of time
+		writeFile << " "; // add space
+	}
+	writeFile << endl;	
+	writeFile << "Driver Speeds:" << endl;
+	for (int ii = 0; ii < allUsers.size(); ii++) {
+		writeFile << allUsers[ii]->speed; // cost of 1 unit of time
+		writeFile << " "; // add space
+	}
+	writeFile << endl;
+	return;
 }
 
 bool Grid::update(double timing) { // Updates all elements of the grid.

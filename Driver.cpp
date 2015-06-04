@@ -60,6 +60,14 @@ bool Driver::departLot() { // return true if parked, else return false
 	}
 }
 
+double Driver::getArrivalTime() {
+	return timeOfArrival;
+}
+
+double Driver::getTimeAtPark() {
+	return timeAtPark;
+}
+
 Lot * Driver::makeReservation(double timeParking) { // finds potential lots
 	// Currently based on the best option given at the time.
 	// Later we plan to utilize it better.
