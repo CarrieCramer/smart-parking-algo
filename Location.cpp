@@ -21,6 +21,12 @@ std::ostream &operator << (std::ostream &os, const Location &point) {
   return os;
 }
 
+std::istream &operator >> (std::istream &is, const Location &point) {
+	char par1, comma, par2; // parentheses and comma
+	is >> par1 >> point.x >> comma >> point.y >> par2;
+	return is;
+}
+
 double dist(Location point1, Location point2) {
     return sqrt(pow((point2.x-point1.x), 2)+pow((point2.y-point1.y), 2));
 }

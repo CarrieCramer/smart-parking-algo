@@ -131,7 +131,20 @@ void write_file(Grid & world) { // write data to file
 
 void open_file(Grid & world) { // read data from written file
 	// Recommended to do at start of simulation
-	
+	string fileName;
+	ifstream readFile;
+	cout << "Enter the name of the file that you want to open: " << endl;
+	cin.ignore();
+	getline(cin, fileName); // type your file name to get it
+	readFile.open(fileName); // works in c++11 only	
+	if (readFile.is_open()) { // if file exists
+		world.read_file(readFile);
+	} else {
+		throw InvalidInput("File does not exist.");
+	}
+	readFile.close();
+	cout << "File has been read. Press 's' to show status." << endl;
+	return;
 }
 
 void advance_by_simulation(Grid & world) { // input g

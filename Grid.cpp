@@ -82,6 +82,8 @@ Destination * Grid::findDestinationByID(int correctID) {
 void Grid::write_file(ofstream& writeFile) {
 	writeFile << "Grid Size:" << endl;
 	writeFile << this->size << endl;
+	writeFile << "Destination Count:" << endl;
+	writeFile << allDestinations.size() << endl;
 	writeFile << "Destination Locations:" << endl;
 	for (int ii = 0; ii < allDestinations.size(); ii++) {
 		writeFile << allDestinations[ii]->getLocation();
@@ -91,9 +93,11 @@ void Grid::write_file(ofstream& writeFile) {
 	writeFile << "Destination Probabilities: " << endl;
 	// writeFile << ; // Need to write code for these probabilities
 	writeFile << endl;
-	writeFile << "Destination Average Durations: " << endl;
+	writeFile << "Destination Average Durations:" << endl;
 	// writeFile << ; // Write code for this
 	writeFile << endl;
+	writeFile << "Lot Count:" << endl;
+	writeFile << allLots.size() << endl;
 	writeFile << "Lot Locations:" << endl;
 	for (int ii = 0; ii < allLots.size(); ii++) {
 		writeFile << allLots[ii]->getLocation();
@@ -112,6 +116,8 @@ void Grid::write_file(ofstream& writeFile) {
 		writeFile << " "; // add space
 	}
 	writeFile << endl;
+	writeFile << "Driver Count:" << endl;
+	writeFile << allUsers.size() << endl;
 	writeFile << "Driver Arrival Locations: " << endl;
 	for (int ii = 0; ii < allUsers.size(); ii++) {
 		writeFile << allUsers[ii]->getLocation(); // cost of 1 unit of time
@@ -154,12 +160,182 @@ void Grid::write_file(ofstream& writeFile) {
 		writeFile << " "; // add space
 	}
 	writeFile << endl;	
-	writeFile << "Driver Speeds:" << endl;
-	for (int ii = 0; ii < allUsers.size(); ii++) {
-		writeFile << allUsers[ii]->speed; // cost of 1 unit of time
-		writeFile << " "; // add space
+	return;
+}
+
+void Grid::read_file(ifstream& readFile) {
+	// Each destination, lot, and driver has IDs starting with 0 and counting.
+	string currentlyRead; // reads current word
+	string variableToSet; // finds variable
+	// initial count set to 1 in order to prevent compilation errors
+	int destCount = 1;
+	int lotCount = 1;
+	int driverCount = 1;
+	double gridSize;
+	Location locationRead;
+	int intRead;
+	double doubleRead;
+	vector<Location> destLocs;
+	vector<double> destProbs;
+	vector<double> destAvgDur;
+	vector<Location> lotLocs;
+	vector<int> lotCapacities;
+	vector<double> lotPrices;
+	vector<double> dArrTimes;
+	vector<Location> dLocs;
+	vector<int> dDest;
+	vector<double> dDurations;
+	vector<double> dMaxWalkDist;
+	vector<double> dMaxCost;
+	vector<double> dImportanceWeight;
+	
+	while (!readfile.eof()) { // while file hasn't ended yet
+		readFile >> currentlyRead; // read words from file
+		if (currentlyRead == "Grid") {
+			readFile >> variableToSet; // read next word
+			if (variableToSet == "Size:") { // read size of grid
+				readFile >> gridSize;
+			}
+		} else if (currentlyRead == "Destination") {
+			readFile >> variableToSet;
+			if (variableToSet == "Count:") {
+				readFile >> destCount; // sets count
+			}	
+			if (variableToSet == "Locations:") { // location
+				for (int ii = 0; ii < destCount; ii++) {
+					readFile >> locationRead;
+					destLocs.push_back(locationRead);
+				}
+			}
+			if (variableToSet == "Probabilities:") { // double
+				for (int ii = 0; ii < destCount; ii++) {
+					readFile >> doubleRead;
+					destProbs.push_back(doubleRead);
+				}			
+			}
+			if (variableToSet == "Average") { // double
+				readFile >> variableToSet; // read third word
+				if (variableToSet == "Durations:") {
+					for (int ii = 0; ii < destCount; ii++) {
+						readFile >> doubleRead;
+						destAvgDur.push_back(doubleRead);
+					}	
+				}
+			}
+		} else if (currentlyRead == "Lot") {
+			readFile >> variableToSet;
+			if (variableToSet == "Count:") { // int
+				readFile >> lotCount; // sets count
+			}
+			if (variableToSet == "Locations:") { // location
+				for (int ii = 0; ii < lotCount; ii++) {
+					readFile >> locationRead;
+					lotLocs.push_back(locationRead);
+				}
+			}
+			if (variableToSet == "Capacities:") { // int
+				for (int ii = 0; ii < lotCount; ii++) {
+					readFile >> intRead;
+					lotCapacities.push_back(intRead);
+				}
+			}
+			if (variableToSet == "Prices:") { // double
+				for (int ii = 0; ii < lotCount; ii++) {
+					readFile >> doubleRead;
+					lotPrices.push_back(doubleRead);
+				}			
+			}
+		} else if (currentlyRead == "Driver") {
+			readFile >> variableToSet;
+			if (variableToSet == "Count:") {
+				readFile >> driverCount; // sets count
+			}
+			if (variableToSet == "Arrival") {
+				readFile >> variableToSet; // read next word
+				if (variableToSet == "Times:") {
+					for (int ii = 0; ii < driverCount; ii++) {
+						readFile >> doubleRead;
+						dArrTimes.push_back(doubleRead);
+					}
+				} else if (variableToSet == "Locations:") {
+					for (int ii = 0; ii < driverCount; ii++) {
+						readFile >> locationRead;
+						dLocs.push_back(locationRead);
+					}
+				}
+			}
+			if (variableToSet == "Destinations:") {
+				for (int ii = 0; ii < driverCount; ii++) {
+					readFile >> intRead;
+					dDest.push_back(intRead);
+				}
+			}
+			if (variableToSet == "Durations:") {
+				for (int ii = 0; ii < driverCount; ii++) {
+					readFile >> doubleRead;
+					dDurations.push_back(doubleRead);
+				}
+			}
+			if (variableToSet == "Max") {
+				readFile >> variableToSet;
+				if (variableToSet == "Walking") {
+					readFile >> variableToSet;
+					if (variableToSet == "Distances:") {
+						for (int ii = 0; ii < driverCount; ii++) {
+							readFile >> doubleRead;
+							dMaxWalkDist.push_back(doubleRead);
+						}
+					}
+				}
+				if (variableToSet == "Prices:") {
+					for (int ii = 0; ii < driverCount; ii++) {
+						readFile >> doubleRead;
+						dMaxCost.push_back(doubleRead);
+					}
+				}
+			}
+			if (variableToSet == "Importance") {
+				readFile >> variableToSet;
+				if (variableToSet == "Weight:") {
+					for (int ii = 0; ii < driverCount; ii++) {
+						readFile >> doubleRead;
+						dImportanceWeight.push_back(doubleRead);
+					}
+				}
+			}
+		} // If it is otherwise then ignore it completely
 	}
-	writeFile << endl;
+	// now we set up almost all of the variables
+	/*
+			vector<Location> destLocs;
+			vector<double> destProbs;
+			vector<double> destAvgDur;
+			vector<Location> lotLocs;
+			vector<int> lotCapacities;
+			vector<double> lotPrices;
+			vector<double> dArrTimes;
+			vector<Location> dLocs;
+			vector<int> dDest;
+			vector<double> dDurations;
+			vector<double> dMaxWalkDist;
+			vector<double> dMaxCost;
+			vector<double> dImportanceWeight;
+	*/
+	// set up destinations
+	for (int ii = 0; ii < destCount; ii++) {
+		addDestination(new Destination(ii, destLocs[ii]));
+	}
+	// set up lots
+	for (int jj = 0; jj < lotCount; jj++) {
+		addLot(new Lot(jj, lotLocs[jj], lotCapacities[jj],this));
+	}
+	// set up drivers
+	for (int kk = 0; kk < driverCount; kk++) {
+		Destination * destPoint = findDestinationByID(dDest[kk]); // first find the destination
+		addDriver(new Driver(kk, dArrTimes[kk], dImportanceWeight[kk], 
+		                     dMaxWalkDist[kk], dMaxCost[kk], 
+				             dLocs[kk], dDurations[kk], destPoint, this));
+	}
 	return;
 }
 

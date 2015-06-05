@@ -30,6 +30,7 @@ class Grid {
 		Destination * findDestinationByID(int);
 		
 		void write_file(ofstream&); // Write file in grid
+		void read_file(ifstream&); // Read file to grid
 		
 		bool update(double timing = 1); // updates the entire grid
 		void show_status(); // shows status of all items

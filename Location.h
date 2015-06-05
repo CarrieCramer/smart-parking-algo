@@ -15,6 +15,7 @@ class Location{
 };
 
 std::ostream &operator << (std::ostream &, const Location &);
+std::istream &operator >> (std::istream &, const Location &); // reads value in parentheses and converts into location
 
 double dist(Location, Location);
 Location operator + (const Location &, const DriveVector &); // adds vector to location
