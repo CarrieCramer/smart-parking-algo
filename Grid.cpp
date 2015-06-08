@@ -91,10 +91,16 @@ void Grid::write_file(ofstream& writeFile) {
 	}
 	writeFile << endl;
 	writeFile << "Destination Probabilities: " << endl;
-	// writeFile << ; // Need to write code for these probabilities
+	for (int ii = 0; ii < allDestinations.size(); ii++) {
+		writeFile << 1; // write code for this later
+		writeFile << " "; // add space
+	}
 	writeFile << endl;
 	writeFile << "Destination Average Durations:" << endl;
-	// writeFile << ; // Write code for this
+	for (int ii = 0; ii < allDestinations.size(); ii++) {
+		writeFile << 1; // write code for this later
+		writeFile << " "; // add space
+	}
 	writeFile << endl;
 	writeFile << "Lot Count:" << endl;
 	writeFile << allLots.size() << endl;
@@ -118,6 +124,12 @@ void Grid::write_file(ofstream& writeFile) {
 	writeFile << endl;
 	writeFile << "Driver Count:" << endl;
 	writeFile << allUsers.size() << endl;
+	writeFile << "Driver Arrival Times:" << endl;
+	for (int ii = 0; ii < allUsers.size(); ii++) {
+		writeFile << allUsers[ii]->getArrivalTime(); // cost of 1 unit of time
+		writeFile << " "; // add space
+	}
+	writeFile << endl;
 	writeFile << "Driver Arrival Locations: " << endl;
 	for (int ii = 0; ii < allUsers.size(); ii++) {
 		writeFile << allUsers[ii]->getLocation(); // cost of 1 unit of time
@@ -127,12 +139,6 @@ void Grid::write_file(ofstream& writeFile) {
 	writeFile << "Driver Destinations:" << endl;
 	for (int ii = 0; ii < allUsers.size(); ii++) {
 		writeFile << allUsers[ii]->dest->getID(); // cost of 1 unit of time
-		writeFile << " "; // add space
-	}
-	writeFile << endl;
-	writeFile << "Driver Arrival Times:" << endl;
-	for (int ii = 0; ii < allUsers.size(); ii++) {
-		writeFile << allUsers[ii]->getArrivalTime(); // cost of 1 unit of time
 		writeFile << " "; // add space
 	}
 	writeFile << endl;
@@ -148,7 +154,7 @@ void Grid::write_file(ofstream& writeFile) {
 		writeFile << " "; // add space
 	}
 	writeFile << endl;	
-	writeFile << "Driver Max Costs:" << endl;
+	writeFile << "Driver Max Prices:" << endl;
 	for (int ii = 0; ii < allUsers.size(); ii++) {
 		writeFile << allUsers[ii]->maxCharge; // cost of 1 unit of time
 		writeFile << " "; // add space
@@ -189,7 +195,7 @@ void Grid::read_file(ifstream& readFile) {
 	vector<double> dMaxCost;
 	vector<double> dImportanceWeight;
 	
-	while (!readfile.eof()) { // while file hasn't ended yet
+	while (!readFile.eof()) { // while file hasn't ended yet
 		readFile >> currentlyRead; // read words from file
 		if (currentlyRead == "Grid") {
 			readFile >> variableToSet; // read next word
@@ -306,21 +312,6 @@ void Grid::read_file(ifstream& readFile) {
 		} // If it is otherwise then ignore it completely
 	}
 	// now we set up almost all of the variables
-	/*
-			vector<Location> destLocs;
-			vector<double> destProbs;
-			vector<double> destAvgDur;
-			vector<Location> lotLocs;
-			vector<int> lotCapacities;
-			vector<double> lotPrices;
-			vector<double> dArrTimes;
-			vector<Location> dLocs;
-			vector<int> dDest;
-			vector<double> dDurations;
-			vector<double> dMaxWalkDist;
-			vector<double> dMaxCost;
-			vector<double> dImportanceWeight;
-	*/
 	// set up destinations
 	for (int ii = 0; ii < destCount; ii++) {
 		addDestination(new Destination(ii, destLocs[ii]));

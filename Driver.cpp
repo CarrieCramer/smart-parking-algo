@@ -8,7 +8,9 @@
 #include <iostream>
 using namespace std;
 
-Driver::Driver(int ID, double arrivalTime, double weightScale, double maxDist, double maxPay, Location loc, double timeAtPark, Destination * toReach, Grid * as) {
+Driver::Driver(int ID, double arrivalTime, double weightScale, 
+				double maxDist, double maxPay, Location loc, 
+				double timeAtPark, Destination * toReach, Grid * as) {
 	this->id = ID;
 	try {
 		if (weightScale < 0 || weightScale > 1) {

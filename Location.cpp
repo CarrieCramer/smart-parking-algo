@@ -21,9 +21,12 @@ std::ostream &operator << (std::ostream &os, const Location &point) {
   return os;
 }
 
-std::istream &operator >> (std::istream &is, const Location &point) {
+std::istream &operator >> (std::istream &is, Location &point) {
+	double ix, iy;
 	char par1, comma, par2; // parentheses and comma
-	is >> par1 >> point.x >> comma >> point.y >> par2;
+	is >> par1 >> ix >> comma >> iy >> par2;
+	point.x = ix;
+	point.y = iy;
 	return is;
 }
 
