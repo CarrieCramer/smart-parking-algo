@@ -41,7 +41,8 @@ class Driver {
 		double maxWalkDist; // longest distance able to walk to get to destination
 		double maxCharge; // largest amount able to pay to park
 		double importanceWeight; // between 0 and 1: used to determine balance between walking and cost
-
+		void goToPark(); // set status of drivers to head to park
+		
 		bool update(); // update driver data
 		void show_status(); // shows status of driver
 	private:
@@ -53,7 +54,6 @@ class Driver {
 		int reserveSpot; // 0 or -1 if not reserved, else ID of reserved spot
 		double timeArrivedAtPark; // when the car arrives at the parking lot
 		double timeAtPark; // how long the driver wishes to park for
-		bool parked;
 		DriveVector driveDirection; // setup driver direction
 		Location travelPoint; // where the driver wishes to go
 		

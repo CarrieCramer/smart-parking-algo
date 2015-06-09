@@ -29,7 +29,6 @@ Driver::Driver(int ID, double arrivalTime, double weightScale,
 	this->dest = toReach;
 	this->reserveSpot = -1;
 	this->world = as;
-	this->parked = false;
 	this->state = 'z';
 	this->speed = 5; // set speed to 5 by default
 }
@@ -54,8 +53,10 @@ bool Driver::isInIA() {
 
 bool Driver::departLot() { // return true if parked, else return false
 	// when returns true, Grid will remove this parker from the list of parked people.
-	if (parked) {
-		this->parked = false;
+	if (this->state = 'p') {
+		// send request to lot to stop parking
+		reserved->releaseDriver(); // allot more space
+		this->state = 'g'; // leave parking
 		return true;
 	} else {
 		return false;
@@ -68,6 +69,11 @@ double Driver::getArrivalTime() {
 
 double Driver::getTimeAtPark() {
 	return timeAtPark;
+}
+
+void Driver::goToPark() {
+	this->state = 'd'; // set to head towards parking lot
+	setup_destination(reserved->getLocation()); // setup destination
 }
 
 Lot * Driver::makeReservation(double timeParking) { // finds potential lots
@@ -110,7 +116,7 @@ vector<Lot *> Driver::findLots(double timeParking) {
 	
 	vector<Lot *> allLots = world->getAllLots();
 	for (int ii = 0; ii < allLots.size(); ii++) {
-		if (allLots[ii]->numNotReserved != 0) { // won't add lot that has no spaces available
+		if (allLots[ii]->isFull() == false) { // won't add lot that has no spaces available
 			distance = dist(allLots[ii]->getLocation(), dest->getLocation()); // calculate distance
 			if (distance <= this->maxWalkDist) { // if destination within walking distance
 				charge = allLots[ii]->getCost(timeParking); // calculate cost
@@ -144,14 +150,11 @@ bool Driver::update() { // update driver parking, returns true on state change
 		case 'z':
 			if (world->getTime() >= timeOfArrival) { // if car should arrive at this time
 				reserved = makeReservation(timeAtPark); // reserving spot
-				if (reserved == NULL) { // if reserved nothing
-					setup_destination(dest->getLocation());
-					this->state = 'n'; // driving towards destination
-				} else {
-					setup_destination(reserved->getLocation());
-					reserved->numNotReserved--;
-					this->state = 'd'; // driving to lot
+				if (reserved != NULL) { // if found reservation
+					reserved->addToQueue(this);
 				}
+				setup_destination(dest->getLocation()); // go to destination
+				this->state = 'n';
 				return true;
 			} else {
 				return false;
@@ -161,18 +164,16 @@ bool Driver::update() { // update driver parking, returns true on state change
 			update_location(); // move the car
 			reserved = makeReservation(timeAtPark); // try reserving a spot again
 			if (reserved != NULL) { // if reservation exists
-				setup_destination(reserved->getLocation());
-				reserved->numNotReserved--; // decrement number of nonreserved spaces
-				this->state = 'd'; // driving to lot
+				reserved->addToQueue(this); // add driver to reservation queue
 				return true;
 			}
 			return false;
 			break;
 		case 'd': // drive towards parking lot
 			if (update_location() == true) { // move car and check if arrived at parking lot
-				this->state = 'p'; // set state to "parking"
-				reserved->numFree--; // decrement number of spots available
+				reserved->driverHasParked(); // show the driver has parked
 				timeArrivedAtPark = world->getTime(); // store time of lot arrival
+				this->state = 'p'; // state is now parking
 				return true;
 			} else { // driver hasn't reached parking lot
 				return false;
@@ -180,9 +181,7 @@ bool Driver::update() { // update driver parking, returns true on state change
 			break;
 		case 'p': // parking
 			if (world->getTime() >= timeArrivedAtPark+timeAtPark) {
-				this->state = 'g'; // state is now 'leaving the area'
-				reserved->numFree++; // increment number of spots available
-				reserved->numNotReserved++;
+				departLot(); // leave the lot
 				return true;
 			} else {
 				return false;
