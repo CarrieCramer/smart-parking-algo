@@ -11,6 +11,7 @@ Lot::Lot() { // default constructor
 	this->capacity = 0;
 	this->numFree = 0;
 	this->numNotReserved = 0;
+	this->peopleLeaving = 0;
 	this->world = NULL;
 }
 
@@ -20,12 +21,13 @@ Lot::Lot(int ID, Location loc, int totalSpots, Grid * as) {
 	this->capacity = totalSpots;
 	this->numFree = capacity;
 	this->numNotReserved = capacity;
+	this->peopleLeaving = 0;
 	this->world = as;
 }
 
 double Lot::getCost(double timeParked) {
 	// SAMPLE COST FUNCTION
-	return timeParked;
+	return 0.5*timeParked;
 }
 
 int Lot::getID() {
@@ -84,14 +86,15 @@ bool Lot::update() { // Updates lot information
 	numNotReserved += peopleLeaving;
 	// Next, check the drivers and see if they are fit.
 	if (numNotReserved >= driversToPark.size()) {
+		for (int ii = 0; ii < driversToPark.size(); ii++) {
+			driversToPark[ii]->goToPark(); // head to parking
+		}
 		numNotReserved -= driversToPark.size(); // reduce size of reserve queue
-		for (int ii = 0; ii < driversToPark.size(); ii++) {
+	} else { // reserve as many as possible
+		for (int ii = 0; ii < numNotReserved; ii++) {
 			driversToPark[ii]->goToPark(); // head to parking
 		}
-	} else {
-		for (int ii = 0; ii < driversToPark.size(); ii++) {
-			driversToPark[ii]->goToPark(); // head to parking
-		}
+		numNotReserved = 0;
 	}
 	driversToPark.clear(); // reset driver count
 	numOfReservers = 0; // reset reserving at update
