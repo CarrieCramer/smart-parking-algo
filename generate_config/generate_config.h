@@ -7,6 +7,9 @@
 #include <vector>
 using namespace std;
 
+// Obtain the number of simulation iterations. In each iteration, the grid, lot, and destination attributes will remain the same, but there will be a different set of drivers.   
+int getNumIterations();
+
 // Obtain grid size from user input
 int getGridSize();
 
@@ -21,6 +24,9 @@ bool randCapac();
 
 // Obtain lot capacity if user chooses to use equal lot capacities
 int getLotCapac();
+
+// Obtain lot pricing policy number
+int getPricePolicy();
 
 // Obtain whether lot prices are equal or random from user input
 bool randPrice();
@@ -49,28 +55,34 @@ void writeLotLocs(int gridSize, int numLots, ofstream& config, default_random_en
 // Write random parking lot capacities to config
 void writeLotCapacities(bool randCapacIn, int capac, int avgDemand, int numLots, ofstream& config, default_random_engine& engine);
 
+// Write the pricing policy to config
+void writePricePolicy(int pricePolicy, ofstream& config);
+
 // Write random parking lot prices to config
-void writeLotPrices(bool randPriceIn, double price, int numLots, ofstream& config, default_random_engine& engine);
+void writeLotPrices(int pricePolicy, double price, int numLots, ofstream& config, default_random_engine& engine);
 
 // Write driver arrival times to config and return demand (total number of drivers)
-int writeDriverArrivals(int avgDemand, ofstream& config, default_random_engine& engine);
+list<int> writeDriverArrivals(int numIterations, int avgDemand, ofstream& config, default_random_engine& engine);
+
+// Write number of drivers in each simulation run to config
+void writeNumDrivers(list<int> numDrivers, ofstream& config);
 
 // Write random driver arrival locations to config
-void writeDriverLocs(int gridSize, int numDrivers, ofstream& config, default_random_engine& engine);
+void writeDriverLocs(int gridSize, list<int> numDrivers, ofstream& config, default_random_engine& engine);
 
 // Write random driver destinations to config and return list of destinations
-list<int> writeDriverDests(list<double> destProbs, int numDrivers, ofstream& config, default_random_engine& engine);
+list<list<int>> writeDriverDests(list<double> destProbs, list<int> numDrivers, ofstream& config, default_random_engine& engine);
 
 // Write random driver durations to config
-void writeDriverDurs(vector<double> avgDurations, list<int> dests, ofstream& config, default_random_engine& engine);
+void writeDriverDurs(vector<double> avgDurations, list<list<int>> dests, ofstream& config, default_random_engine& engine);
 
 // Write random driver max walking distances to config
-void writeDriverMaxWalkDists(int gridSize, int numDrivers, ofstream& config, default_random_engine& engine);
+void writeDriverMaxWalkDists(int gridSize, list<int> numDrivers, ofstream& config, default_random_engine& engine);
 
 // Write random driver max prices to config
-void writeDriverMaxPrices(int numDrivers, ofstream& config, default_random_engine& engine);
+void writeDriverMaxPrices(list<int> numDrivers, ofstream& config, default_random_engine& engine);
 
 // Write random driver importance weight to config
-void writeDriverImportWeights(int numDrivers, ofstream& config, default_random_engine& engine);
+void writeDriverImportWeights(list<int> numDrivers, ofstream& config, default_random_engine& engine);
 
 #endif
