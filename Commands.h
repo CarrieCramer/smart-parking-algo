@@ -15,10 +15,13 @@ void display_status(Grid &); // input s to display status of all drivers and lot
 
 void write_file(Grid &); // input w to save current state to file
 void open_file(Grid &); // input o to open a file
+void save_driver_status(Grid &); // save detailed results about simulation
 
 void run_simulation(Grid &); // input r to start the simulation
 void advance_by_simulation(Grid &); // input g and then a number to advance simulation to a specific time
 // Also, input q to quit.
+void reset_simulation(Grid &); // input x to reset the simulation
+
 void display_help(); // input h to display help text
 
 #endif

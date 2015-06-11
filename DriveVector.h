@@ -19,7 +19,7 @@ public:
 	DriveVector(double, double);
 };
 
-#endif // defined __DriveVector__
-
 DriveVector operator * (const DriveVector &, const double &); // multiplies vector by amount
 DriveVector operator / (const DriveVector &, const double &); // divides vector by amount
+
+#endif // defined __DriveVector__

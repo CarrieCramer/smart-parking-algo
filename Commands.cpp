@@ -39,6 +39,9 @@ void do_commands(char input, Grid & world) {
 		case 'g':
 			advance_by_simulation(world); // g to advance simulation to a point
 			break;
+		case 'x':
+			reset_simulation(world); // reset simulation
+			break;
 		case 'q':
 			break; // do nothing, exit function done in main.cpp
 		default:
@@ -111,8 +114,8 @@ void display_status(Grid & world) {
 } // input s to display status of all drivers and lots
 
 void run_simulation(Grid & world) { // run simulation to end
-	cout << "Advancing 1 step of simulation" << endl;
-	world.update();
+	cout << "Advancing to next event in simulation" << endl;
+	world.update(world.toNextEvent());
 	world.show_status();
 }
 
@@ -147,6 +150,10 @@ void open_file(Grid & world) { // read data from written file
 	return;
 }
 
+void save_driver_status(Grid & world) {
+	
+}
+
 void advance_by_simulation(Grid & world) { // input g
 	const double timeIncrement = 0.01; // change this to change rate of update
 	double passTime;
@@ -158,6 +165,11 @@ void advance_by_simulation(Grid & world) { // input g
 		timePassed += timeIncrement;
 	}
 	world.show_status();
+}
+
+void reset_simulation(Grid & world) {
+	world.reset();
+	cout << "File has been reset" << endl;
 }
 
 void display_help() {

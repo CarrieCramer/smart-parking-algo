@@ -89,14 +89,23 @@ bool Lot::update() { // Updates lot information
 	numFree += peopleLeaving;
 	numNotReserved += peopleLeaving;
 	// Next, check the drivers and see if they are fit.
+	double expectedParkingTime;
 	if (numNotReserved >= driversToPark.size()) {
 		for (int ii = 0; ii < driversToPark.size(); ii++) {
 			driversToPark[ii]->goToPark(); // head to parking
+			expectedParkingTime = driversToPark[ii]->getTimeArrivedAtPark();
+			world->addEvent(new Event(world->getTime(), driversToPark[ii], 's'));
+			world->addEvent(new Event(expectedParkingTime, driversToPark[ii], 'p'));
+			world->addEvent(new Event(expectedParkingTime+driversToPark[ii]->getTimeAtPark(), driversToPark[ii], 'd'));
 		}
 		numNotReserved -= driversToPark.size(); // reduce size of reserve queue
 	} else { // reserve as many as possible
 		for (int ii = 0; ii < numNotReserved; ii++) {
 			driversToPark[ii]->goToPark(); // head to parking
+			expectedParkingTime = driversToPark[ii]->getTimeArrivedAtPark();
+			world->addEvent(new Event(world->getTime(), driversToPark[ii], 's'));
+			world->addEvent(new Event(expectedParkingTime, driversToPark[ii], 'p'));
+			world->addEvent(new Event(expectedParkingTime+driversToPark[ii]->getTimeAtPark(), driversToPark[ii], 'd'));
 		}
 		numNotReserved = 0;
 	}

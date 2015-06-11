@@ -4,6 +4,7 @@
 #include "Location.h"
 #include "Lot.h"
 #include "DriveVector.h"
+#include "Event.h"
 #include <cmath>
 #include <iostream>
 using namespace std;
@@ -31,6 +32,7 @@ Driver::Driver(int ID, double arrivalTime, double weightScale,
 	this->world = as;
 	this->state = 'z';
 	this->speed = 5; // set speed to 5 by default
+	world->addEvent(new Event(this->timeOfArrival, this, 'n'));
 }
 
 int Driver::getID() { // Function returns the ID value of driver
@@ -63,11 +65,22 @@ bool Driver::departLot() { // return true if parked, else return false
 	}
 }
 
-double Driver::getArrivalTime() {
+double Driver::getDistToLot() {
+	return dist(this->getLocation(), reserved->getLocation());
+}
+
+double Driver::getArrivalTime() { // find when the car appeared on the grid
 	return timeOfArrival;
 }
 
-double Driver::getTimeAtPark() {
+double Driver::getTimeArrivedAtPark() {
+	if (this->state != 'p' && reserved != NULL) {
+		timeArrivedAtPark = world->getTime() + getDistToLot()/speed;
+	}
+	return timeArrivedAtPark;
+}
+
+double Driver::getTimeAtPark() { // find how long the car is at the park
 	return timeAtPark;
 }
 

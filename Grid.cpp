@@ -1,6 +1,7 @@
 // Grid.cpp
 
 #include "Grid.h"
+#include <set>
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -10,13 +11,16 @@ Grid::Grid() {
 	this->time = 0;
 	this->timeIncrement = 1;
 	this->size = 10;
-	
+	this->addEvent(new Event(0, nullptr,'z')); // base event
+	this->eventIt = allEvents.begin();
 }
 
 Grid::Grid(double boardSize) {
 	this->time = 0;
 	this->timeIncrement = 1;
 	this->size = boardSize;
+	this->addEvent(new Event(0, nullptr,'z')); // base event
+	this->eventIt = allEvents.begin();
 }
 
 double Grid::getTime() {
@@ -54,6 +58,10 @@ void Grid::addDestination (Destination * toAdd) {
 	return;
 }
 
+void Grid::addEvent(Event * toAdd) {
+	allEvents.insert(toAdd); // inserts and sorts event by time
+}
+
 int Grid::getDestinationCount() {
 	return allDestinations.size();
 }
@@ -64,6 +72,24 @@ void Grid::setGridSize(double edgeLength) {
 
 double Grid::getGridSize() {
 	return this->size;
+}
+
+double Grid::toNextEvent() {
+	if (*eventIt == nullptr) {
+		eventIt = allEvents.begin();
+	}
+	while ((*eventIt)->getTime() <= this->time) { // while event has lower time than current time
+		++eventIt; // go to next event
+		if (eventIt == allEvents.end()) {
+			cout << "Simulation over." << endl;
+			return 0; // return 0
+		}
+	}
+		// event with a different time reached, return difference
+	if (eventIt == allEvents.end()) {
+		cout << "Simulation over." << endl;
+	}
+	return ((*eventIt)->getTime()-this->time);
 }
 
 vector<Lot *> Grid::getAllLots() {
@@ -170,6 +196,8 @@ void Grid::write_file(ofstream& writeFile) {
 }
 
 void Grid::read_file(ifstream& readFile) {
+	// First, reset the entire grid.
+	this->reset();
 	// Each destination, lot, and driver has IDs starting with 0 and counting.
 	string currentlyRead; // reads current word
 	string variableToSet; // finds variable
@@ -328,6 +356,18 @@ void Grid::read_file(ifstream& readFile) {
 				             dLocs[kk], dDurations[kk], destPoint, this));
 	}
 	return;
+}
+
+void Grid::reset() { // reset everything back to original state
+	this->time = 0;
+	this->timeIncrement = 1;
+	this->size = 10;
+	allUsers.clear();
+	allLots.clear();
+	allDestinations.clear();
+	allSpacesLeft.clear();
+	allWaiting.clear();
+	allReserved.clear();
 }
 
 bool Grid::update(double timing) { // Updates all elements of the grid.

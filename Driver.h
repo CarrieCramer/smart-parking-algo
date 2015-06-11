@@ -33,8 +33,10 @@ class Driver {
 		bool accept(Lot); // choose to accept the lot
 		Lot * makeReservation(double); // makes reservation. If not satisfied, then will try to find a better one
 		double getDistToDest(); // return distance from driver to destination
+		double getDistToLot(); // returns distance from driver to reserved lot
 		double getArrivalTime(); // get arrival time
-		double getTimeAtPark(); // get time at park
+		double getTimeArrivedAtPark(); // get the time when the car will arrive at the park
+		double getTimeAtPark(); // find how long car is parked for
 		bool departLot(); // if parked, leave parking lot
 		char getState(); // returns state of driver
 		
