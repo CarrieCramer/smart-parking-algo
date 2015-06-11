@@ -30,6 +30,7 @@ class Lot { // the ID of a location
 		Location getLocation(); // return location
 		int getCapacity(); // get capacity of parking
 		double getCost(double); // get cost to use parking lot
+		void setCost(double); // set cost to use parking lot
 		void addToQueue(Driver *); // add driver to queue of parkers
 		bool update(); // update number of spots
 		void show_status(); // shows status of parking lot

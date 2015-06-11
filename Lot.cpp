@@ -27,7 +27,11 @@ Lot::Lot(int ID, Location loc, int totalSpots, Grid * as) {
 
 double Lot::getCost(double timeParked) {
 	// SAMPLE COST FUNCTION
-	return 0.5*timeParked;
+	return cost*timeParked;
+}
+
+void Lot::setCost(double newCost) {
+	this->cost = newCost;
 }
 
 int Lot::getID() {
