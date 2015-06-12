@@ -1,16 +1,20 @@
+#ifndef PRICING_POLICY_3
+#define PRICING_POLICY_3
+
 // Pricing Policy 3: Real-time, Proportional Dynamic Pricing Policy
 
 #include <iostream>
 #include <vector>
-#include <Lot.h>
+#include "Lot.h"
 using namespace std;
 
 
 // Adjusts prices of all lots based on current "reserved rate" - fraction of reserved (not necessarily occupied) spots 
 // Each Lot's cost will be updated if its current reserved rate is outside of [targetResRate - limit, targetResRate + limit]
-// The cost is changed by the following amount (current reserved rate - target reserved rate)/current reserved rate
-// This function should be called after every event or every few events so that price updates are real-time
-void updatePrices3(vector<Lot*> allLots, double targetResRate, double limit) {
+// Default target reserved rate is 0.85, default limit is 0
+// The cost is changed by the following amount: current cost * (current reserved rate - target reserved rate)/current reserved rate
+// This function should be called after every Event
+void updatePrices3(vector<Lot*> allLots, double targetResRate = 0.85, double limit = 0) {
 
 	// Iterate through each Lot
 	for (vector<Lot*>::iterator currentLot = allLots.begin(); currentLot != allLots.end(); currentLot++) {
@@ -22,7 +26,7 @@ void updatePrices3(vector<Lot*> allLots, double targetResRate, double limit) {
 		if ((currentResRate < (targetResRate - limit)) || (currentResRate >(targetResRate + limit))) {
 
 			// Get the Lot's current cost
-			double currentCost = (*currentLot)->getCost(1.0); // NEEDS TO BE ADDED TO LOT FUNCTIONS: getCost() should return the parking cost per unit time
+			double currentCost = (*currentLot)->getCost(1.0);
 
 			// Calculate the new cost  
 			double newCost = currentCost + currentCost*((currentResRate - targetResRate) / currentResRate);
@@ -36,7 +40,9 @@ void updatePrices3(vector<Lot*> allLots, double targetResRate, double limit) {
 			}
 
 			// Update the Lot's cost
-			(*currentLot)->setCost(newCost); // NEEDS TO BE ADDED TO LOT FUNCTIONS: setCost(double) should set the parking cost per unit time
+			(*currentLot)->setCost(newCost); 
 		}
 	}
 }
+
+#endif
