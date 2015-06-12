@@ -1,6 +1,7 @@
 // Event.cpp
 
 #include "Event.h"
+#include "Driver.h"
 #include <iostream>
 using namespace std;
 
@@ -14,7 +15,7 @@ Event::Event(double timeIn, Driver * driver, char eventType) {
 	this->time = timeIn;
 	this->eventDriver = driver;
 	this->type = eventType;
-	cout << "Event at time " << time << " of event type " << type << endl;
+	cout << "Event at time " << time << " for Driver " << driver->getID() << " of event type " << type << endl;
 }
 
 double Event::getTime() const {

@@ -7,6 +7,7 @@
 #include "Event.h"
 #include <cmath>
 #include <iostream>
+#include <limits> // for maximum double value
 using namespace std;
 
 Driver::Driver(int ID, double arrivalTime, double weightScale, 
@@ -74,9 +75,7 @@ double Driver::getArrivalTime() { // find when the car appeared on the grid
 }
 
 double Driver::getTimeArrivedAtPark() {
-	if (this->state != 'p' && reserved != NULL) {
-		timeArrivedAtPark = world->getTime() + getDistToLot()/speed;
-	}
+	timeArrivedAtPark = world->getTime() + getDistToLot()/speed;
 	return timeArrivedAtPark;
 }
 
@@ -172,7 +171,9 @@ bool Driver::update() { // update driver parking, returns true on state change
 			break;
 		case 'n': // drive towards destination, but waiting for lots
 			if (update_location() == true){ // Move the car. If lot not reached:
-				
+				this->maxWalkDist = numeric_limits<double>::max();
+				this->maxCharge = numeric_limits<double>::max();
+				// set max walk distance and cost to maximum value
 			}
 			reserved = makeReservation(timeAtPark); // try reserving a spot again
 			if (reserved != NULL) { // if reservation exists
@@ -207,7 +208,7 @@ bool Driver::update() { // update driver parking, returns true on state change
 
 bool Driver::update_location() { // Moves towards destination. Return true if reached.
 	DriveVector distDiff = travelPoint-location;
-	if (fabs(distDiff.x) <= fabs(driveDirection.x) && fabs(distDiff.y) <= fabs(driveDirection.y)) { // if the fish can reach destination
+	if (fabs(distDiff.x) <= fabs(driveDirection.x) && fabs(distDiff.y) <= fabs(driveDirection.y)) { // if driver can reach
 		location = travelPoint; // set location to destination
 		return true;
 	} else {
@@ -220,7 +221,7 @@ void Driver::setup_destination(Location dest) { // setup where to go
   this->travelPoint = dest; // Destination is set to value
   double totalDistance = dist(travelPoint,location);
   if (totalDistance != 0) { // check if destination is the same place or not
-    this->driveDirection = (travelPoint - location) * (this->speed/totalDistance)*world->timeIncrement; // delta equation
+    this->driveDirection = (travelPoint - location) * ((this->speed/totalDistance)*world->timeIncrement); // delta equation
   } else {
     this->driveDirection = DriveVector(0,0);
   }

@@ -36,6 +36,9 @@ void do_commands(char input, Grid & world) {
 		case 'r':
 			run_simulation(world); // run simulation
 			break;
+		case 'j':
+			jump_to_end(world);
+			break;
 		case 'g':
 			advance_by_simulation(world); // g to advance simulation to a point
 			break;
@@ -139,6 +142,7 @@ void open_file(Grid & world) { // read data from written file
 	cout << "Enter the name of the file that you want to open: " << endl;
 	cin.ignore();
 	getline(cin, fileName); // type your file name to get it
+	world.reset(); // reset in the case that there is no error
 	readFile.open(fileName); // works in c++11 only	
 	if (readFile.is_open()) { // if file exists
 		world.read_file(readFile);
@@ -165,6 +169,15 @@ void advance_by_simulation(Grid & world) { // input g
 		timePassed += timeIncrement;
 	}
 	world.show_status();
+}
+
+void jump_to_end(Grid & world) {
+	// Continues with the updating until the end of the simulation.
+	while (!world.simulationOver) {
+		world.update(world.toNextEvent());
+	}
+	world.show_status();
+	return;
 }
 
 void reset_simulation(Grid & world) {

@@ -19,6 +19,7 @@ void save_driver_status(Grid &); // save detailed results about simulation
 
 void run_simulation(Grid &); // input r to start the simulation
 void advance_by_simulation(Grid &); // input g and then a number to advance simulation to a specific time
+void jump_to_end(Grid &); // input j to update to the end of the simulation
 // Also, input q to quit.
 void reset_simulation(Grid &); // input x to reset the simulation
 

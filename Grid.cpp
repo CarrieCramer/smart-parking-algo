@@ -11,16 +11,18 @@ Grid::Grid() {
 	this->time = 0;
 	this->timeIncrement = 1;
 	this->size = 10;
-	this->addEvent(Event(0, nullptr,'z')); // base event
+	this->addEvent(Event()); // base event
 	this->eventIt = allEvents.begin();
+	this->simulationOver = false;
 }
 
 Grid::Grid(double boardSize) {
 	this->time = 0;
 	this->timeIncrement = 1;
 	this->size = boardSize;
-	this->addEvent(Event(0, nullptr,'z')); // base event
+	this->addEvent(Event()); // base event
 	this->eventIt = allEvents.begin();
+	this->simulationOver = false;
 }
 
 double Grid::getTime() {
@@ -78,15 +80,16 @@ double Grid::toNextEvent() { // Moves set iterator to next event
 	cout << eventIt->getTime() << endl;
 	while (eventIt->getTime() <= this->time) { // while event has lower time than current time
 		++eventIt; // go to next event
-		cout << eventIt->getTime() << endl;
 		if (eventIt == allEvents.end()) {
 			cout << "Simulation over." << endl;
+			this->simulationOver = true;
 			return 0; // return 0
 		}
 	}
 		// event with a different time reached, return difference
 	if (eventIt == allEvents.end()) {
 		cout << "Simulation over." << endl;
+		this->simulationOver = true;
 	}
 	return (eventIt->getTime()-this->time);
 }
@@ -369,10 +372,14 @@ void Grid::reset() { // reset everything back to original state
 	allSpacesLeft.clear();
 	allWaiting.clear();
 	allReserved.clear();
+	allEvents.clear();
+	this->addEvent(Event()); // base event
+	this->eventIt = allEvents.begin();
+	this->simulationOver = false;
 }
 
 bool Grid::update(double timing) { // Updates all elements of the grid.
-	this->timeIncrement = timing;
+	this->timeIncrement = timing; // change time increment based on time it takes
 	bool stateChanged = false;
 	this->time += timeIncrement; // increments time
 	for (int ii = 0; ii < allUsers.size(); ii++) {

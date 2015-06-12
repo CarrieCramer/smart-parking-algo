@@ -38,6 +38,8 @@ class Grid {
 		void reset(); // Reset the entire grid
 		void addEvent(Event); // adds a new event to the set
 		
+		bool simulationOver; // checks if simulation is over or not
+		
 		bool update(double timing = 1); // updates the entire grid
 		void show_status(); // shows status of all items
 		
