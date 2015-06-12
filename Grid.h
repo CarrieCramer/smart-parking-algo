@@ -36,7 +36,7 @@ class Grid {
 		void write_file(ofstream&); // Write file in grid
 		void read_file(ifstream&); // Read file to grid
 		void reset(); // Reset the entire grid
-		void addEvent(Event *); // adds a new event to the set
+		void addEvent(Event); // adds a new event to the set
 		
 		bool update(double timing = 1); // updates the entire grid
 		void show_status(); // shows status of all items
@@ -49,8 +49,8 @@ class Grid {
 		vector<Lot *> allLots;
 		vector<Destination *> allDestinations;
 		vector<int> allSpacesLeft;  // currently unused
-		set<Event *> allEvents; // set of all events.
-		set<Event *>::iterator eventIt; // position of current set iterator
+		set<Event> allEvents; // set of all events.
+		set<Event>::iterator eventIt; // position of current set iterator
 		
 		// Will be used when queues are added
 		vector<Driver> allWaiting; // all drivers currently waiting

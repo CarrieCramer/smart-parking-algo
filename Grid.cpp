@@ -11,7 +11,7 @@ Grid::Grid() {
 	this->time = 0;
 	this->timeIncrement = 1;
 	this->size = 10;
-	this->addEvent(new Event(0, nullptr,'z')); // base event
+	this->addEvent(Event(0, nullptr,'z')); // base event
 	this->eventIt = allEvents.begin();
 }
 
@@ -19,7 +19,7 @@ Grid::Grid(double boardSize) {
 	this->time = 0;
 	this->timeIncrement = 1;
 	this->size = boardSize;
-	this->addEvent(new Event(0, nullptr,'z')); // base event
+	this->addEvent(Event(0, nullptr,'z')); // base event
 	this->eventIt = allEvents.begin();
 }
 
@@ -58,7 +58,7 @@ void Grid::addDestination (Destination * toAdd) {
 	return;
 }
 
-void Grid::addEvent(Event * toAdd) {
+void Grid::addEvent(Event toAdd) {
 	allEvents.insert(toAdd); // inserts and sorts event by time
 }
 
@@ -74,12 +74,11 @@ double Grid::getGridSize() {
 	return this->size;
 }
 
-double Grid::toNextEvent() {
-	if (*eventIt == nullptr) {
-		eventIt = allEvents.begin();
-	}
-	while ((*eventIt)->getTime() <= this->time) { // while event has lower time than current time
+double Grid::toNextEvent() { // Moves set iterator to next event
+	cout << eventIt->getTime() << endl;
+	while (eventIt->getTime() <= this->time) { // while event has lower time than current time
 		++eventIt; // go to next event
+		cout << eventIt->getTime() << endl;
 		if (eventIt == allEvents.end()) {
 			cout << "Simulation over." << endl;
 			return 0; // return 0
@@ -89,7 +88,7 @@ double Grid::toNextEvent() {
 	if (eventIt == allEvents.end()) {
 		cout << "Simulation over." << endl;
 	}
-	return ((*eventIt)->getTime()-this->time);
+	return (eventIt->getTime()-this->time);
 }
 
 vector<Lot *> Grid::getAllLots() {
@@ -346,7 +345,9 @@ void Grid::read_file(ifstream& readFile) {
 	}
 	// set up lots
 	for (int jj = 0; jj < lotCount; jj++) {
-		addLot(new Lot(jj, lotLocs[jj], lotCapacities[jj],this));
+		Lot * newLot = new Lot(jj, lotLocs[jj], lotCapacities[jj],this);
+		newLot->setCost(lotPrices[jj]);
+		addLot(newLot);
 	}
 	// set up drivers
 	for (int kk = 0; kk < driverCount; kk++) {
@@ -377,9 +378,7 @@ bool Grid::update(double timing) { // Updates all elements of the grid.
 	for (int ii = 0; ii < allUsers.size(); ii++) {
 		if (allUsers[ii]->update()) { // update each and every user
 			stateChanged = true;
-			if (allUsers[ii]->getState() == 'g') { // if set to leave map
-				delete allUsers[ii]; // delete pointer
-			}
+			// deleting the pointer was causing trouble, not deleting
 		} // keep updating after that
 	}
 	for (int jj = 0; jj < allLots.size(); jj++) {

@@ -31,8 +31,8 @@ Driver::Driver(int ID, double arrivalTime, double weightScale,
 	this->reserveSpot = -1;
 	this->world = as;
 	this->state = 'z';
-	this->speed = 5; // set speed to 5 by default
-	world->addEvent(new Event(this->timeOfArrival, this, 'n'));
+	this->speed = 100; // set speed to 5 by default
+	world->addEvent(Event(this->timeOfArrival, this, 'n'));
 }
 
 int Driver::getID() { // Function returns the ID value of driver
@@ -143,9 +143,6 @@ vector<Lot *> Driver::findLots(double timeParking) {
 			}
 		}
 	}
-	if (lotsAvailable.size() == 0) { // No lots available for driver
-		cout << "No lots are available." << endl; 
-	}
 	return lotsAvailable;
 }
 
@@ -174,7 +171,9 @@ bool Driver::update() { // update driver parking, returns true on state change
 			}
 			break;
 		case 'n': // drive towards destination, but waiting for lots
-			update_location(); // move the car
+			if (update_location() == true){ // Move the car. If lot not reached:
+				
+			}
 			reserved = makeReservation(timeAtPark); // try reserving a spot again
 			if (reserved != NULL) { // if reservation exists
 				reserved->addToQueue(this); // add driver to reservation queue
@@ -186,6 +185,7 @@ bool Driver::update() { // update driver parking, returns true on state change
 			if (update_location() == true) { // move car and check if arrived at parking lot
 				reserved->driverHasParked(); // show the driver has parked
 				timeArrivedAtPark = world->getTime(); // store time of lot arrival
+				world->addEvent(Event(timeArrivedAtPark+timeAtPark, this, 'd'));
 				this->state = 'p'; // state is now parking
 				return true;
 			} else { // driver hasn't reached parking lot
