@@ -208,6 +208,10 @@ bool Driver::update() { // update driver parking, returns true on state change
 
 bool Driver::update_location() { // Moves towards destination. Return true if reached.
 	DriveVector distDiff = travelPoint-location;
+	double totalDistance = dist(travelPoint,location);
+    if (totalDistance != 0) { // check if destination is the same place or not
+      this->driveDirection = (travelPoint - location) * ((this->speed/totalDistance)*world->timeIncrement); // delta equation
+    }
 	if (fabs(distDiff.x) <= fabs(driveDirection.x) && fabs(distDiff.y) <= fabs(driveDirection.y)) { // if driver can reach
 		location = travelPoint; // set location to destination
 		return true;
