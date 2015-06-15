@@ -378,16 +378,8 @@ void writeLotPrices(int pricePolicy, double price, int numLots, ofstream& config
 	*/
 }
 
-// Write driver arrival times to config and return demand (total number of drivers)
-list<int> writeDriverArrivals(int numIterations, int avgDemand, ofstream& config, default_random_engine& engine) {
-
-	config << "****************************************************************************************************\n";
-	config << "DRIVER ARRIVAL TIMES:\n";
-	config << "Arrival times of each driver in ascending order.\n";
-	config << "Note that the simulation time is normalized from 0 to 1.\n";
-	config << "Each row corresponds to one simulation iteration.\n";
-	config << "****************************************************************************************************\n";
-
+// Get driver arrival times and return them in a matrix
+list<list<double>> generateArrivals(int numIterations, int avgDemand, ofstream& config, default_random_engine& engine) {
 
 	//Define exponential distribution with arrival rate parameter 
 	exponential_distribution<double> distribution(avgDemand);
@@ -395,33 +387,65 @@ list<int> writeDriverArrivals(int numIterations, int avgDemand, ofstream& config
 	// t will store current arrival time
 	double t;
 
-	// numDrivers will store the total number of drivers during each simulation iteration
-	list<int> numDrivers;
+	// Matrix that will store arrival times
+	// 1st dimension corresponds to simulation iteration number
+	// 2nd dimension corresponds to driver ID
+	list<list<double>> arrivals;
 
-	// currentNumDrivers will count the number of drivers in the current simulation iteration
-	int currentNumDrivers;
+	// List of arrival times for current iteration
+	list<double> currentArrivals;
 
 	// For each simulation iteration
 	for (int i = 0; i < numIterations; i++) {
+		
+		// Clear currentArrivals
+		currentArrivals.clear();
 
 		t = 0;
-		currentNumDrivers = 0;
 		
+		// Loop until a generated arrival time exceeds 1
 		while (t <= 1) {
 
 			// Generate next arrival interval and add it to t
 			t += distribution(engine);
 
-			// Write arrival time to config
+			// Add arrival time to currentArrivals
 			if (t <= 1) {
-				config << t << " ";
-				currentNumDrivers++;
+				currentArrivals.push_back(t);
 			}
 		}
-		// Go to the next line in config
-		config << "\n";
 
-		// Add the total number of drivers for the current iteration to numDrivers
+		// Add a copy of currentArrivals to arrivals
+		arrivals.push_back(currentArrivals);
+	}
+
+	return arrivals;
+}
+
+// Write number of drivers in each simulation iteration to config and return them in a list
+list<int> writeNumDrivers(list<list<double>> arrivals, ofstream& config) {
+
+	config << "****************************************************************************************************\n";
+	config << "DRIVER COUNT:\n";
+	config << "Number of drivers that arrives during each simulation iteration.\n";
+	config << "Each row corresponds to one simulation iteration.\n";
+	config << "****************************************************************************************************\n";
+
+	// Stores the number of drivers in each simulation iteration
+	list<int> numDrivers;
+
+	// Counter storing number of drivers in current simulation iteration
+	int currentNumDrivers;
+
+	// Iterate through 1st dimension of arrivals
+	for (list<list<double>>::iterator arrivalsIt = arrivals.begin(); arrivalsIt != arrivals.end(); arrivalsIt++) {
+
+		currentNumDrivers = (*arrivalsIt).size();
+
+		// Write number of drivers to config
+		config << currentNumDrivers << "\n";
+
+		// Store number of drivers in numDrivers
 		numDrivers.push_back(currentNumDrivers);
 	}
 
@@ -430,22 +454,29 @@ list<int> writeDriverArrivals(int numIterations, int avgDemand, ofstream& config
 	return numDrivers;
 }
 
-// Write number of drivers in each simulation iteration to config
-void writeNumDrivers(list<int> numDrivers, ofstream& config) {
-	
+// Write driver arrival times to config
+void writeDriverArrivals(list<list<double>> arrivals, ofstream& config) {
+
 	config << "****************************************************************************************************\n";
-	config << "DRIVER COUNT:\n";
-	config << "Number of drivers that arrives during each simulation iteration.\n";
+	config << "DRIVER ARRIVAL TIMES:\n";
+	config << "Arrival times of each driver in ascending order.\n";
+	config << "Note that the simulation time is normalized from 0 to 1.\n";
 	config << "Each row corresponds to one simulation iteration.\n";
 	config << "****************************************************************************************************\n";
 
-	// Iterate through each value in numDrivers list 
-	for (list<int>::iterator numDriversIt = numDrivers.begin(); numDriversIt != numDrivers.end(); numDriversIt++) {
-
-		// Write number of drivers in current simulation iteration
-		config << *numDriversIt << "\n";
-	}
+	// Iterate through 1st dimension of arrivals
+	for (list<list<double>>::iterator arrivalsIt = arrivals.begin(); arrivalsIt != arrivals.end(); arrivalsIt++) {
 		
+		// Iterate through 2nd dimension of arrivals
+		for (list<double>::iterator arrivalsIt2 = (*arrivalsIt).begin(); arrivalsIt2 != (*arrivalsIt).end(); arrivalsIt2++) {
+
+			// Write current arrival time to config
+			config << *arrivalsIt2 << " ";
+		}
+			
+		config << "\n";
+	}
+
 	config << "\n";
 }
 

@@ -61,11 +61,14 @@ void writePricePolicy(int pricePolicy, ofstream& config);
 // Write random parking lot prices to config
 void writeLotPrices(int pricePolicy, double price, int numLots, ofstream& config, default_random_engine& engine);
 
-// Write driver arrival times to config and return demand (total number of drivers)
-list<int> writeDriverArrivals(int numIterations, int avgDemand, ofstream& config, default_random_engine& engine);
+// Get driver arrival times and return them in a matrix
+list<list<double>> generateArrivals(int numIterations, int avgDemand, ofstream& config, default_random_engine& engine);
 
-// Write number of drivers in each simulation run to config
-void writeNumDrivers(list<int> numDrivers, ofstream& config);
+// Write number of drivers in each simulation iteration to config and return them in a list
+list<int> writeNumDrivers(list<list<double>> arrivals, ofstream& config);
+
+// Write driver arrival times to config
+void writeDriverArrivals(list<list<double>> arrivals, ofstream& config);
 
 // Write random driver arrival locations to config
 void writeDriverLocs(int gridSize, list<int> numDrivers, ofstream& config, default_random_engine& engine);
