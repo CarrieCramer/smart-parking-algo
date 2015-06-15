@@ -2,9 +2,12 @@
 
 #include "Grid.h"
 #include <set>
+#include <string>
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <sstream>
+#include "InputHandling.h"
 using namespace std;
 
 Grid::Grid() {
@@ -207,7 +210,6 @@ void Grid::read_file(ifstream& readFile) {
 	int destCount = 1;
 	int lotCount = 1;
 	int driverCount = 1;
-	double gridSize;
 	Location locationRead;
 	int intRead;
 	double doubleRead;
@@ -225,121 +227,201 @@ void Grid::read_file(ifstream& readFile) {
 	vector<double> dMaxCost;
 	vector<double> dImportanceWeight;
 	
-	while (!readFile.eof()) { // while file hasn't ended yet
-		readFile >> currentlyRead; // read words from file
-		if (currentlyRead == "Grid") {
-			readFile >> variableToSet; // read next word
-			if (variableToSet == "Size:") { // read size of grid
-				readFile >> gridSize;
+	/*
+		Read file state: 
+		0. Read file line by line
+		1. Check for string of asterisks.
+		2. Check for specific variable to set.
+		3. Check for next string of asterisks.
+		4. Immediately after, check for the numbers to set the variables to.
+		5. Also, figure out how to set iterations.
+	*/
+	bool readVal = false; // if ready to read values, set to true
+	int state = 0; // determines which variable to set. 0 indicates that we need to see asterisks. Other values meant to set values.
+	try {
+		while (getline(readFile, currentlyRead) && !readFile.eof()) { // read line each time
+			istringstream iss(currentlyRead); // for cases of multiple variables to set on line
+			if (state != 0 && state != 1 && !readVal) {
+				if (currentlyRead == "****************************************************************************************************") {
+					readVal = true;
+				} // go to the next line and read it
 			}
-		} else if (currentlyRead == "Destination") {
-			readFile >> variableToSet;
-			if (variableToSet == "Count:") {
-				readFile >> destCount; // sets count
-			}	
-			if (variableToSet == "Locations:") { // location
-				for (int ii = 0; ii < destCount; ii++) {
-					readFile >> locationRead;
-					destLocs.push_back(locationRead);
-				}
-			}
-			if (variableToSet == "Probabilities:") { // double
-				for (int ii = 0; ii < destCount; ii++) {
-					readFile >> doubleRead;
-					destProbs.push_back(doubleRead);
-				}			
-			}
-			if (variableToSet == "Average") { // double
-				readFile >> variableToSet; // read third word
-				if (variableToSet == "Durations:") {
-					for (int ii = 0; ii < destCount; ii++) {
-						readFile >> doubleRead;
-						destAvgDur.push_back(doubleRead);
-					}	
-				}
-			}
-		} else if (currentlyRead == "Lot") {
-			readFile >> variableToSet;
-			if (variableToSet == "Count:") { // int
-				readFile >> lotCount; // sets count
-			}
-			if (variableToSet == "Locations:") { // location
-				for (int ii = 0; ii < lotCount; ii++) {
-					readFile >> locationRead;
-					lotLocs.push_back(locationRead);
-				}
-			}
-			if (variableToSet == "Capacities:") { // int
-				for (int ii = 0; ii < lotCount; ii++) {
-					readFile >> intRead;
-					lotCapacities.push_back(intRead);
-				}
-			}
-			if (variableToSet == "Prices:") { // double
-				for (int ii = 0; ii < lotCount; ii++) {
-					readFile >> doubleRead;
-					lotPrices.push_back(doubleRead);
-				}			
-			}
-		} else if (currentlyRead == "Driver") {
-			readFile >> variableToSet;
-			if (variableToSet == "Count:") {
-				readFile >> driverCount; // sets count
-			}
-			if (variableToSet == "Arrival") {
-				readFile >> variableToSet; // read next word
-				if (variableToSet == "Times:") {
-					for (int ii = 0; ii < driverCount; ii++) {
-						readFile >> doubleRead;
-						dArrTimes.push_back(doubleRead);
-					}
-				} else if (variableToSet == "Locations:") {
-					for (int ii = 0; ii < driverCount; ii++) {
-						readFile >> locationRead;
-						dLocs.push_back(locationRead);
-					}
-				}
-			}
-			if (variableToSet == "Destinations:") {
-				for (int ii = 0; ii < driverCount; ii++) {
-					readFile >> intRead;
-					dDest.push_back(intRead);
-				}
-			}
-			if (variableToSet == "Durations:") {
-				for (int ii = 0; ii < driverCount; ii++) {
-					readFile >> doubleRead;
-					dDurations.push_back(doubleRead);
-				}
-			}
-			if (variableToSet == "Max") {
-				readFile >> variableToSet;
-				if (variableToSet == "Walking") {
-					readFile >> variableToSet;
-					if (variableToSet == "Distances:") {
+			else { // otherwise 
+				switch(state) {
+					case 0:
+						if (currentlyRead == "****************************************************************************************************") {
+							// if reading a long line of asterisks
+							state = 1; // State 1 means we have to check for a variable to set
+						}
+						break;
+					case 1: // Since switch files don't work on strings if-statements are used.
+						if (currentlyRead == "NUMBER OF ITERATIONS:") state = 2;
+						else if (currentlyRead == "GRID SIZE:") state = 3;
+						else if (currentlyRead == "DESTINATION COUNT:") state = 4;
+						else if (currentlyRead == "DESTINATION LOCATIONS:") state = 5;
+						else if (currentlyRead == "DESTINATION PROBABILITIES:") state = 6;
+						else if (currentlyRead == "DESTINATION AVERAGE DURATIONS:") state = 7;
+						else if (currentlyRead == "LOT COUNT:") state = 8;
+						else if (currentlyRead == "LOT LOCATIONS:") state = 9;
+						else if (currentlyRead == "LOT CAPACITIES:") state = 10;
+						else if (currentlyRead == "LOT PRICING POLICY:") state = 11;
+						else if (currentlyRead == "LOT PRICES:") state = 12;
+						else if (currentlyRead == "AVERAGE DEMAND:") state = 13;
+						else if (currentlyRead == "DRIVER COUNT:") state = 14;
+						else if (currentlyRead == "DRIVER ARRIVAL TIMES:") state = 15;
+						else if (currentlyRead == "DRIVER ARRIVAL LOCATIONS:") state = 16;
+						else if (currentlyRead == "DRIVER DESTINATIONS:") state = 17;
+						else if (currentlyRead == "DRIVER DURATIONS:") state = 18;
+						else if (currentlyRead == "DRIVER MAX WALKING DISTANCES:") state = 19;
+						else if (currentlyRead == "DRIVER MAX PRICES:") state = 20;
+						else if (currentlyRead == "DRIVER IMPORTANCE WEIGHTS:") state = 21;
+						else {
+							throw InvalidInput("Error: File variable read incorrectly.");
+						}
+						break; // end of file reading
+					case 2: // iteration count
+						iss >> intRead;
+						this->numOfIterations = intRead; // set number of iterations
+						state = 0;
+						readVal = false; // not reading values
+						break; // to be implemented
+					case 3: // grid size
+						iss >> doubleRead;
+						this->size = doubleRead; // set size
+						readVal = false;
+						state = 0;
+						break;
+					case 4: // destination count
+						iss >> intRead;
+						destCount = intRead;
+						readVal = false;
+						state = 0;
+						break;
+					case 5: // destination locations (same for each iteration)
+						for (int ii = 0; ii < destCount; ii++) { // iterate over previously read destination count
+							iss >> locationRead;
+							destLocs.push_back(locationRead); // add location to vector
+						}
+						state = 0;
+						readVal = false;
+						break;
+					case 6: // destination probabilities (config file statistic)
+						state = 0;
+						readVal = false;
+						break; // to be used
+					case 7: // average duration at destination (config stat)
+						state = 0;
+						readVal = false;
+						break; // to be used
+					case 8: // lot count
+						iss >> intRead;
+						lotCount = intRead;
+						state = 0;
+						readVal = false;
+						break;
+					case 9: // location of lots (same per iteration)
+						for (int ii = 0; ii < lotCount; ii++) { // iterate over previously read destination count
+							iss >> locationRead;
+							lotLocs.push_back(locationRead); // add location to vector
+						}
+						state = 0;
+						readVal = false;
+						break;
+					case 10: // capacities of lot
+						for (int ii = 0; ii < lotCount; ii++) {
+							iss >> intRead;
+							lotCapacities.push_back(intRead); // add int to vector
+						}
+						state = 0;
+						readVal = false;
+						break;
+					case 11: // policy of lot pricing
+						for (int ii = 0; ii < lotCount; ii++) {
+							iss >> doubleRead;
+							lotPrices.push_back(doubleRead); // add to vector
+						}						
+						state = 0;
+						readVal = false;
+						break; // to be added
+					case 12: // lot prices
+						state = 0;
+						readVal = false;
+						break; // to be added
+					case 13: // average demand
+						state = 0;
+						readVal = false;
+						break; // to be added
+					case 14: // driver count
+						iss >> intRead;
+						driverCount = intRead;
+						state = 0;
+						readVal = false;
+						break; // support for multiple iterations to be done later
+					case 15: // driver arrival times
 						for (int ii = 0; ii < driverCount; ii++) {
-							readFile >> doubleRead;
+							iss >> doubleRead;
+							dArrTimes.push_back(doubleRead);
+						}
+						state = 0;
+						readVal = false;
+						break;
+					case 16: // driver arrival locations (starting points)
+						for (int ii = 0; ii < driverCount; ii++) {
+							iss >> locationRead;
+							dLocs.push_back(locationRead);
+						}
+						state = 0;
+						readVal = false;
+						break;
+					case 17: // driver destinations
+						for (int ii = 0; ii < driverCount; ii++) {
+							iss >> intRead;
+							dDest.push_back(intRead);
+						}
+						state = 0;
+						readVal = false;
+						break;
+					case 18: // duration of parking drivers
+						for (int ii = 0; ii < driverCount; ii++) {
+							iss >> doubleRead;
+							dDurations.push_back(doubleRead);
+						}
+						state = 0;
+						readVal = false;
+						break;
+					case 19: // max walking distance
+						for (int ii = 0; ii < driverCount; ii++) {
+							iss >> doubleRead;
 							dMaxWalkDist.push_back(doubleRead);
 						}
-					}
-				}
-				if (variableToSet == "Prices:") {
-					for (int ii = 0; ii < driverCount; ii++) {
-						readFile >> doubleRead;
-						dMaxCost.push_back(doubleRead);
-					}
-				}
-			}
-			if (variableToSet == "Importance") {
-				readFile >> variableToSet;
-				if (variableToSet == "Weight:") {
-					for (int ii = 0; ii < driverCount; ii++) {
-						readFile >> doubleRead;
-						dImportanceWeight.push_back(doubleRead);
-					}
-				}
-			}
-		} // If it is otherwise then ignore it completely
+						state = 0;
+						readVal = false;
+						break;
+					case 20: // max allowed prices
+						for (int ii = 0; ii < driverCount; ii++) {
+							iss >> doubleRead;
+							dMaxCost.push_back(doubleRead);
+						}
+						state = 0;
+						readVal = false;
+						break;
+					case 21: // importance weights
+						for (int ii = 0; ii < driverCount; ii++) {
+							iss >> doubleRead;
+							dImportanceWeight.push_back(doubleRead);
+						}
+						state = 0;
+						readVal = false;
+						break;
+					default:
+						throw InvalidInput("File reading state corrupted");
+				} // end of switch statement
+			} // end of else statement
+		} // end of getline while loop
+	} catch (InvalidInput& except) {
+		cout << except.msg_ptr << endl; // exception found, ask to try again
+		cout << "Please reconfigure your file and try again." << endl;
+		return;
 	}
 	// now we set up almost all of the variables
 	// set up destinations
@@ -348,7 +430,7 @@ void Grid::read_file(ifstream& readFile) {
 	}
 	// set up lots
 	for (int jj = 0; jj < lotCount; jj++) {
-		Lot * newLot = new Lot(jj, lotLocs[jj], lotCapacities[jj],this);
+		Lot * newLot = new Lot(jj, lotLocs[jj], lotCapacities[jj], this);
 		newLot->setCost(lotPrices[jj]);
 		addLot(newLot);
 	}

@@ -115,11 +115,11 @@ int main() {
 	config << "****************************************************************************************************\n";
 	config << avgDemand << "\n\n";
 
-	// Write driver arrival times to config.txt
-	list<int> numDrivers = writeDriverArrivals(numIterations, avgDemand, config, engine);
-
 	// Write number of drivers to config.txt
 	writeNumDrivers(numDrivers, config);
+	
+	// Write driver arrival times to config.txt
+	list<int> numDrivers = writeDriverArrivals(numIterations, avgDemand, config, engine);
 
 	// Write random driver arrival locations to config.txt
 	writeDriverLocs(gridSize, numDrivers, config, engine);

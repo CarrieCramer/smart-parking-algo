@@ -46,6 +46,7 @@ class Grid {
 	private:
 		double size; // length of one side of the square grid
 		double time; // decision point
+		int numOfIterations; // number of iterations
 		
 		vector<Driver *> allUsers; // all drivers currently on the grid
 		vector<Lot *> allLots;
