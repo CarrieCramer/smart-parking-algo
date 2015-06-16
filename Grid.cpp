@@ -13,6 +13,8 @@ using namespace std;
 
 Grid::Grid() {
 	this->time = 0;
+	this->currentIteration = 0;
+	this->numOfIterations = 1;
 	this->timeIncrement = 1;
 	this->size = 10;
 	this->addEvent(Event()); // base event
@@ -20,9 +22,12 @@ Grid::Grid() {
 	this->simulationOver = false;
 }
 
-Grid::Grid(double boardSize) {
+Grid::Grid(double boardSize, double iterations) {
 	this->time = 0;
+	this->currentIteration = 0;
+	this->numOfIterations = iterations;
 	this->timeIncrement = 1;
+	
 	this->size = boardSize;
 	this->addEvent(Event()); // base event
 	this->eventIt = allEvents.begin();
@@ -49,8 +54,12 @@ vector<int> Grid::allocateParking() { // Called once each driver has a list of p
 	}
 }
 */
-void Grid::addDriver(Driver * toAdd) {
-	allUsers.push_back(toAdd);
+void Grid::addDriver(Driver * toAdd, int iteration) {
+	int iterationNumber;
+	if (iteration != -1) {
+		iterationNumber = iteration;
+	} else iterationNumber = this->currentIteration;
+	allUsers[iterationNumber].push_back(toAdd);
 	return;
 }
 
@@ -445,17 +454,52 @@ void Grid::read_file(ifstream& readFile) {
 	return;
 }
 
+/*
+	how iterations work:
+	iterations are stored as 2D vectors
+	of both driver and grid.
+	When switching from iteration to iteration, 
+	time resets. However, all events are preserved.
+	
+*/
+
+int Grid::switchIteration(int newIt) { // switches iteration. Resets time. Returns iteration number.
+	if (newIt >= numOfIterations || newIt < 0) { // not an iteration
+		return -1; // doesn't count
+	} else {
+		this->time = 0;
+		this->eventIt = allEvents[newIt].begin(); // change event iterator
+		currentIteration = newIt; // set current iteration
+		return newIt;
+	}
+}
+
 void Grid::reset() { // reset everything back to original state
 	this->time = 0;
 	this->timeIncrement = 1;
 	this->size = 10;
+	for (int i = 0; i < numOfIterations; i++) {
+		allEvents[i].clear(); // clear event set
+	}
+	allEvents.clear(); // clear all iteration events
+	for (int i = 0; i < numOfIterations; i++) {
+		for (int j = 0; j < allUsers[i].size(); j++) {
+			delete (allUsers[i][j]); // clear pointers
+		}
+		allUsers[i].clear();
+	}
 	allUsers.clear();
+	for (int j = 0; j < allLots.size(); j++) {
+		delete (allLots[j]); // clear pointers
+	}
 	allLots.clear();
+	for (int j = 0; j < allDestinations.size(); j++) {
+		delete (allDestinations[j]); // clear pointers
+	}
 	allDestinations.clear();
 	allSpacesLeft.clear();
 	allWaiting.clear();
 	allReserved.clear();
-	allEvents.clear();
 	this->addEvent(Event()); // base event
 	this->eventIt = allEvents.begin();
 	this->simulationOver = false;
@@ -465,8 +509,8 @@ bool Grid::update(double timing) { // Updates all elements of the grid.
 	this->timeIncrement = timing; // change time increment based on time it takes
 	bool stateChanged = false;
 	this->time += timeIncrement; // increments time
-	for (int ii = 0; ii < allUsers.size(); ii++) {
-		if (allUsers[ii]->update()) { // update each and every user
+	for (int ii = 0; ii < allUsers[currentIteration].size(); ii++) {
+		if (allUsers[currentIteration][ii]->update()) { // update each and every user
 			stateChanged = true;
 			// deleting the pointer was causing trouble, not deleting
 		} // keep updating after that
