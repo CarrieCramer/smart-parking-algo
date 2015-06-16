@@ -15,23 +15,29 @@ Grid::Grid() {
 	this->time = 0;
 	this->currentIteration = 0;
 	this->numOfIterations = 1;
+	allUsers.reserve(1);
+	allEvents.reserve(1);
 	this->timeIncrement = 1;
 	this->size = 10;
-	this->addEvent(Event()); // base event
-	this->eventIt = allEvents.begin();
-	this->simulationOver = false;
+	this->addEvent(Event(), 0); // base event
+	this->eventIt = allEvents[0].begin();
+	this->simulationOver[0] = false;
 }
 
-Grid::Grid(double boardSize, double iterations) {
+Grid::Grid(double boardSize, int iterations) {
 	this->time = 0;
 	this->currentIteration = 0;
 	this->numOfIterations = iterations;
 	this->timeIncrement = 1;
-	
+	allUsers.reserve(iterations);
+	allEvents.reserve(iterations);
 	this->size = boardSize;
-	this->addEvent(Event()); // base event
-	this->eventIt = allEvents.begin();
-	this->simulationOver = false;
+	this->addEvent(Event(), 0); // base event
+	
+	for (int ii = 0; ii < iterations; ii++) {
+		this->simulationOver[ii] = false;
+	}
+	this->eventIt = allEvents[0].begin(); // start at 1st event of 0th iter
 }
 
 double Grid::getTime() {
@@ -73,8 +79,12 @@ void Grid::addDestination (Destination * toAdd) {
 	return;
 }
 
-void Grid::addEvent(Event toAdd) {
-	allEvents.insert(toAdd); // inserts and sorts event by time
+void Grid::addEvent(Event toAdd, int iteration) {
+	int iterationNumber;
+	if (iteration != -1) {
+		iterationNumber = iteration;
+	} else iterationNumber = this->currentIteration;
+	allEvents[iterationNumber].insert(toAdd); // inserts and sorts event by time
 }
 
 int Grid::getDestinationCount() {
@@ -93,16 +103,16 @@ double Grid::toNextEvent() { // Moves set iterator to next event
 	cout << eventIt->getTime() << endl;
 	while (eventIt->getTime() <= this->time) { // while event has lower time than current time
 		++eventIt; // go to next event
-		if (eventIt == allEvents.end()) {
+		if (eventIt == allEvents[currentIteration].end()) {
 			cout << "Simulation over." << endl;
-			this->simulationOver = true;
+			this->simulationOver[currentIteration] = true;
 			return 0; // return 0
 		}
 	}
 		// event with a different time reached, return difference
-	if (eventIt == allEvents.end()) {
+	if (eventIt == allEvents[currentIteration].end()) {
 		cout << "Simulation over." << endl;
-		this->simulationOver = true;
+		this->simulationOver[currentIteration] = true;
 	}
 	return (eventIt->getTime()-this->time);
 }
@@ -120,6 +130,11 @@ Destination * Grid::findDestinationByID(int correctID) {
 	return NULL; // if none are found then return null pointer
 }
 
+int Grid::getCurrentIteration() {
+	return this->currentIteration;
+}
+
+/*
 void Grid::write_file(ofstream& writeFile) {
 	writeFile << "Grid Size:" << endl;
 	writeFile << this->size << endl;
@@ -209,13 +224,13 @@ void Grid::write_file(ofstream& writeFile) {
 	writeFile << endl;	
 	return;
 }
+*/
 
 void Grid::read_file(ifstream& readFile) {
 	// First, reset the entire grid.
 	this->reset();
 	// Each destination, lot, and driver has IDs starting with 0 and counting.
 	string currentlyRead; // reads current word
-	string variableToSet; // finds variable
 	// initial count set to 1 in order to prevent compilation errors
 	int destCount = 1;
 	int lotCount = 1;
@@ -229,13 +244,15 @@ void Grid::read_file(ifstream& readFile) {
 	vector<Location> lotLocs;
 	vector<int> lotCapacities;
 	vector<double> lotPrices;
-	vector<double> dArrTimes;
-	vector<Location> dLocs;
-	vector<int> dDest;
-	vector<double> dDurations;
-	vector<double> dMaxWalkDist;
-	vector<double> dMaxCost;
-	vector<double> dImportanceWeight;
+	
+	vector<int> dCounts; // driver counts
+	vector<vector<double> > dArrTimes;
+	vector<vector<Location> > dLocs;
+	vector<vector<int> > dDest;
+	vector<vector<double> > dDurations;
+	vector<vector<double> > dMaxWalkDist;
+	vector<vector<double> > dMaxCost;
+	vector<vector<double> > dImportanceWeight;
 	
 	/*
 		Read file state: 
@@ -247,6 +264,7 @@ void Grid::read_file(ifstream& readFile) {
 		5. Also, figure out how to set iterations.
 	*/
 	bool readVal = false; // if ready to read values, set to true
+	int iterationToAdd = 0;
 	int state = 0; // determines which variable to set. 0 indicates that we need to see asterisks. Other values meant to set values.
 	try {
 		while (getline(readFile, currentlyRead) && !readFile.eof()) { // read line each time
@@ -292,6 +310,13 @@ void Grid::read_file(ifstream& readFile) {
 					case 2: // iteration count
 						iss >> intRead;
 						this->numOfIterations = intRead; // set number of iterations
+						dArrTimes.reserve(numOfIterations);
+						dLocs.reserve(numOfIterations);
+						dDest.reserve(numOfIterations);
+						dDurations.reserve(numOfIterations);
+						dMaxWalkDist.reserve(numOfIterations);
+						dMaxCost.reserve(numOfIterations);
+						dImportanceWeight.reserve(numOfIterations);
 						state = 0;
 						readVal = false; // not reading values
 						break; // to be implemented
@@ -363,69 +388,62 @@ void Grid::read_file(ifstream& readFile) {
 						break; // to be added
 					case 14: // driver count
 						iss >> intRead;
-						driverCount = intRead;
-						state = 0;
-						readVal = false;
+						dCounts.push_back(intRead);
+						iterationToAdd++;
 						break; // support for multiple iterations to be done later
 					case 15: // driver arrival times
-						for (int ii = 0; ii < driverCount; ii++) {
+						for (int jj = 0; jj < dCounts[iterationToAdd]; jj++) {
 							iss >> doubleRead;
-							dArrTimes.push_back(doubleRead);
+							dArrTimes[iterationToAdd].push_back(doubleRead);
 						}
-						state = 0;
-						readVal = false;
+						iterationToAdd++;
 						break;
 					case 16: // driver arrival locations (starting points)
-						for (int ii = 0; ii < driverCount; ii++) {
+						for (int ii = 0; ii < dCounts[iterationToAdd]; ii++) {
 							iss >> locationRead;
-							dLocs.push_back(locationRead);
+							dLocs[iterationToAdd].push_back(locationRead);
 						}
-						state = 0;
-						readVal = false;
 						break;
 					case 17: // driver destinations
-						for (int ii = 0; ii < driverCount; ii++) {
+						for (int ii = 0; ii < dCounts[iterationToAdd]; ii++) {
 							iss >> intRead;
-							dDest.push_back(intRead);
+							dDest[iterationToAdd].push_back(intRead);
 						}
-						state = 0;
-						readVal = false;
 						break;
 					case 18: // duration of parking drivers
-						for (int ii = 0; ii < driverCount; ii++) {
+						for (int ii = 0; ii < dCounts[iterationToAdd]; ii++) {
 							iss >> doubleRead;
-							dDurations.push_back(doubleRead);
+							dDurations[iterationToAdd].push_back(doubleRead);
 						}
-						state = 0;
-						readVal = false;
 						break;
 					case 19: // max walking distance
-						for (int ii = 0; ii < driverCount; ii++) {
+						for (int ii = 0; ii < dCounts[iterationToAdd]; ii++) {
 							iss >> doubleRead;
-							dMaxWalkDist.push_back(doubleRead);
+							dMaxWalkDist[iterationToAdd].push_back(doubleRead);
 						}
 						state = 0;
 						readVal = false;
 						break;
 					case 20: // max allowed prices
-						for (int ii = 0; ii < driverCount; ii++) {
+						for (int ii = 0; ii < dCounts[iterationToAdd]; ii++) {
 							iss >> doubleRead;
-							dMaxCost.push_back(doubleRead);
+							dMaxCost[iterationToAdd].push_back(doubleRead);
 						}
-						state = 0;
-						readVal = false;
 						break;
 					case 21: // importance weights
-						for (int ii = 0; ii < driverCount; ii++) {
+						for (int ii = 0; ii < dCounts[iterationToAdd]; ii++) {
 							iss >> doubleRead;
-							dImportanceWeight.push_back(doubleRead);
+							dImportanceWeight[iterationToAdd].push_back(doubleRead);
 						}
-						state = 0;
-						readVal = false;
 						break;
 					default:
 						throw InvalidInput("File reading state corrupted");
 				} // end of switch statement
+				if (iterationToAdd >= numOfIterations) {
+					iterationToAdd = 0;
+					state = 0;
+					readVal = false;
+				}
 			} // end of else statement
 		} // end of getline while loop
 	} catch (InvalidInput& except) {
@@ -445,11 +463,13 @@ void Grid::read_file(ifstream& readFile) {
 		addLot(newLot);
 	}
 	// set up drivers
-	for (int kk = 0; kk < driverCount; kk++) {
-		Destination * destPoint = findDestinationByID(dDest[kk]); // first find the destination
-		addDriver(new Driver(kk, dArrTimes[kk], dImportanceWeight[kk], 
-		                     dMaxWalkDist[kk], dMaxCost[kk], 
-				             dLocs[kk], dDurations[kk], destPoint, this));
+	for (int ii = 0; ii < numOfIterations; ii++) {
+		for (int kk = 0; kk < dCounts[ii]; kk++) {
+			Destination * destPoint = findDestinationByID(dDest[ii][kk]); // first find the destination
+			addDriver(new Driver(kk, dArrTimes[ii][kk], dImportanceWeight[ii][kk], 
+								 dMaxWalkDist[ii][kk], dMaxCost[ii][kk], 
+								 dLocs[ii][kk], dDurations[ii][kk], destPoint, this), ii);
+		}
 	}
 	return;
 }
@@ -501,8 +521,8 @@ void Grid::reset() { // reset everything back to original state
 	allWaiting.clear();
 	allReserved.clear();
 	this->addEvent(Event()); // base event
-	this->eventIt = allEvents.begin();
-	this->simulationOver = false;
+	this->eventIt = allEvents[0].begin();
+	this->simulationOver[0] = false;
 }
 
 bool Grid::update(double timing) { // Updates all elements of the grid.
@@ -531,7 +551,7 @@ bool Grid::update(double timing) { // Updates all elements of the grid.
 
 void Grid::show_status() {
 	for (int ii = 0; ii < allUsers.size(); ii++) {
-		allUsers[ii]->show_status();
+		allUsers[currentIteration][ii]->show_status();
 	}
 	for (int jj = 0; jj < allLots.size(); jj++) {
 		allLots[jj]->show_status();
@@ -539,6 +559,8 @@ void Grid::show_status() {
 	for (int hh = 0; hh < allDestinations.size(); hh++) {
 		allDestinations[hh]->show_status();
 	}
+	cout << "Iteration " << currentIteration << endl;
+	cout << "Total iterations: " << numOfIterations << endl;
 	cout << "Time: " << time << endl;
 	return;
 }

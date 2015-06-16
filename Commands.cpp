@@ -25,14 +25,17 @@ void do_commands(char input, Grid & world) {
 		case 's': // input s to show world status
 			display_status(world);
 			break;
-			
+		/* UNDER CONSTRUCTION
 		case 'w': // input w to save file
 			write_file(world);
 			break;
+		*/
 		case 'o': // input o to open file
 			open_file(world);
 			break;
-			
+		case 'i':
+			set_iteration_modification(world);
+			break;
 		case 'r':
 			run_simulation(world); // run simulation
 			break;
@@ -121,7 +124,7 @@ void run_simulation(Grid & world) { // run simulation to end
 	world.update(world.toNextEvent());
 	world.show_status();
 }
-
+/*
 void write_file(Grid & world) { // write data to file
 	string fileName;
 	ofstream writeFile;
@@ -134,7 +137,7 @@ void write_file(Grid & world) { // write data to file
 	cout << "File has been written." << endl;
 	return;
 }
-
+*/
 void open_file(Grid & world) { // read data from written file
 	// Recommended to do at start of simulation
 	string fileName;
@@ -173,7 +176,7 @@ void advance_by_simulation(Grid & world) { // input g
 
 void jump_to_end(Grid & world) {
 	// Continues with the updating until the end of the simulation.
-	while (!world.simulationOver) {
+	while (!world.simulationOver[world.getCurrentIteration()]) {
 		world.update(world.toNextEvent());
 	}
 	world.show_status();
@@ -183,6 +186,16 @@ void jump_to_end(Grid & world) {
 void reset_simulation(Grid & world) {
 	world.reset();
 	cout << "File has been reset" << endl;
+}
+
+void set_iteration_modification(Grid & world) {
+	int newIteration;
+	cout << "Please select which iteration you want to choose." << endl;
+	cin >> newIteration;
+	if (world.switchIteration(newIteration) == -1) {
+		cout << "Invalid iteration. Please enter a correct number" << endl;
+	} 
+	return;
 }
 
 void display_help() {

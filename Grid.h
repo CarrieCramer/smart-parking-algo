@@ -20,6 +20,7 @@ class Grid {
 	public:
 		Grid();
 		Grid(double);
+		Grid(double, int);
 		double timeIncrement; // this should stay constant through the simulation
 		
 		double getTime(); // return time
@@ -32,16 +33,19 @@ class Grid {
 		double getGridSize();
 		double toNextEvent(); // Moves iterator to next event. Returns time to the next event
 		int getDestinationCount();
+		int getCurrentIteration();
 		vector<Lot *> getAllLots();
 		Destination * findDestinationByID(int);
 		
 		void write_file(ofstream&); // Write file in grid
 		void read_file(ifstream&); // Read file to grid
 		void reset(); // Reset the entire grid
-		void addEvent(Event); // adds a new event to the set
+		void addEvent(Event, int iteration = -1); // adds a new event to the set
+		
+		int switchIteration(int); // switches iteration. If valid, returns current iteration.
+		// If not valid, returns -1.
 		
 		vector<bool> simulationOver; // checks the finished state of iteration
-		
 		
 		bool update(double timing = 1); // updates the entire grid
 		void show_status(); // shows status of all items
