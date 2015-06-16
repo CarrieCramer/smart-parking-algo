@@ -107,6 +107,10 @@ bool Lot::update() { // Updates lot information
 		}
 		numNotReserved = 0;
 	}
+
+	// Send data 
+	sendData();
+
 	driversToPark.clear(); // reset driver count
 	numOfReservers = 0; // reset reserving at update
 	peopleLeaving = 0; // reset number of leaving
@@ -124,4 +128,17 @@ void Lot::show_status() {
 	cout << " has " << numFree << " out of " << capacity;
 	cout << " spaces free." << endl;
 	return;
+}
+
+// Sends current occupancy rate, reserved rate, and cost to data attribute
+void Lot::sendData() {
+
+	// Send occupancy rate
+	((world->data->lotOccupancyRates)[id]).push_back(getOccupancyRate());
+
+	// Send reserved rate
+	((world->data->lotReservedRates)[id]).push_back(getReservedRate());
+	
+	// Send cost
+	((world->data->lotCosts)[id]).push_back(cost);
 }

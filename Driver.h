@@ -26,7 +26,7 @@ class Driver {
 		vector<double> lotCost; // cost function of using the parking lot
 		double lowestLotCost; // measured when assigned a lot to ensure that this driver gets no worse lot
 		Destination * dest;
-		
+				
 		int getID(); // return id
 		bool isInIA(); // checks if driver is to be allocated immediately
 		Location getLocation(); // return location
@@ -60,11 +60,12 @@ class Driver {
 		Location travelPoint; // where the driver wishes to go
 		
 		Grid * world; // full allocation system
-		
+
 		vector<Lot *> findLots(double); // Calculates feasLot and lotDist
 		Lot * findOptLot(); // Calculates lotCost
 		bool update_location(); // updates where it is
 		void setup_destination(Location dest); // sets up place to go
+		void sendData(int bestLotAt); // Adds data regarding reserved parking spot to the Driver's data attribute
 };
 
 #endif

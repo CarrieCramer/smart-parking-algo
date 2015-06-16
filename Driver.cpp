@@ -113,6 +113,7 @@ Lot * Driver::makeReservation(double timeParking) { // finds potential lots
 	if (lotVectSize != 0) {
 		cout << "Minimum lot at ID " << bestLot->getID() << "." << endl;
 		cout << "Distance: " << lotDist[bestLotAt] << " Charge: " << lotCharge[bestLotAt] << endl;
+		sendData(bestLotAt);
 		return bestLot;
 	} else {
 		return NULL; // no lots are available
@@ -255,4 +256,24 @@ void Driver::show_status() { // output driver ID, location, destination, and lot
 		default:
 			break; // do nothing
 	}
+}
+
+// Adds data regarding reserved parking spot to the Driver's data attribute
+void Driver::sendData(int bestLotAt) {
+
+	// Send payoff of parking in reserved Lot 
+	(world->data->driverPayoffs).push_back(lotCost[bestLotAt]);
+
+	// Send cost of parking in reserved Lot
+	(world->data->driverCosts).push_back(lotCharge[bestLotAt]);
+
+	// Send waiting time (to make a reservation)
+	(world->data->driverWaitTimes).push_back(world->getTime()-timeOfArrival);
+
+	// Send driving time from arrival location to reserved Lot
+	timeArrivedAtPark = this->getTimeArrivedAtPark();
+	(world->data->driverDriveTimes).push_back(timeArrivedAtPark-timeOfArrival);
+
+	// Send walking distance from reserved Lot to destination
+	(world->data->driverWalkDists).push_back(lotDist[bestLotAt]);
 }

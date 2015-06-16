@@ -34,6 +34,8 @@ class Lot { // the ID of a location
 		void addToQueue(Driver *); // add driver to queue of parkers
 		bool update(); // update number of spots
 		void show_status(); // shows status of parking lot
+		void sendData(); // sends current occupancy rate, reserved rate, and cost to data attribute
+
 	private:
 		int id;
 		int peopleLeaving; // counts how many people are leaving

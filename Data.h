@@ -9,9 +9,14 @@ using namespace std;
 class Data {
 
 public:
-	Data();
 	
-private:
+	Data();
+	Data(int numLots); // Constructor that should be used - initializes the Lot data vectors
+
+	// Writes current data to CSV files, which can be viewed in Excel 
+	void writeToExcel();
+	void writeDriverData();
+	void writeLotData();
 	
 	// Driver Data
 	// Index corresponds to Driver id
@@ -30,9 +35,5 @@ private:
 	vector<vector<double>> lotReservedRates;	// Lot utilization rate by reservation (fraction of spots reserved but not necessarily occupied)	
 	vector<vector<double>> lotCosts;			// Lot cost
 };
-
-Data::Data() {
-
-}
 
 #endif

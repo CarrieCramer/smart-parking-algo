@@ -8,6 +8,7 @@
 #include <fstream>
 #include <sstream>
 #include "InputHandling.h"
+#include "Data.h"
 using namespace std;
 
 Grid::Grid() {

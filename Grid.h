@@ -7,6 +7,7 @@
 #include "Driver.h"
 #include "Lot.h"
 #include "Destination.h"
+#include "Data.h"
 #include <iostream>
 #include <fstream>
 using namespace std;
@@ -42,6 +43,8 @@ class Grid {
 		
 		bool update(double timing = 1); // updates the entire grid
 		void show_status(); // shows status of all items
+
+		Data* data; // Data object that Drivers and Lots will send data to
 		
 	private:
 		double size; // length of one side of the square grid
