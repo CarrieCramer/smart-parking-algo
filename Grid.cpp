@@ -58,8 +58,12 @@ for (int jj = 0; jj < allWaiting[ii].feasLots.size(); jj++) {
 }
 }
 */
-void Grid::addDriver(Driver * toAdd) {
-	allUsers.push_back(toAdd);
+void Grid::addDriver(Driver * toAdd, int iteration) {
+	int iterationNumber;
+	if (iteration != -1) {
+		iterationNumber = iteration;
+	} else iterationNumber = this->currentIteration;
+	allUsers[iterationNumber].push_back(toAdd);
 	return;
 }
 
@@ -273,7 +277,7 @@ void Grid::read_file(ifstream& readFile) {
 				case 8: // lot count
 					iss >> intRead;
 					lotCount = intRead;
-					data = Data(lotCount);
+					data = new Data(lotCount);
 					state = 0;
 					readVal = false;
 					break;
