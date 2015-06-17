@@ -88,7 +88,7 @@ void Driver::goToPark() {
 	setup_destination(reserved->getLocation()); // setup destination
 }
 
-Lot * Driver::makeReservation(double timeParking) { // finds potential lots
+Lot* Driver::makeReservation(double timeParking) { // finds potential lots
 	// Currently based on the best option given at the time.
 	// Later we plan to utilize it better.
 	
@@ -101,7 +101,7 @@ Lot * Driver::makeReservation(double timeParking) { // finds potential lots
 	
 	int lotVectSize = feasLots.size();
 	int bestLotAt;
-	Lot * bestLot;
+	Lot* bestLot = NULL;
 	double minCost = 10000; // arbitrarily large number. All costs are less than 10.
 	for (int ii = 0; ii < lotVectSize; ii++) {
 		if (lotCost[ii] < minCost) {
@@ -111,7 +111,7 @@ Lot * Driver::makeReservation(double timeParking) { // finds potential lots
 		}
 	}
 	if (lotVectSize != 0) {
-		cout << "Minimum lot at ID " << bestLot->getID() << "." << endl;
+		cout << "Minimum lot at ID " << bestLotAt << "." << endl;
 		cout << "Distance: " << lotDist[bestLotAt] << " Charge: " << lotCharge[bestLotAt] << endl;
 		sendData(bestLotAt);
 		return bestLot;

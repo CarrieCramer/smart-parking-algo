@@ -134,11 +134,11 @@ void Lot::show_status() {
 void Lot::sendData() {
 
 	// Send occupancy rate
-	((world->data->lotOccupancyRates)[id]).push_back(getOccupancyRate());
+	(((world->data).lotOccupancyRates)[id]).push_back(getOccupancyRate());
 
 	// Send reserved rate
-	((world->data->lotReservedRates)[id]).push_back(getReservedRate());
+	(((world->data).lotReservedRates)[id]).push_back(getReservedRate());
 	
 	// Send cost
-	((world->data->lotCosts)[id]).push_back(cost);
+	(((world->data).lotCosts)[id]).push_back(cost);
 }
