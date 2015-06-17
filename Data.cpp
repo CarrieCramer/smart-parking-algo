@@ -10,7 +10,12 @@ Data::Data() {
 }
 
 Data::Data(int numLots) {
-
+	
+	lotOccupancyRates.resize(numLots);
+	lotReservedRates.resize(numLots);
+	lotCosts.resize(numLots);
+	
+	/*
 	vector<double> l;
 
 	// Push back numLots vectors to each of the Lot data vectors
@@ -19,6 +24,7 @@ Data::Data(int numLots) {
 		lotReservedRates.push_back(l);
 		lotCosts.push_back(l);
 	}
+	*/
 }
 
 void Data::writeToExcel() {
@@ -29,14 +35,16 @@ void Data::writeToExcel() {
 
 // Writes current data to a CSV file, which can be viewed in Excel
 void Data::writeDriverData() {
-	
-	// Iterators into all of the driver data vectors that will keep track of which element to write to the file
-	// Static iterators are used so that we can append new data to the end of the file, rather than overwriting the file with all data each time this function is called
-	static vector<double>::iterator driverPayoffsIt = driverPayoffs.begin();
-	static vector<double>::iterator driverCostsIt = driverCosts.begin();
-	static vector<double>::iterator driverWaitTimesIt = driverWaitTimes.begin();
-	static vector<double>::iterator driverDriveTimesIt = driverDriveTimes.begin();
-	static vector<double>::iterator driverWalkDistsIt = driverWalkDists.begin();
+
+	// Keeps track of how many drivers' data have already been collected so that this data can be skipped
+	static int lastDriverCount = 0;
+
+	// Iterators into all of the driver data vectors that will point to the elements that need to be written
+	vector<double>::iterator driverPayoffsIt = driverPayoffs.begin() + lastDriverCount;
+	vector<double>::iterator driverCostsIt = driverCosts.begin() + lastDriverCount;
+	vector<double>::iterator driverWaitTimesIt = driverWaitTimes.begin() + lastDriverCount;
+	vector<double>::iterator driverDriveTimesIt = driverDriveTimes.begin() + lastDriverCount;
+	vector<double>::iterator driverWalkDistsIt = driverWalkDists.begin() + lastDriverCount;
 
 	// Declare output stream that will be used to write to the CSV file
 	ofstream excelFile;
@@ -44,13 +52,12 @@ void Data::writeDriverData() {
 	// Open "driver_data.csv" in append mode - whatever is written will be appended to the end of the file
 	excelFile.open("driver_data.csv", ofstream::app);
 
-	// If this is the first time that the file is being written to, write the titles to the file
-	if (driverPayoffsIt == driverPayoffs.begin()) {
-	
+	// If this is the first time the file is being written to, write titles
+	if (lastDriverCount == 0) {
 		excelFile << "Driver Data" << endl;
 		excelFile << "Payoff of Reserved Spot, Cost of Reserved Spot, Waiting Time, Driving Time, Walking Distance" << endl;
 	}
-	
+
 	// Loop until the end of the driver data vectors is reached
 	while ((driverPayoffsIt != driverPayoffs.end()) && (driverCostsIt != driverCosts.end()) && (driverWaitTimesIt != driverWaitTimes.end()) && (driverDriveTimesIt != driverDriveTimes.end()) && (driverWalkDistsIt != driverWalkDists.end())) {
 		
@@ -58,12 +65,13 @@ void Data::writeDriverData() {
 		// Commas separate columns
 		excelFile << *driverPayoffsIt << "," << *driverCostsIt << "," << *driverWaitTimesIt << "," << *driverDriveTimesIt << "," << *driverWalkDistsIt << endl;
 	
-		// Increment all iterators
+		// Increment all iterators and the counter
 		driverPayoffsIt++;
 		driverCostsIt++;
 		driverWaitTimesIt++;
 		driverDriveTimesIt++;
 		driverWalkDistsIt++;
+		lastDriverCount++;
 	}
 
 	excelFile.close();
@@ -82,9 +90,9 @@ void Data::writeLotData() {
 
 	if (firstWrite) {
 		excelFile << "Lot Data" << endl;
-		excelFile << "Occupancy Rates,,Reserved Rates,,Costs" << endl;
+		excelFile << "Occupancy Rates, Reserved Rates, Costs" << endl;
+		firstWrite = 0;
 	}
-
 
 	// Iterate lot-by-lot through the occupancy rates matrix
 	for (vector<vector<double>>::iterator currentLot = lotOccupancyRates.begin(); currentLot != lotOccupancyRates.end(); currentLot++) {
@@ -114,7 +122,7 @@ void Data::writeLotData() {
 	}
 	
 	// Go to the next row in the excel file
-	excelFile << endl;
+	excelFile << "\n";
 
 	excelFile.close();
 		

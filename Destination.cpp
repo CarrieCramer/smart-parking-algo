@@ -20,9 +20,11 @@ Location Destination::getLocation() {
 	return this->location;
 }
 
-bool Destination::update() { // Possibly used to change the demand of the destination over time
 
+bool Destination::update() { // Possibly used to change the demand of the destination over time
+	return true;
 }
+
 
 void Destination::show_status() { // show destination location
 	cout << "Destination " << id;

@@ -88,7 +88,7 @@ void Driver::goToPark() {
 	setup_destination(reserved->getLocation()); // setup destination
 }
 
-Lot * Driver::makeReservation(double timeParking) { // finds potential lots
+Lot* Driver::makeReservation(double timeParking) { // finds potential lots
 	// Currently based on the best option given at the time.
 	// Later we plan to utilize it better.
 	
@@ -101,7 +101,7 @@ Lot * Driver::makeReservation(double timeParking) { // finds potential lots
 	
 	int lotVectSize = feasLots.size();
 	int bestLotAt;
-	Lot * bestLot;
+	Lot* bestLot = NULL;
 	double minCost = 10000; // arbitrarily large number. All costs are less than 10.
 	for (int ii = 0; ii < lotVectSize; ii++) {
 		if (lotCost[ii] < minCost) {
@@ -111,7 +111,7 @@ Lot * Driver::makeReservation(double timeParking) { // finds potential lots
 		}
 	}
 	if (lotVectSize != 0) {
-		cout << "Minimum lot at ID " << bestLot->getID() << "." << endl;
+		cout << "Minimum lot at ID " << bestLotAt << "." << endl;
 		cout << "Distance: " << lotDist[bestLotAt] << " Charge: " << lotCharge[bestLotAt] << endl;
 		// sendData(bestLotAt); TESTING WITHOUT FUNCTION
 		return bestLot;
@@ -262,18 +262,18 @@ void Driver::show_status() { // output driver ID, location, destination, and lot
 void Driver::sendData(int bestLotAt) {
 
 	// Send payoff of parking in reserved Lot 
-	(world->data->driverPayoffs).push_back(lotCost[bestLotAt]);
+	((world->data).driverPayoffs).push_back(lotCost[bestLotAt]);
 
 	// Send cost of parking in reserved Lot
-	(world->data->driverCosts).push_back(lotCharge[bestLotAt]);
+	((world->data).driverCosts).push_back(lotCharge[bestLotAt]);
 
 	// Send waiting time (to make a reservation)
-	(world->data->driverWaitTimes).push_back(world->getTime()-timeOfArrival);
+	((world->data).driverWaitTimes).push_back(world->getTime()-timeOfArrival);
 
 	// Send driving time from arrival location to reserved Lot
 	timeArrivedAtPark = this->getTimeArrivedAtPark();
-	(world->data->driverDriveTimes).push_back(timeArrivedAtPark-timeOfArrival);
+	((world->data).driverDriveTimes).push_back(timeArrivedAtPark-timeOfArrival);
 
 	// Send walking distance from reserved Lot to destination
-	(world->data->driverWalkDists).push_back(lotDist[bestLotAt]);
+	((world->data).driverWalkDists).push_back(lotDist[bestLotAt]);
 }

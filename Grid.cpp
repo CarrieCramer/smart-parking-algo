@@ -8,15 +8,12 @@
 #include <fstream>
 #include <sstream>
 #include "InputHandling.h"
-#include "Data.h"
 using namespace std;
 
 Grid::Grid() {
 	this->time = 0;
 	this->currentIteration = 0;
 	this->numOfIterations = 1;
-	allUsers.reserve(1);
-	allEvents.reserve(1);
 	this->timeIncrement = 1;
 	this->size = 10;
 	this->baseSet.insert(Event());
@@ -27,8 +24,6 @@ Grid::Grid() {
 
 Grid::Grid(double boardSize, int iterations) {
 	this->time = 0;
-	this->currentIteration = 0;
-	this->numOfIterations = iterations;
 	this->timeIncrement = 1;
 	cout << "Version 2015 June 17" << endl;
 	this->size = boardSize;
@@ -49,26 +44,22 @@ double Grid::getTime() {
 
 /*
 vector<int> Grid::allocateParking() { // Called once each driver has a list of potential parking spaces.
-	bool minFound = false;
-	vector<Driver *> newReserved;
-	while (!minFound) {
-		double minSum = 0;
-		for (int ii = 0; ii < allWaiting.size(); ii++) {
-			if (allWaiting[ii].isInIA()) { // more priority
-				for (int jj = 0; jj < allWaiting[ii].feasLots.size(); jj++) {
-					
-				}
-			}
-		}
-	}
+bool minFound = false;
+vector<Driver *> newReserved;
+while (!minFound) {
+double minSum = 0;
+for (int ii = 0; ii < allWaiting.size(); ii++) {
+if (allWaiting[ii].isInIA()) { // more priority
+for (int jj = 0; jj < allWaiting[ii].feasLots.size(); jj++) {
+
+}
+}
+}
+}
 }
 */
-void Grid::addDriver(Driver * toAdd, int iteration) {
-	int iterationNumber;
-	if (iteration != -1) {
-		iterationNumber = iteration;
-	} else iterationNumber = this->currentIteration;
-	allUsers[iterationNumber].push_back(toAdd);
+void Grid::addDriver(Driver * toAdd) {
+	allUsers.push_back(toAdd);
 	return;
 }
 
@@ -77,7 +68,7 @@ void Grid::addLot(Lot * toAdd) {
 	return;
 }
 
-void Grid::addDestination (Destination * toAdd) {
+void Grid::addDestination(Destination * toAdd) {
 	allDestinations.push_back(toAdd); // add pointer to destination
 	return;
 }
@@ -111,12 +102,13 @@ double Grid::toNextEvent() { // Moves set iterator to next event
 			return 0; // return 0
 		}
 	}
+
 		// event with a different time reached, return difference
 	if (simulationOver[currentIteration] || eventIt == allEvents[currentIteration].end()) {
 		cout << "Simulation over." << endl;
 		simulationOver[currentIteration] = true;
 	}
-	return (eventIt->getTime()-this->time);
+	return (eventIt->getTime() - this->time);
 }
 
 vector<Lot *> Grid::getAllLots() {
@@ -179,15 +171,14 @@ void Grid::read_file(ifstream& readFile) {
 	vector<vector<double> > dImportanceWeight;
 	
 	/*
-		Read file state: 
-		0. Read file line by line
-		1. Check for string of asterisks.
-		2. Check for specific variable to set.
-		3. Check for next string of asterisks.
-		4. Immediately after, check for the numbers to set the variables to.
-		5. Also, figure out how to set iterations.
+	Read file state:
+	0. Read file line by line
+	1. Check for string of asterisks.
+	2. Check for specific variable to set.
+	3. Check for next string of asterisks.
+	4. Immediately after, check for the numbers to set the variables to.
+	5. Also, figure out how to set iterations.
 	*/
-	cout << "a" << endl;
 	bool readVal = false; // if ready to read values, set to true
 	int iterationToAdd = 0;
 	int state = 0; // determines which variable to set. 0 indicates that we need to see asterisks. Other values meant to set values.
@@ -200,125 +191,126 @@ void Grid::read_file(ifstream& readFile) {
 				} // go to the next line and read it
 			}
 			else { // otherwise 
-				switch(state) {
-					case 0:
-						if (currentlyRead == "****************************************************************************************************") {
-							// if reading a long line of asterisks
-							state = 1; // State 1 means we have to check for a variable to set
-						}
-						break;
-					case 1: // Since switch files don't work on strings if-statements are used.
-						if (currentlyRead == "NUMBER OF ITERATIONS:") state = 2;
-						else if (currentlyRead == "GRID SIZE:") state = 3;
-						else if (currentlyRead == "DESTINATION COUNT:") state = 4;
-						else if (currentlyRead == "DESTINATION LOCATIONS:") state = 5;
-						else if (currentlyRead == "DESTINATION PROBABILITIES:") state = 6;
-						else if (currentlyRead == "DESTINATION AVERAGE DURATIONS:") state = 7;
-						else if (currentlyRead == "LOT COUNT:") state = 8;
-						else if (currentlyRead == "LOT LOCATIONS:") state = 9;
-						else if (currentlyRead == "LOT CAPACITIES:") state = 10;
-						else if (currentlyRead == "LOT PRICING POLICY:") state = 11;
-						else if (currentlyRead == "LOT PRICES:") state = 12;
-						else if (currentlyRead == "AVERAGE DEMAND:") state = 13;
-						else if (currentlyRead == "DRIVER COUNT:") state = 14;
-						else if (currentlyRead == "DRIVER ARRIVAL TIMES:") state = 15;
-						else if (currentlyRead == "DRIVER ARRIVAL LOCATIONS:") state = 16;
-						else if (currentlyRead == "DRIVER DESTINATIONS:") state = 17;
-						else if (currentlyRead == "DRIVER DURATIONS:") state = 18;
-						else if (currentlyRead == "DRIVER MAX WALKING DISTANCES:") state = 19;
-						else if (currentlyRead == "DRIVER MAX PRICES:") state = 20;
-						else if (currentlyRead == "DRIVER IMPORTANCE WEIGHTS:") state = 21;
-						else {
-							throw InvalidInput("Error: File variable read incorrectly.");
-						}
-						break; // end of file reading
-					case 2: // iteration count
+				switch (state) {
+				case 0:
+					if (currentlyRead == "****************************************************************************************************") {
+						// if reading a long line of asterisks
+						state = 1; // State 1 means we have to check for a variable to set
+					}
+					break;
+				case 1: // Since switch files don't work on strings if-statements are used.
+					if (currentlyRead == "NUMBER OF ITERATIONS:") state = 2;
+					else if (currentlyRead == "GRID SIZE:") state = 3;
+					else if (currentlyRead == "DESTINATION COUNT:") state = 4;
+					else if (currentlyRead == "DESTINATION LOCATIONS:") state = 5;
+					else if (currentlyRead == "DESTINATION PROBABILITIES:") state = 6;
+					else if (currentlyRead == "DESTINATION AVERAGE DURATIONS:") state = 7;
+					else if (currentlyRead == "LOT COUNT:") state = 8;
+					else if (currentlyRead == "LOT LOCATIONS:") state = 9;
+					else if (currentlyRead == "LOT CAPACITIES:") state = 10;
+					else if (currentlyRead == "LOT PRICING POLICY:") state = 11;
+					else if (currentlyRead == "LOT PRICES:") state = 12;
+					else if (currentlyRead == "AVERAGE DEMAND:") state = 13;
+					else if (currentlyRead == "DRIVER COUNT:") state = 14;
+					else if (currentlyRead == "DRIVER ARRIVAL TIMES:") state = 15;
+					else if (currentlyRead == "DRIVER ARRIVAL LOCATIONS:") state = 16;
+					else if (currentlyRead == "DRIVER DESTINATIONS:") state = 17;
+					else if (currentlyRead == "DRIVER DURATIONS:") state = 18;
+					else if (currentlyRead == "DRIVER MAX WALKING DISTANCES:") state = 19;
+					else if (currentlyRead == "DRIVER MAX PRICES:") state = 20;
+					else if (currentlyRead == "DRIVER IMPORTANCE WEIGHTS:") state = 21;
+					else {
+						throw InvalidInput("Error: File variable read incorrectly.");
+					}
+					break; // end of file reading
+				case 2: // iteration count
+					iss >> intRead;
+					this->numOfIterations = intRead; // set number of iterations
+					allUsers.clear();
+					allEvents.clear();
+					for (int ii = 0; ii < numOfIterations; ii++) {
+						allUsers.push_back(emptyDriverVector);
+						allEvents.push_back(baseSet);
+						dArrTimes.push_back(emptyDouble);
+						dLocs.push_back(emptyLocation);
+						dDest.push_back(emptyInt);
+						dDurations.push_back(emptyDouble);
+						dMaxWalkDist.push_back(emptyDouble);
+						dMaxCost.push_back(emptyDouble);
+						dImportanceWeight.push_back(emptyDouble);
+					}
+					state = 0;
+					readVal = false; // not reading values
+					break; // to be implemented
+				case 3: // grid size
+					iss >> doubleRead;
+					this->size = doubleRead; // set size
+					readVal = false;
+					state = 0;
+					break;
+				case 4: // destination count
+					iss >> intRead;
+					destCount = intRead;
+					readVal = false;
+					state = 0;
+					break;
+				case 5: // destination locations (same for each iteration)
+					for (int ii = 0; ii < destCount; ii++) { // iterate over previously read destination count
+						iss >> locationRead;
+						destLocs.push_back(locationRead); // add location to vector
+					}
+					state = 0;
+					readVal = false;
+					break;
+				case 6: // destination probabilities (config file statistic)
+					state = 0;
+					readVal = false;
+					break; // to be used
+				case 7: // average duration at destination (config stat)
+					state = 0;
+					readVal = false;
+					break; // to be used
+				case 8: // lot count
+					iss >> intRead;
+					lotCount = intRead;
+					data = Data(lotCount);
+					state = 0;
+					readVal = false;
+					break;
+				case 9: // location of lots (same per iteration)
+					for (int ii = 0; ii < lotCount; ii++) { // iterate over previously read destination count
+						iss >> locationRead;
+						lotLocs.push_back(locationRead); // add location to vector
+					}
+					state = 0;
+					readVal = false;
+					break;
+				case 10: // capacities of lot
+					for (int ii = 0; ii < lotCount; ii++) {
 						iss >> intRead;
-						this->numOfIterations = intRead; // set number of iterations
-						allUsers.clear();
-						allEvents.clear();
-						for (int ii = 0; ii < numOfIterations; ii++) {
-							allUsers.push_back(emptyDriverVector);
-							allEvents.push_back(baseSet);
-							dArrTimes.push_back(emptyDouble);
-							dLocs.push_back(emptyLocation);
-							dDest.push_back(emptyInt);
-							dDurations.push_back(emptyDouble);
-							dMaxWalkDist.push_back(emptyDouble);
-							dMaxCost.push_back(emptyDouble);
-							dImportanceWeight.push_back(emptyDouble);
-						}
-						state = 0;
-						readVal = false; // not reading values
-						break; // to be implemented
-					case 3: // grid size
+						lotCapacities.push_back(intRead); // add int to vector
+					}
+					state = 0;
+					readVal = false;
+					break;
+				case 11: // policy of lot pricing
+					for (int ii = 0; ii < lotCount; ii++) {
 						iss >> doubleRead;
-						this->size = doubleRead; // set size
-						readVal = false;
-						state = 0;
-						break;
-					case 4: // destination count
-						iss >> intRead;
-						destCount = intRead;
-						readVal = false;
-						state = 0;
-						break;
-					case 5: // destination locations (same for each iteration)
-						for (int ii = 0; ii < destCount; ii++) { // iterate over previously read destination count
-							iss >> locationRead;
-							destLocs.push_back(locationRead); // add location to vector
-						}
-						state = 0;
-						readVal = false;
-						break;
-					case 6: // destination probabilities (config file statistic)
-						state = 0;
-						readVal = false;
-						break; // to be used
-					case 7: // average duration at destination (config stat)
-						state = 0;
-						readVal = false;
-						break; // to be used
-					case 8: // lot count
-						iss >> intRead;
-						lotCount = intRead;
-						state = 0;
-						readVal = false;
-						break;
-					case 9: // location of lots (same per iteration)
-						for (int ii = 0; ii < lotCount; ii++) { // iterate over previously read destination count
-							iss >> locationRead;
-							lotLocs.push_back(locationRead); // add location to vector
-						}
-						state = 0;
-						readVal = false;
-						break;
-					case 10: // capacities of lot
-						for (int ii = 0; ii < lotCount; ii++) {
-							iss >> intRead;
-							lotCapacities.push_back(intRead); // add int to vector
-						}
-						state = 0;
-						readVal = false;
-						break;
-					case 11: // policy of lot pricing
-						for (int ii = 0; ii < lotCount; ii++) {
-							iss >> doubleRead;
-							lotPrices.push_back(doubleRead); // add to vector
-						}						
-						state = 0;
-						readVal = false;
-						break; // to be added
-					case 12: // lot prices
-						state = 0;
-						readVal = false;
-						break; // to be added
-					case 13: // average demand
-						state = 0;
-						readVal = false;
-						break; // to be added
-					case 14: // driver count
-						iss >> intRead;
+						lotPrices.push_back(doubleRead); // add to vector
+					}
+					state = 0;
+					readVal = false;
+					break; // to be added
+				case 12: // lot prices
+					state = 0;
+					readVal = false;
+					break; // to be added
+				case 13: // average demand
+					state = 0;
+					readVal = false;
+					break; // to be added
+				case 14: // driver count
+					iss >> intRead;
 						dCounts.push_back(intRead);
 						iterationToAdd++;
 						break; // support for multiple iterations to be done later
@@ -381,7 +373,8 @@ void Grid::read_file(ifstream& readFile) {
 				}
 			} // end of else statement
 		} // end of getline while loop
-	} catch (InvalidInput& except) {
+	}
+	catch (InvalidInput& except) {
 		cout << except.msg_ptr << endl; // exception found, ask to try again
 		cout << "Please reconfigure your file and try again." << endl;
 		return;
@@ -420,48 +413,12 @@ void Grid::read_file(ifstream& readFile) {
 	return;
 }
 
-/*
-	how iterations work:
-	iterations are stored as 2D vectors
-	of both driver and grid.
-	When switching from iteration to iteration, 
-	time resets. However, all events are preserved.
-	
-*/
-
-int Grid::switchIteration(int newIt) { // switches iteration. Resets time. Returns iteration number.
-	if (newIt >= numOfIterations || newIt < 0) { // not an iteration
-		return -1; // doesn't count
-	} else {
-		this->time = 0;
-		this->eventIt = allEvents[newIt].begin(); // change event iterator
-		currentIteration = newIt; // set current iteration
-		return newIt;
-	}
-}
-
 void Grid::reset() { // reset everything back to original state
 	this->time = 0;
 	this->timeIncrement = 1;
 	this->size = 10;
-	for (int i = 0; i < numOfIterations; i++) {
-		allEvents[i].clear(); // clear event set
-	}
-	allEvents.clear(); // clear all iteration events
-	for (int i = 0; i < numOfIterations; i++) {
-		for (int j = 0; j < allUsers[i].size(); j++) {
-			delete (allUsers[i][j]); // clear pointers
-		}
-		allUsers[i].clear();
-	}
 	allUsers.clear();
-	for (int j = 0; j < allLots.size(); j++) {
-		delete (allLots[j]); // clear pointers
-	}
 	allLots.clear();
-	for (int j = 0; j < allDestinations.size(); j++) {
-		delete (allDestinations[j]); // clear pointers
-	}
 	allDestinations.clear();
 	allSpacesLeft.clear();
 	allWaiting.clear();
@@ -472,6 +429,7 @@ void Grid::reset() { // reset everything back to original state
 		allEvents.push_back(baseSet);
 		simulationOver.push_back(false);
 	}
+	allEvents.clear();
 	this->addEvent(Event()); // base event
 	this->eventIt = allEvents[0].begin();
 }
