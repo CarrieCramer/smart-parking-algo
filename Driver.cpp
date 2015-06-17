@@ -262,18 +262,18 @@ void Driver::show_status() { // output driver ID, location, destination, and lot
 void Driver::sendData(int bestLotAt) {
 
 	// Send payoff of parking in reserved Lot 
-	(world->data->driverPayoffs).push_back(lotCost[bestLotAt]);
+	((world->data).driverPayoffs).push_back(lotCost[bestLotAt]);
 
 	// Send cost of parking in reserved Lot
-	(world->data->driverCosts).push_back(lotCharge[bestLotAt]);
+	((world->data).driverCosts).push_back(lotCharge[bestLotAt]);
 
 	// Send waiting time (to make a reservation)
-	(world->data->driverWaitTimes).push_back(world->getTime()-timeOfArrival);
+	((world->data).driverWaitTimes).push_back(world->getTime()-timeOfArrival);
 
 	// Send driving time from arrival location to reserved Lot
 	timeArrivedAtPark = this->getTimeArrivedAtPark();
-	(world->data->driverDriveTimes).push_back(timeArrivedAtPark-timeOfArrival);
+	((world->data).driverDriveTimes).push_back(timeArrivedAtPark-timeOfArrival);
 
 	// Send walking distance from reserved Lot to destination
-	(world->data->driverWalkDists).push_back(lotDist[bestLotAt]);
+	((world->data).driverWalkDists).push_back(lotDist[bestLotAt]);
 }

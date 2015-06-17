@@ -326,6 +326,7 @@ void Grid::read_file(ifstream& readFile) {
 					case 8: // lot count
 						iss >> intRead;
 						lotCount = intRead;
+						data = Data(lotCount); // Construct grid's data attribute using the number of Lots as an argument
 						state = 0;
 						readVal = false;
 						break;
