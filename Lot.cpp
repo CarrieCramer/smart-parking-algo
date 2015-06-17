@@ -12,6 +12,7 @@ Lot::Lot() { // default constructor
 	this->numFree = 0;
 	this->numNotReserved = 0;
 	this->peopleLeaving = 0;
+	this->cost = 3;
 	this->world = NULL;
 }
 
@@ -22,6 +23,7 @@ Lot::Lot(int ID, Location loc, int totalSpots, Grid * as) {
 	this->numFree = capacity;
 	this->numNotReserved = capacity;
 	this->peopleLeaving = 0;
+	this->cost = 3;
 	this->world = as;
 }
 
@@ -102,14 +104,14 @@ bool Lot::update() { // Updates lot information
 		for (int ii = 0; ii < numNotReserved; ii++) {
 			driversToPark[ii]->goToPark(); // head to parking
 			expectedParkingTime = driversToPark[ii]->getTimeArrivedAtPark();
-			world->addEvent(Event(world->getTime(), driversToPark[ii], 's'));
-			world->addEvent(Event(expectedParkingTime, driversToPark[ii], 'p'));
+			world->addEvent(Event(world->getTime(), driversToPark[ii], 's'), -1);
+			world->addEvent(Event(expectedParkingTime, driversToPark[ii], 'p'), -1);
 		}
 		numNotReserved = 0;
 	}
 
 	// Send data 
-	sendData();
+	// sendData(); TEST WITHOUT sendData
 
 	driversToPark.clear(); // reset driver count
 	numOfReservers = 0; // reset reserving at update

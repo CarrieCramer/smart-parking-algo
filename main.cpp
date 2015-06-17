@@ -11,7 +11,7 @@ using namespace std;
 int main() {
 	bool quitLoop = false;
 	cout << "Parking Simulator" << endl;
-	Grid mainGrid(10, 1); // initialize grid
+	Grid mainGrid(10, 5); // initialize grid with 5 iterations initalized
 	char command; // command asked to enter
 	
 	while (quitLoop == false) {

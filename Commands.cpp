@@ -175,7 +175,7 @@ void advance_by_simulation(Grid & world) { // input g
 }
 
 void jump_to_end(Grid & world) {
-	// Continues with the updating until the end of the simulation.
+	// Continues updating until the end of the simulation.
 	while (!world.simulationOver[world.getCurrentIteration()]) {
 		world.update(world.toNextEvent());
 	}

@@ -64,6 +64,7 @@ class Grid {
 		vector<int> allSpacesLeft;  // currently unused
 		vector<set<Event> > allEvents; // set of all events.
 		set<Event>::iterator eventIt; // position of current set iterator
+		set<Event> baseSet; // base set inserted into every grid. DO NOT CHANGE
 		
 		// Will be used when queues are added
 		vector<Driver> allWaiting; // all drivers currently waiting

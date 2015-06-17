@@ -33,7 +33,7 @@ Driver::Driver(int ID, double arrivalTime, double weightScale,
 	this->world = as;
 	this->state = 'z';
 	this->speed = 100; // set speed to 5 by default
-	world->addEvent(Event(this->timeOfArrival, this, 'n'));
+	world->addEvent(Event(this->timeOfArrival, this, 'n'), world->getCurrentIteration());
 }
 
 int Driver::getID() { // Function returns the ID value of driver
@@ -113,7 +113,7 @@ Lot * Driver::makeReservation(double timeParking) { // finds potential lots
 	if (lotVectSize != 0) {
 		cout << "Minimum lot at ID " << bestLot->getID() << "." << endl;
 		cout << "Distance: " << lotDist[bestLotAt] << " Charge: " << lotCharge[bestLotAt] << endl;
-		sendData(bestLotAt);
+		// sendData(bestLotAt); TESTING WITHOUT FUNCTION
 		return bestLot;
 	} else {
 		return NULL; // no lots are available
