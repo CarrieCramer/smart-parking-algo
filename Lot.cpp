@@ -53,11 +53,11 @@ bool Lot::isFull() {
 }
 
 double Lot::getOccupancyRate() {
-	return ((capacity-numFree)/capacity);
+	return ((capacity-numFree)/double(capacity));
 }
 
 double Lot::getReservedRate() {
-	return ((capacity-numNotReserved)/capacity);
+	return ((capacity-numNotReserved)/double(capacity));
 }
 
 void Lot::addToQueue(Driver * reserving) {
@@ -111,7 +111,7 @@ bool Lot::update() { // Updates lot information
 	}
 
 	// Send data 
-	// sendData(); TEST WITHOUT sendData
+	sendData();
 
 	driversToPark.clear(); // reset driver count
 	numOfReservers = 0; // reset reserving at update
@@ -135,12 +135,15 @@ void Lot::show_status() {
 // Sends current occupancy rate, reserved rate, and cost to data attribute
 void Lot::sendData() {
 
+	// Send time
+	((world->data)->lotUpdateTimes).push_back(world->getTime());
+
 	// Send occupancy rate
-	(((world->data).lotOccupancyRates)[id]).push_back(getOccupancyRate());
+	(((world->data)->lotOccupancyRates)[id]).push_back(getOccupancyRate());
 
 	// Send reserved rate
-	(((world->data).lotReservedRates)[id]).push_back(getReservedRate());
-	
+	(((world->data)->lotReservedRates)[id]).push_back(getReservedRate());
+
 	// Send cost
-	(((world->data).lotCosts)[id]).push_back(cost);
+	(((world->data)->lotCosts)[id]).push_back(cost);
 }

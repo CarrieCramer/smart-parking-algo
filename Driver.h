@@ -65,7 +65,8 @@ class Driver {
 		Lot * findOptLot(); // Calculates lotCost
 		bool update_location(); // updates where it is
 		void setup_destination(Location dest); // sets up place to go
-		void sendData(int bestLotAt); // Adds data regarding reserved parking spot to the Driver's data attribute
+		void sendData(); // Adds data regarding reserved parking spot to the Driver's data attribute
+		double reservedPayoff;
 };
 
 #endif

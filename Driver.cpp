@@ -113,7 +113,7 @@ Lot* Driver::makeReservation(double timeParking) { // finds potential lots
 	if (lotVectSize != 0) {
 		cout << "Minimum lot at ID " << bestLotAt << "." << endl;
 		cout << "Distance: " << lotDist[bestLotAt] << " Charge: " << lotCharge[bestLotAt] << endl;
-		// sendData(bestLotAt); TESTING WITHOUT FUNCTION
+		reservedPayoff = lotCost[bestLotAt];
 		return bestLot;
 	} else {
 		return NULL; // no lots are available
@@ -162,6 +162,7 @@ bool Driver::update() { // update driver parking, returns true on state change
 				reserved = makeReservation(timeAtPark); // reserving spot
 				if (reserved != NULL) { // if found reservation
 					reserved->addToQueue(this);
+					this->sendData();
 				}
 				setup_destination(dest->getLocation()); // go to destination
 				this->state = 'n';
@@ -179,6 +180,7 @@ bool Driver::update() { // update driver parking, returns true on state change
 			reserved = makeReservation(timeAtPark); // try reserving a spot again
 			if (reserved != NULL) { // if reservation exists
 				reserved->addToQueue(this); // add driver to reservation queue
+				this->sendData();
 				return true;
 			}
 			return false;
@@ -259,21 +261,21 @@ void Driver::show_status() { // output driver ID, location, destination, and lot
 }
 
 // Adds data regarding reserved parking spot to the Driver's data attribute
-void Driver::sendData(int bestLotAt) {
+void Driver::sendData() {
 
 	// Send payoff of parking in reserved Lot 
-	((world->data).driverPayoffs).push_back(lotCost[bestLotAt]);
+	((world->data)->driverPayoffs).push_back(reservedPayoff);
 
 	// Send cost of parking in reserved Lot
-	((world->data).driverCosts).push_back(lotCharge[bestLotAt]);
+	((world->data)->driverCosts).push_back(reserved->getCost(1.0));
 
 	// Send waiting time (to make a reservation)
-	((world->data).driverWaitTimes).push_back(world->getTime()-timeOfArrival);
+	((world->data)->driverWaitTimes).push_back(world->getTime() - timeOfArrival);
 
 	// Send driving time from arrival location to reserved Lot
 	timeArrivedAtPark = this->getTimeArrivedAtPark();
-	((world->data).driverDriveTimes).push_back(timeArrivedAtPark-timeOfArrival);
+	((world->data)->driverDriveTimes).push_back(timeArrivedAtPark - timeOfArrival);
 
 	// Send walking distance from reserved Lot to destination
-	((world->data).driverWalkDists).push_back(lotDist[bestLotAt]);
+	((world->data)->driverWalkDists).push_back(dist(reserved->getLocation(), dest->getLocation()));
 }

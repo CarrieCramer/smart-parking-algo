@@ -28,7 +28,7 @@ Grid::Grid(double boardSize, int iterations) {
 	cout << "Version 2015 June 17" << endl;
 	this->size = boardSize;
 	this->baseSet.insert(Event()); // DOES NOT CHANGE
-	
+
 	vector<Driver *> emptyDriverVector;
 	for (int ii = 0; ii < iterations; ii++) { // Add based on iterations
 		allUsers.push_back(emptyDriverVector);
@@ -81,7 +81,8 @@ void Grid::addEvent(Event toAdd, int iteration) {
 	int iterationNumber;
 	if (iteration != -1) {
 		iterationNumber = iteration;
-	} else iterationNumber = this->currentIteration;
+	}
+	else iterationNumber = this->currentIteration;
 	allEvents[iterationNumber].insert(toAdd); // inserts and sorts event by time
 }
 
@@ -107,7 +108,7 @@ double Grid::toNextEvent() { // Moves set iterator to next event
 		}
 	}
 
-		// event with a different time reached, return difference
+	// event with a different time reached, return difference
 	if (simulationOver[currentIteration] || eventIt == allEvents[currentIteration].end()) {
 		cout << "Simulation over." << endl;
 		simulationOver[currentIteration] = true;
@@ -134,10 +135,10 @@ int Grid::getCurrentIteration() {
 
 /* STILL BEING REMADE
 void Grid::write_file(ofstream& writeFile) {
-	writeFile << "****************************************************************************************************" << endl;
-	writeFile << "NUMBER OF ITERATIONS:" << endl;
-	writeFile << 
-	return;
+writeFile << "****************************************************************************************************" << endl;
+writeFile << "NUMBER OF ITERATIONS:" << endl;
+writeFile <<
+return;
 }
 */
 
@@ -159,12 +160,12 @@ void Grid::read_file(ifstream& readFile) {
 	vector<Location> lotLocs;
 	vector<int> lotCapacities;
 	vector<double> lotPrices;
-	
+
 	vector<int> emptyInt;
 	vector<double> emptyDouble;
 	vector<Location> emptyLocation;
 	vector<Driver *> emptyDriverVector;
-	
+
 	vector<int> dCounts; // driver counts
 	vector<vector<double> > dArrTimes;
 	vector<vector<Location> > dLocs;
@@ -173,7 +174,7 @@ void Grid::read_file(ifstream& readFile) {
 	vector<vector<double> > dMaxWalkDist;
 	vector<vector<double> > dMaxCost;
 	vector<vector<double> > dImportanceWeight;
-	
+
 	/*
 	Read file state:
 	0. Read file line by line
@@ -277,7 +278,6 @@ void Grid::read_file(ifstream& readFile) {
 				case 8: // lot count
 					iss >> intRead;
 					lotCount = intRead;
-					data = new Data(lotCount);
 					state = 0;
 					readVal = false;
 					break;
@@ -315,60 +315,60 @@ void Grid::read_file(ifstream& readFile) {
 					break; // to be added
 				case 14: // driver count
 					iss >> intRead;
-						dCounts.push_back(intRead);
-						iterationToAdd++;
-						break; // support for multiple iterations to be done later
-					case 15: // driver arrival times
-						for (int jj = 0; jj < dCounts[iterationToAdd]; jj++) {
-							iss >> doubleRead;
-							dArrTimes[iterationToAdd].push_back(doubleRead);
-						}
-						iterationToAdd++;
-						break;
-					case 16: // driver arrival locations (starting points)
-						for (int ii = 0; ii < dCounts[iterationToAdd]; ii++) {
-							iss >> locationRead;
-							dLocs[iterationToAdd].push_back(locationRead);
-						}
-						iterationToAdd++;
-						break;
-					case 17: // driver destinations
-						for (int ii = 0; ii < dCounts[iterationToAdd]; ii++) {
-							iss >> intRead;
-							dDest[iterationToAdd].push_back(intRead);
-						}
-						iterationToAdd++;
-						break;
-					case 18: // duration of parking drivers
-						for (int ii = 0; ii < dCounts[iterationToAdd]; ii++) {
-							iss >> doubleRead;
-							dDurations[iterationToAdd].push_back(doubleRead);
-						}
-						iterationToAdd++;
-						break;
-					case 19: // max walking distance
-						for (int ii = 0; ii < dCounts[iterationToAdd]; ii++) {
-							iss >> doubleRead;
-							dMaxWalkDist[iterationToAdd].push_back(doubleRead);
-						}
-						iterationToAdd++;
-						break;
-					case 20: // max allowed prices
-						for (int ii = 0; ii < dCounts[iterationToAdd]; ii++) {
-							iss >> doubleRead;
-							dMaxCost[iterationToAdd].push_back(doubleRead);
-						}
-						iterationToAdd++;
-						break;
-					case 21: // importance weights
-						for (int ii = 0; ii < dCounts[iterationToAdd]; ii++) {
-							iss >> doubleRead;
-							dImportanceWeight[iterationToAdd].push_back(doubleRead);
-						}
-						iterationToAdd++;
-						break;
-					default:
-						throw InvalidInput("File reading state corrupted");
+					dCounts.push_back(intRead);
+					iterationToAdd++;
+					break; // support for multiple iterations to be done later
+				case 15: // driver arrival times
+					for (int jj = 0; jj < dCounts[iterationToAdd]; jj++) {
+						iss >> doubleRead;
+						dArrTimes[iterationToAdd].push_back(doubleRead);
+					}
+					iterationToAdd++;
+					break;
+				case 16: // driver arrival locations (starting points)
+					for (int ii = 0; ii < dCounts[iterationToAdd]; ii++) {
+						iss >> locationRead;
+						dLocs[iterationToAdd].push_back(locationRead);
+					}
+					iterationToAdd++;
+					break;
+				case 17: // driver destinations
+					for (int ii = 0; ii < dCounts[iterationToAdd]; ii++) {
+						iss >> intRead;
+						dDest[iterationToAdd].push_back(intRead);
+					}
+					iterationToAdd++;
+					break;
+				case 18: // duration of parking drivers
+					for (int ii = 0; ii < dCounts[iterationToAdd]; ii++) {
+						iss >> doubleRead;
+						dDurations[iterationToAdd].push_back(doubleRead);
+					}
+					iterationToAdd++;
+					break;
+				case 19: // max walking distance
+					for (int ii = 0; ii < dCounts[iterationToAdd]; ii++) {
+						iss >> doubleRead;
+						dMaxWalkDist[iterationToAdd].push_back(doubleRead);
+					}
+					iterationToAdd++;
+					break;
+				case 20: // max allowed prices
+					for (int ii = 0; ii < dCounts[iterationToAdd]; ii++) {
+						iss >> doubleRead;
+						dMaxCost[iterationToAdd].push_back(doubleRead);
+					}
+					iterationToAdd++;
+					break;
+				case 21: // importance weights
+					for (int ii = 0; ii < dCounts[iterationToAdd]; ii++) {
+						iss >> doubleRead;
+						dImportanceWeight[iterationToAdd].push_back(doubleRead);
+					}
+					iterationToAdd++;
+					break;
+				default:
+					throw InvalidInput("File reading state corrupted");
 				} // end of switch statement
 				if (iterationToAdd >= numOfIterations) {
 					iterationToAdd = 0;
@@ -402,17 +402,22 @@ void Grid::read_file(ifstream& readFile) {
 	lotLocs.clear();
 	lotCapacities.clear();
 	lotPrices.clear(); // clear up space in memory
-	
+
 	// set up drivers
 	for (int ii = 0; ii < numOfIterations; ii++) {
 		currentIteration = ii;
 		for (int kk = 0; kk < dCounts[ii]; kk++) {
 			Destination * destPoint = findDestinationByID(dDest[ii][kk]); // first find the destination
-			addDriver(new Driver(kk, dArrTimes[ii][kk], dImportanceWeight[ii][kk], 
-								 dMaxWalkDist[ii][kk], dMaxCost[ii][kk], 
-								 dLocs[ii][kk], dDurations[ii][kk], destPoint, this), ii);
+			addDriver(new Driver(kk, dArrTimes[ii][kk], dImportanceWeight[ii][kk],
+				dMaxWalkDist[ii][kk], dMaxCost[ii][kk],
+				dLocs[ii][kk], dDurations[ii][kk], destPoint, this), ii);
 		}
 	}
+
+	// set up data
+	Data * d = new Data(lotCount);
+	this->data = d;
+
 	switchIteration(0);
 	return;
 }

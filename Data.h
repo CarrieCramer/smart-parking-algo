@@ -34,6 +34,8 @@ public:
 	vector<vector<double>> lotOccupancyRates;	// Lot utilization rate by occupancy (fraction of spots physically occupied)
 	vector<vector<double>> lotReservedRates;	// Lot utilization rate by reservation (fraction of spots reserved but not necessarily occupied)	
 	vector<vector<double>> lotCosts;			// Lot cost
+
+	vector<double> lotUpdateTimes;
 };
 
 #endif
