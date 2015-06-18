@@ -298,14 +298,16 @@ void Grid::read_file(ifstream& readFile) {
 					readVal = false;
 					break;
 				case 11: // policy of lot pricing
-					for (int ii = 0; ii < lotCount; ii++) {
-						iss >> doubleRead;
-						lotPrices.push_back(doubleRead); // add to vector
-					}
+					iss >> intRead;
+					this->pricingPolicy = intRead;
 					state = 0;
 					readVal = false;
 					break; // to be added
 				case 12: // lot prices
+					for (int ii = 0; ii < lotCount; ii++) {
+						iss >> doubleRead;
+						lotPrices.push_back(doubleRead); // add to vector
+					}
 					state = 0;
 					readVal = false;
 					break; // to be added

@@ -75,6 +75,8 @@ class Grid {
 		vector<Driver> allWaiting; // all drivers currently waiting
 		vector<Driver> allReserved; // all drivers reserved
 
+		int pricingPolicy; // pricing policy
+
 };
 
 #endif // defined GRID_H
