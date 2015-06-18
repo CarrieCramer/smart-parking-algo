@@ -464,6 +464,8 @@ void Grid::read_file(ifstream& readFile) {
 					readVal = false;
 					break;
 				case 11: // policy of lot pricing
+					iss >> intRead;
+					this->pricingPolicy = intRead;
 					state = 0;
 					readVal = false;
 					break; // to be added
@@ -655,6 +657,7 @@ bool Grid::update(double timing) { // Updates all elements of the grid.
 				stateChanged = true;
 			} // keep updating after that
 		}
+		data->writeToExcel();
 	}
 	return stateChanged;
 }
