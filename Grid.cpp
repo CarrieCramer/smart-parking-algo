@@ -12,8 +12,8 @@ using namespace std;
 
 Grid::Grid() {
 	this->time = 0;
-	this->currentIteration = 0;
 	this->numOfIterations = 1;
+	this->currentIteration = 0;
 	this->timeIncrement = 1;
 	this->size = 10;
 	this->baseSet.insert(Event());
@@ -27,6 +27,8 @@ Grid::Grid(double boardSize, int iterations) {
 	this->timeIncrement = 1;
 	cout << "Version 2015 June 17" << endl;
 	this->size = boardSize;
+	this->numOfIterations = iterations; // how did this get deleted
+	this->currentIteration = 0; // also this was deleted
 	this->baseSet.insert(Event()); // DOES NOT CHANGE
 
 	vector<Driver *> emptyDriverVector;
@@ -184,11 +186,13 @@ void Grid::read_file(ifstream& readFile) {
 	4. Immediately after, check for the numbers to set the variables to.
 	5. Also, figure out how to set iterations.
 	*/
+
 	bool readVal = false; // if ready to read values, set to true
 	int iterationToAdd = 0;
 	int state = 0; // determines which variable to set. 0 indicates that we need to see asterisks. Other values meant to set values.
 	try {
 		while (getline(readFile, currentlyRead) && !readFile.eof()) { // read line each time
+		
 			istringstream iss(currentlyRead); // for cases of multiple variables to set on line
 			if (state != 0 && state != 1 && !readVal) {
 				if (currentlyRead == "****************************************************************************************************") {
@@ -385,7 +389,6 @@ void Grid::read_file(ifstream& readFile) {
 		cout << "Please reconfigure your file and try again." << endl;
 		return;
 	}
-	cout << "done" << endl;
 	// now we set up almost all of the variables
 	// set up destinations
 	for (int ii = 0; ii < destCount; ii++) {
@@ -415,7 +418,6 @@ void Grid::read_file(ifstream& readFile) {
 				dLocs[ii][kk], dDurations[ii][kk], destPoint, this), ii);
 		}
 	}
-
 	// set up data
 	Data * d = new Data(lotCount);
 	this->data = d;
@@ -424,23 +426,46 @@ void Grid::read_file(ifstream& readFile) {
 	return;
 }
 
+int Grid::switchIteration(int newIt) { // switches iteration. Resets time. Returns iteration number.
+	if (newIt >= numOfIterations || newIt < 0) { // not an iteration
+		return -1; // doesn't count
+	} else {
+		this->time = 0;
+		this->eventIt = allEvents[newIt].begin(); // change event iterator
+		currentIteration = newIt; // set current iteration
+		return newIt;
+	}
+}
+
 void Grid::reset() { // reset everything back to original state
 	this->time = 0;
 	this->timeIncrement = 1;
 	this->size = 10;
+	for (int ii = 0; ii < numOfIterations; ii++) { // Add based on iterations
+		for (int jj = 0; jj < allUsers[ii].size(); jj++) {
+			delete allUsers[ii][jj]; // remove user from memory
+		}
+	}
 	allUsers.clear();
+	for (int ii = 0; ii < allLots.size(); ii++) {
+		delete allLots[ii];
+	}
 	allLots.clear();
+	for (int ii = 0; ii < allDestinations.size(); ii++) {
+		delete allDestinations[ii];
+	}
 	allDestinations.clear();
+	allEvents.clear();
 	allSpacesLeft.clear();
 	allWaiting.clear();
 	allReserved.clear();
+	simulationOver.clear();
 	vector<Driver *> emptyDriverVector;
 	for (int ii = 0; ii < numOfIterations; ii++) { // Add based on iterations
 		allUsers.push_back(emptyDriverVector);
 		allEvents.push_back(baseSet);
 		simulationOver.push_back(false);
 	}
-	allEvents.clear();
 	this->addEvent(Event()); // base event
 	this->eventIt = allEvents[0].begin();
 }
