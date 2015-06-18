@@ -47,6 +47,7 @@ class Driver {
 		
 		bool update(); // update driver data
 		void show_status(); // shows status of driver
+		void sendData(); // Adds data regarding reserved parking spot to the Driver's data attribute
 	private:
 		int id;
 		Location location; // gets location on map (GPS realistically)
@@ -65,7 +66,6 @@ class Driver {
 		Lot * findOptLot(); // Calculates lotCost
 		bool update_location(); // updates where it is
 		void setup_destination(Location dest); // sets up place to go
-		void sendData(); // Adds data regarding reserved parking spot to the Driver's data attribute
 		double reservedPayoff;
 };
 

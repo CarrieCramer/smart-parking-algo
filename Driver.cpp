@@ -162,7 +162,6 @@ bool Driver::update() { // update driver parking, returns true on state change
 				reserved = makeReservation(timeAtPark); // reserving spot
 				if (reserved != NULL) { // if found reservation
 					reserved->addToQueue(this);
-					this->sendData();
 				}
 				setup_destination(dest->getLocation()); // go to destination
 				this->state = 'n';
@@ -180,7 +179,6 @@ bool Driver::update() { // update driver parking, returns true on state change
 			reserved = makeReservation(timeAtPark); // try reserving a spot again
 			if (reserved != NULL) { // if reservation exists
 				reserved->addToQueue(this); // add driver to reservation queue
-				this->sendData();
 				return true;
 			}
 			return false;
