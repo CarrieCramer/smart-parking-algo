@@ -491,6 +491,7 @@ bool Grid::update(double timing) { // Updates all elements of the grid.
 				stateChanged = true;
 			} // keep updating after that
 		}
+		data->writeToExcel();
 	}
 	return stateChanged;
 }
