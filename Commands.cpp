@@ -25,11 +25,9 @@ void do_commands(char input, Grid & world) {
 		case 's': // input s to show world status
 			display_status(world);
 			break;
-		/* UNDER CONSTRUCTION
 		case 'w': // input w to save file
 			write_file(world);
 			break;
-		*/
 		case 'o': // input o to open file
 			open_file(world);
 			break;
@@ -124,7 +122,7 @@ void run_simulation(Grid & world) { // run simulation to end
 	world.update(world.toNextEvent());
 	world.show_status();
 }
-/*
+
 void write_file(Grid & world) { // write data to file
 	string fileName;
 	ofstream writeFile;
@@ -137,7 +135,7 @@ void write_file(Grid & world) { // write data to file
 	cout << "File has been written." << endl;
 	return;
 }
-*/
+
 void open_file(Grid & world) { // read data from written file
 	// Recommended to do at start of simulation
 	string fileName;

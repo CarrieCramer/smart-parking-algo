@@ -135,19 +135,182 @@ int Grid::getCurrentIteration() {
 	return this->currentIteration;
 }
 
-/* STILL BEING REMADE
 void Grid::write_file(ofstream& writeFile) {
-writeFile << "****************************************************************************************************" << endl;
-writeFile << "NUMBER OF ITERATIONS:" << endl;
-writeFile <<
-return;
+	string asterisks = "****************************************************************************************************";
+	string simItNotice = "Each row corresponds to one simulation iteration.";
+	writeFile << asterisks << endl;
+	writeFile << "NUMBER OF ITERATIONS:" << endl;
+	writeFile << "During each iteration, a new set of drivers with random attributes will be generated." << endl;
+	writeFile << "The grid, lot, and destination attributes will remain the same throughout all iterations." << endl;
+	writeFile << asterisks << endl;
+	writeFile << numOfIterations << endl;
+	writeFile << endl;
+	writeFile << asterisks << endl;
+	writeFile << "GRID SIZE:" << endl;
+	writeFile << "The grid represents a 2-D, square, Cartesian space, with its lower left corner at (0, 0)." << endl;
+	writeFile << "The grid size is a positive integer value representing the maximum x and y-coordinates." << endl;
+	writeFile << asterisks << endl;
+	writeFile << size << endl;
+	writeFile << endl;
+	writeFile << asterisks << endl;
+	writeFile << "DESTINATION COUNT:" << endl;
+	writeFile << "Total number of destinations on the grid." << endl;
+	writeFile << asterisks << endl;
+	writeFile << allDestinations.size() << endl;
+	writeFile << endl;
+	writeFile << asterisks << endl;
+	writeFile << "DESTINATION LOCATIONS:" << endl;
+	writeFile << "Coordinates of each destination in the format: (x1,y1) (x2,y2) (x3,y3) ..." << endl;
+	writeFile << "The coordinates are real numbers that do not exceed the grid size." << endl;
+	writeFile << asterisks << endl;
+	for (int ii = 0; ii < allDestinations.size(); ii++) {
+		writeFile << allDestinations[ii]->getLocation() << ' ';
+	}
+	writeFile << endl; // end writeFile line
+	writeFile << endl; // newline
+	writeFile << asterisks << endl; // skip destination probabilities and average durations for now
+	writeFile << "LOT COUNT:" << endl;
+	writeFile << "Total number of parking lots on the grid." << endl;
+	writeFile << asterisks << endl;
+	writeFile << allLots.size() << endl;
+	writeFile << endl;
+	writeFile << asterisks << endl;
+	writeFile << "LOT LOCATIONS:" << endl;
+	writeFile << "Coordinates of each lot in the format: (x1,y1) (x2,y2) (x3,y3) ..." << endl;
+	writeFile << "The coordinates are real numbers that do not exceed the grid size." << endl;
+	writeFile << asterisks << endl;
+	for (int ii = 0; ii < allLots.size(); ii++) {
+		writeFile << allLots[ii]->getLocation() << ' ';
+	}
+	writeFile << endl; // end line
+	writeFile << endl; // blank line
+	writeFile << asterisks << endl;
+	writeFile << "LOT CAPACITIES:" << endl;
+	writeFile << "Number of parking spots in each parking lot." << endl;
+	writeFile << asterisks << endl;
+	for (int ii = 0; ii < allLots.size(); ii++) {
+		writeFile << allLots[ii]->getCapacity() << ' ';
+	}
+	writeFile << endl; // end line
+	writeFile << endl; // blank line
+	writeFile << asterisks << endl;
+	writeFile << "LOT PRICES:" << endl;
+	writeFile << "Parking rate (price per unit of time) for each lot." << endl;
+	writeFile << "Note that parking rates are normalized from 0 to 1." << endl;
+	writeFile << asterisks << endl;
+	for (int ii = 0; ii < allLots.size(); ii++) {
+		writeFile << allLots[ii]->getBaseCost() << ' ';
+	}
+	writeFile << endl;
+	writeFile << endl;
+	writeFile << asterisks << endl;
+	writeFile << "DRIVER COUNT:" << endl;
+	writeFile << "Number of drivers that arrives during each simulation iteration." << endl;
+	writeFile << simItNotice << endl;
+	writeFile << asterisks << endl;
+	for (int ii = 0; ii < numOfIterations; ii++) {
+		writeFile << allUsers[ii].size() << endl;
+	}
+	writeFile << endl;
+	writeFile << asterisks << endl;
+	writeFile << "DRIVER ARRIVAL TIMES:" << endl;
+	writeFile << "Arrival times of each driver in ascending order." << endl;
+	writeFile << "Note that the simulation time is normalized from 0 to 1." << endl;
+	writeFile << simItNotice << endl;
+	writeFile << asterisks << endl;
+	for (int ii = 0; ii < numOfIterations; ii++) {
+		for (int jj = 0; jj < allUsers[ii].size(); jj++) {
+			writeFile << allUsers[ii][jj]->getArrivalTime() << " ";
+		}
+		writeFile << endl;
+	}
+	writeFile << endl;
+	writeFile << asterisks << endl;
+	writeFile << "DRIVER ARRIVAL LOCATIONS:" << endl;
+	writeFile << "Coordinates of the location of each driver at its arrival time in the format: (x1,y1) (x2,y2) (x3,y3) ..." << endl;
+	writeFile << "The coordinates are real numbers that do not exceed the grid size." << endl;
+	writeFile << simItNotice << endl;
+	writeFile << asterisks << endl;
+	for (int ii = 0; ii < numOfIterations; ii++) {
+		for (int jj = 0; jj < allUsers[ii].size(); jj++) {
+			writeFile << allUsers[ii][jj]->getLocation() << " ";
+		}
+		writeFile << endl;
+	}
+	writeFile << endl;
+	writeFile << asterisks << endl;
+	writeFile << "DRIVER DESTINATIONS:" << endl;
+	writeFile << "ID number of each driver's destination." << endl;
+	writeFile << simItNotice << endl;
+	writeFile << asterisks << endl;
+	for (int ii = 0; ii < numOfIterations; ii++) {
+		for (int jj = 0; jj < allUsers[ii].size(); jj++) {
+			writeFile << allUsers[ii][jj]->dest->getID() << " ";
+		}
+		writeFile << endl;
+	}
+	writeFile << endl;
+	writeFile << asterisks << endl;
+	writeFile << "DRIVER DURATIONS:" << endl;
+	writeFile << "The amount of time that each driver will remain at its parking spot after arriving at the lot." << endl;
+	writeFile << "Note that the simulation time is normalized from 0 to 1." << endl;
+	writeFile << "A duration greater than 1 means that the driver will stay beyond the end of the simulation iteration." << endl;
+	writeFile << simItNotice << endl;
+	writeFile << asterisks << endl;
+	for (int ii = 0; ii < numOfIterations; ii++) {
+		for (int jj = 0; jj < allUsers[ii].size(); jj++) {
+			writeFile << allUsers[ii][jj]->dest->getID() << " ";
+		}
+		writeFile << endl;
+	}
+	writeFile << endl;
+	writeFile << asterisks << endl;
+	writeFile << "DRIVER MAX WALKING DISTANCES:" << endl;
+	writeFile << "The maximum distance that each driver is willing to walk from its assigned lot to its destination." << endl;
+	writeFile << simItNotice << endl;
+	writeFile << asterisks << endl;
+	for (int ii = 0; ii < numOfIterations; ii++) {
+		for (int jj = 0; jj < allUsers[ii].size(); jj++) {
+			writeFile << allUsers[ii][jj]->maxWalkDist << " ";
+		}
+		writeFile << endl;
+	}
+	writeFile << endl;
+	writeFile << asterisks << endl;
+	writeFile << "DRIVER MAX PRICES:" << endl;
+	writeFile << "The maximum parking rate (price per unit time) that each driver is willing to pay." << endl;
+	writeFile << "Note that parking rates are normalized from 0 to 1." << endl;
+	writeFile << simItNotice << endl;
+	writeFile << asterisks << endl;
+	for (int ii = 0; ii < numOfIterations; ii++) {
+		for (int jj = 0; jj < allUsers[ii].size(); jj++) {
+			writeFile << allUsers[ii][jj]->maxCharge << " ";
+		}
+		writeFile << endl;
+	}
+	writeFile << endl;
+	writeFile << asterisks << endl;
+	writeFile << "DRIVER IMPORTANCE WEIGHTS:" << endl;
+	writeFile << "A value for each driver representing the relative importance of parking price vs. walking distance." << endl;
+	writeFile << "These weights are real and normalized from 0 to 1." << endl;
+	writeFile << simItNotice << endl;
+	writeFile << asterisks << endl;
+	for (int ii = 0; ii < numOfIterations; ii++) {
+		for (int jj = 0; jj < allUsers[ii].size(); jj++) {
+			writeFile << allUsers[ii][jj]->importanceWeight << " ";
+		}
+		writeFile << endl;
+	}
+	writeFile << endl;
+	return;
 }
-*/
+
 
 void Grid::read_file(ifstream& readFile) {
 	// First, reset the entire grid.
 	this->reset();
 	// Each destination, lot, and driver has IDs starting with 0 and counting.
+	string asterisks = "****************************************************************************************************";
 	string currentlyRead; // reads current word
 	// initial count set to 1 in order to prevent compilation errors
 	int destCount = 1;
@@ -192,17 +355,16 @@ void Grid::read_file(ifstream& readFile) {
 	int state = 0; // determines which variable to set. 0 indicates that we need to see asterisks. Other values meant to set values.
 	try {
 		while (getline(readFile, currentlyRead) && !readFile.eof()) { // read line each time
-		
 			istringstream iss(currentlyRead); // for cases of multiple variables to set on line
 			if (state != 0 && state != 1 && !readVal) {
-				if (currentlyRead == "****************************************************************************************************") {
+				if (currentlyRead == asterisks) {
 					readVal = true;
 				} // go to the next line and read it
 			}
 			else { // otherwise 
 				switch (state) {
 				case 0:
-					if (currentlyRead == "****************************************************************************************************") {
+					if (currentlyRead == asterisks) {
 						// if reading a long line of asterisks
 						state = 1; // State 1 means we have to check for a variable to set
 					}
@@ -302,14 +464,14 @@ void Grid::read_file(ifstream& readFile) {
 					readVal = false;
 					break;
 				case 11: // policy of lot pricing
-					for (int ii = 0; ii < lotCount; ii++) {
-						iss >> doubleRead;
-						lotPrices.push_back(doubleRead); // add to vector
-					}
 					state = 0;
 					readVal = false;
 					break; // to be added
 				case 12: // lot prices
+					for (int ii = 0; ii < lotCount; ii++) {
+						iss >> doubleRead;
+						lotPrices.push_back(doubleRead); // add to vector
+					}
 					state = 0;
 					readVal = false;
 					break; // to be added
@@ -399,6 +561,9 @@ void Grid::read_file(ifstream& readFile) {
 	// set up lots
 	for (int jj = 0; jj < lotCount; jj++) {
 		Lot * newLot = new Lot(jj, lotLocs[jj], lotCapacities[jj], this);
+		cout << 'a' << endl;
+		cout << lotPrices[jj] << endl;
+		cout << 'b' << endl;
 		newLot->setCost(lotPrices[jj]);
 		addLot(newLot);
 	}
@@ -407,6 +572,7 @@ void Grid::read_file(ifstream& readFile) {
 	lotPrices.clear(); // clear up space in memory
 
 	// set up drivers
+	cout << 'c' << endl; // REMOVE
 	for (int ii = 0; ii < numOfIterations; ii++) {
 		currentIteration = ii;
 		for (int kk = 0; kk < dCounts[ii]; kk++) {

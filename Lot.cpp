@@ -32,6 +32,10 @@ double Lot::getCost(double timeParked) {
 	return cost*timeParked;
 }
 
+double Lot::getBaseCost() {
+	return cost;
+}
+
 void Lot::setCost(double newCost) {
 	this->cost = newCost;
 }
