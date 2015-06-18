@@ -563,9 +563,6 @@ void Grid::read_file(ifstream& readFile) {
 	// set up lots
 	for (int jj = 0; jj < lotCount; jj++) {
 		Lot * newLot = new Lot(jj, lotLocs[jj], lotCapacities[jj], this);
-		cout << 'a' << endl;
-		cout << lotPrices[jj] << endl;
-		cout << 'b' << endl;
 		newLot->setCost(lotPrices[jj]);
 		addLot(newLot);
 	}
