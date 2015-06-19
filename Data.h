@@ -38,7 +38,7 @@ public:
 
 	vector<double> lotUpdateTimes;
 
-	// Variables used for naming the CSV files
+	// Variables used for naming the CSV files 
 
 	int driverFileNum; 
 	string driverFileName;

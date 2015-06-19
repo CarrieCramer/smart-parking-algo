@@ -16,7 +16,7 @@ void updatePrice(Lot* lot, double timeCongested, double timeUnderused, double to
 // Any reserved rate below underuseRate is considered underused. Default (used by LA Express Park) is 0.70
 // Any reserved rate above congestionRate is considered congested. Default (used by LA Express Park) is 0.90
 // priceStep is the amount by which price is adjusted up or down. Default  is 0.0909090909 (normalized version of LA Express Park's $0.50 steps btwn $0.50 and $6.00)
-void updatePrices4(vector<vector<double>> lotReservedRates, vector<Lot*> allLots, vector<Event*> allEvents, int numEvents, double underuseRate = 0.70, double congestionRate = 0.90, double priceStep = 0.0909090909) {
+void updatePrices4(vector<vector<double>> lotReservedRates, vector<double> lotUpdateTimes, vector<Lot*> allLots, int numEvents, double underuseRate = 0.70, double congestionRate = 0.90, double priceStep = 0.0909090909) {
 
 	// This static variable will be incremented each time the function is called in order to count up to numEvents
 	// Once it reaches numEvents, the rest of the code in this function will be executed (updating the Lot prices) and the counter will be reset to 0
@@ -56,11 +56,11 @@ void updatePrices4(vector<vector<double>> lotReservedRates, vector<Lot*> allLots
 			}
 
 			// prevTime Will keep track of time that previous Event occurred
-			vector<Event*>::iterator allEventsIt = allEvents.begin();
-			double prevTime = (*allEventsIt)->getTime();
+			vector<double>::iterator lotUpdateTimesIt = lotUpdateTimes.end() - numEvents;
+			double prevTime = *lotUpdateTimesIt;
 
 			lotReservedRatesIt2++;
-			allEventsIt++;
+			lotUpdateTimesIt++;
 
 			double timeDiff;
 
@@ -68,7 +68,7 @@ void updatePrices4(vector<vector<double>> lotReservedRates, vector<Lot*> allLots
 			for (lotReservedRatesIt2; lotReservedRatesIt2 != (*lotReservedRatesIt1).end(); lotReservedRatesIt2++) {
 
 				// Amount of time between previous Event and and current Event
-				timeDiff = (*allEventsIt)->getTime() - prevTime;
+				timeDiff = *lotUpdateTimesIt - prevTime;
 
 				if (flag == -1) {
 
@@ -98,10 +98,10 @@ void updatePrices4(vector<vector<double>> lotReservedRates, vector<Lot*> allLots
 				totalTime += timeDiff;
 
 				// Update prevTime to current Event time 
-				prevTime = (*allEventsIt)->getTime();
+				prevTime = *lotUpdateTimesIt;
 
 				//Update currentEvent to next Event
-				allEventsIt++;
+				lotUpdateTimesIt++;
 			}
 
 			// Update Lot price
