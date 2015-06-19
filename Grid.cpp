@@ -49,18 +49,18 @@ double Grid::getTime() {
 
 /*
 vector<int> Grid::allocateParking() { // Called once each driver has a list of potential parking spaces.
-bool minFound = false;
-vector<Driver *> newReserved;
-while (!minFound) {
-double minSum = 0;
-for (int ii = 0; ii < allWaiting.size(); ii++) {
-if (allWaiting[ii].isInIA()) { // more priority
-for (int jj = 0; jj < allWaiting[ii].feasLots.size(); jj++) {
+	bool minFound = false;
+	vector<Driver *> newReserved;
+	while (!minFound) {
+		double minSum = 0;
+		for (int ii = 0; ii < allWaiting.size(); ii++) {
+			if (allWaiting[ii].isInIA()) { // more priority
+				for (int jj = 0; jj < allWaiting[ii].feasLots.size(); jj++) {
 
-}
-}
-}
-}
+				}
+			}
+		}
+	}
 }
 */
 void Grid::addDriver(Driver * toAdd, int iteration) {
@@ -607,6 +607,9 @@ int Grid::switchIteration(int newIt) { // switches iteration. Resets time. Retur
 	} else {
 		this->time = 0;
 		this->eventIt = allEvents[newIt].begin(); // change event iterator
+		for (int ii = 0; ii < allLots.size(); ii++) {
+			allLots[ii]->resetLot(); // reset lot info
+		}
 		currentIteration = newIt; // set current iteration
 		return newIt;
 	}

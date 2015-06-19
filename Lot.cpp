@@ -40,6 +40,15 @@ void Lot::setCost(double newCost) {
 	this->cost = newCost;
 }
 
+void Lot::resetLot() { // Reset number of people at lot
+	this->numFree = capacity;
+	this->numNotReserved = capacity; 
+	peopleLeaving = 0;
+	numOfReservers = 0;
+	driversToPark.clear(); // clears vector if necessary
+	return;
+}
+
 int Lot::getID() {
 	return this->id;
 }

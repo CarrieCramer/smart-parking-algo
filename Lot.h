@@ -32,6 +32,7 @@ class Lot { // the ID of a location
 		double getCost(double); // get cost to use parking lot
 		void setCost(double); // set cost to use parking lot
 		double getBaseCost(); // get the BASE value of the cost to use
+		void resetLot(); // Reset lot's empty spaces
 		void addToQueue(Driver *); // add driver to queue of parkers
 		bool update(); // update number of spots
 		void show_status(); // shows status of parking lot
