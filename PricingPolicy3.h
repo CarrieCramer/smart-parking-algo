@@ -29,7 +29,11 @@ void updatePrices3(vector<Lot*> allLots, double targetResRate = 0.85, double lim
 			double currentCost = (*currentLot)->getCost(1.0);
 
 			// Calculate the new cost  
-			double newCost = currentCost + currentCost*((currentResRate - targetResRate) / currentResRate);
+			double newCost = currentCost;
+
+			if (1 + ((targetResRate - currentResRate) / targetResRate) != 0) {
+				newCost = currentCost / (1 + ((targetResRate - currentResRate) / targetResRate));
+			}
 
 			// If the new cost is less than 0, set it to 0. If it is greater than 1, set it to 1. 
 			if (newCost < 0) {

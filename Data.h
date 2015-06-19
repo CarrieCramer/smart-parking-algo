@@ -4,6 +4,7 @@
 #define DATA_H
 
 #include <vector>
+#include <string>
 using namespace std;
 
 class Data {
@@ -36,6 +37,16 @@ public:
 	vector<vector<double>> lotCosts;			// Lot cost
 
 	vector<double> lotUpdateTimes;
+
+	// Variables used for naming the CSV files
+
+	int driverFileNum; 
+	string driverFileName;
+	int lotFileNum;
+	string lotFileName;
 };
+
+// Returns true if file exists, false if not
+bool fileExists(string& fileName);
 
 #endif

@@ -8,6 +8,7 @@
 #include <fstream>
 #include <sstream>
 #include "InputHandling.h"
+#include "PricingPolicy3.h"
 using namespace std;
 
 Grid::Grid() {
@@ -655,6 +656,7 @@ bool Grid::update(double timing) { // Updates all elements of the grid.
 			} // keep updating after that
 		}
 		data->writeToExcel();
+		if (pricingPolicy == 3) updatePrices3(allLots);
 	}
 	return stateChanged;
 }
