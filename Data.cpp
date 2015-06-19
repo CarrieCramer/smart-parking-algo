@@ -2,14 +2,25 @@
 
 #include <iostream>
 #include <fstream>
+#include <sys/stat.h>
+#include <sstream>
 #include "Data.h"
 using namespace std;
 
 Data::Data() {
-
+	
+	driverFileNum = 0;
+	driverFileName = "driver_data.csv";
+	lotFileNum = 0;
+	lotFileName = "lot_data.csv";
 }
 
 Data::Data(int numLots) {
+
+	driverFileNum = 0;
+	driverFileName = "driver_data.csv";
+	lotFileNum = 0;
+	lotFileName = "lot_data.csv";
 
 	lotOccupancyRates.resize(numLots);
 	lotReservedRates.resize(numLots);
@@ -74,50 +85,62 @@ void Data::writeLotData() {
 	// Declare output stream that will be used to write to the CSV file
 	ofstream excelFile;
 
-	// Open "driver_data.csv" in append mode - whatever is written will be appended to the end of the file
+	// Open "lot_data.csv" in append mode - whatever is written will be appended to the end of the file
 	excelFile.open("lot_data.csv", ofstream::app);
 
-	// If this is the first time the file is being written to, write titles
-	static bool firstWrite = 1;
+	if (excelFile.is_open()) {
+		// If this is the first time the file is being written to, write titles
+		static bool firstWrite = 1;
 
-	if (firstWrite) {
-		excelFile << "Lot Data" << endl;
-		excelFile << "Time, Occupancy Rates, Reserved Rates, Costs" << endl;
-		firstWrite = 0;
+		if (firstWrite) {
+			excelFile << "Lot Data" << endl;
+			excelFile << "Time, Occupancy Rates, Reserved Rates, Costs" << endl;
+			firstWrite = 0;
+		}
+
+		// Write the current time
+		excelFile << *(lotUpdateTimes.end() - 1) << ",,";
+
+		// Iterate lot-by-lot through the occupancy rates matrix
+		for (vector<vector<double>>::iterator currentLot = lotOccupancyRates.begin(); currentLot != lotOccupancyRates.end(); currentLot++) {
+
+			// Write the last entry in the current Lot's occupancy rates vector
+			excelFile << *((*currentLot).end() - 1) << ",";
+		}
+
+		// Skip a cell in the excel file
+		excelFile << ",";
+
+		// Iterate lot-by-lot through the reserved rates matrix
+		for (vector<vector<double>>::iterator currentLot = lotReservedRates.begin(); currentLot != lotReservedRates.end(); currentLot++) {
+
+			// Write the last entry in the current Lot's reserved rates vector
+			excelFile << *((*currentLot).end() - 1) << ",";
+		}
+
+		// Skip a cell in the excel file
+		excelFile << ",";
+
+		// Iterate lot-by-lot through the costs matrix
+		for (vector<vector<double>>::iterator currentLot = lotCosts.begin(); currentLot != lotCosts.end(); currentLot++) {
+
+			// Write the last entry in the current Lot's costs vector
+			excelFile << *((*currentLot).end() - 1) << ",";
+		}
+
+		excelFile << endl;
+
+		excelFile.close();
 	}
+	else {
 
-	// Write the current time
-	excelFile << *(lotUpdateTimes.end() - 1) << ",,";
-
-	// Iterate lot-by-lot through the occupancy rates matrix
-	for (vector<vector<double>>::iterator currentLot = lotOccupancyRates.begin(); currentLot != lotOccupancyRates.end(); currentLot++) {
-
-		// Write the last entry in the current Lot's occupancy rates vector
-		excelFile << *((*currentLot).end() - 1) << ",";
 	}
-
-	// Skip a cell in the excel file
-	excelFile << ",";
-
-	// Iterate lot-by-lot through the reserved rates matrix
-	for (vector<vector<double>>::iterator currentLot = lotReservedRates.begin(); currentLot != lotReservedRates.end(); currentLot++) {
-
-		// Write the last entry in the current Lot's reserved rates vector
-		excelFile << *((*currentLot).end() - 1) << ",";
-	}
-
-	// Skip a cell in the excel file
-	excelFile << ",";
-
-	// Iterate lot-by-lot through the costs matrix
-	for (vector<vector<double>>::iterator currentLot = lotCosts.begin(); currentLot != lotCosts.end(); currentLot++) {
-
-		// Write the last entry in the current Lot's costs vector
-		excelFile << *((*currentLot).end() - 1) << ",";
-	}
-
-	excelFile << endl;
-
-	excelFile.close();
-
 }
+
+// Returns true if file exists, false if not
+bool fileExists(string& fileName) {
+	struct stat buffer;
+	cout << fileName << " exists" << endl;
+	return (stat(fileName.c_str(), &buffer) == 0);
+}
+
