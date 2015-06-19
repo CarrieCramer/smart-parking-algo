@@ -102,6 +102,7 @@ bool Lot::update() { // Updates lot information
 			expectedParkingTime = driversToPark[ii]->getTimeArrivedAtPark();
 			world->addEvent(Event(world->getTime(), driversToPark[ii], 's'));
 			world->addEvent(Event(expectedParkingTime, driversToPark[ii], 'p'));
+			driversToPark[ii]->sendData();
 		}
 		numNotReserved -= driversToPark.size(); // reduce size of reserve queue
 	} else { // reserve as many as possible
@@ -110,6 +111,7 @@ bool Lot::update() { // Updates lot information
 			expectedParkingTime = driversToPark[ii]->getTimeArrivedAtPark();
 			world->addEvent(Event(world->getTime(), driversToPark[ii], 's'), -1);
 			world->addEvent(Event(expectedParkingTime, driversToPark[ii], 'p'), -1);
+			driversToPark[ii]->sendData();
 		}
 		numNotReserved = 0;
 	}
