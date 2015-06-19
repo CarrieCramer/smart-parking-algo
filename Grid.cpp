@@ -10,7 +10,7 @@
 #include "InputHandling.h"
 using namespace std;
 
-Grid::Grid() {
+Grid::Grid() { // not used at this time
 	this->time = 0;
 	this->numOfIterations = 1;
 	this->currentIteration = 0;
@@ -23,18 +23,18 @@ Grid::Grid() {
 	this->simulationOver[0] = false;
 }
 
-Grid::Grid(double boardSize, int iterations) {
+Grid::Grid(double boardSize, int iterations) { 
 	this->time = 0;
 	this->timeIncrement = 1;
 	this->pricingPolicy = 2;
-	cout << "Version 2015 June 18" << endl; // update this date whenever new update
+	cout << "Version 2015 June 19" << endl; // update this date whenever new update
 	this->size = boardSize;
 	this->numOfIterations = iterations; // how did this get deleted
 	this->currentIteration = 0; // also this was deleted
 	this->baseSet.insert(Event()); // DOES NOT CHANGE
 
 	vector<Driver *> emptyDriverVector;
-	for (int ii = 0; ii < iterations; ii++) { // Add based on iterations
+	for (int ii = 0; ii < numOfIterations; ii++) { // Add based on iterations
 		allUsers.push_back(emptyDriverVector);
 		allEvents.push_back(baseSet);
 		simulationOver.push_back(false);
@@ -103,6 +103,8 @@ double Grid::getGridSize() {
 }
 
 double Grid::toNextEvent() { // Moves set iterator to next event
+	cout << currentIteration << endl;
+	cout << eventIt->getTime() << endl;
 	while (eventIt->getTime() <= this->time && !simulationOver[currentIteration]) { // while event has lower time than current time
 		++eventIt; // go to next event
 		if (eventIt == allEvents[currentIteration].end()) {
@@ -414,6 +416,7 @@ void Grid::read_file(ifstream& readFile) {
 						allUsers.push_back(emptyDriverVector);
 						allEvents.push_back(baseSet);
 						dArrTimes.push_back(emptyDouble);
+						simulationOver.push_back(false);
 						dLocs.push_back(emptyLocation);
 						dDest.push_back(emptyInt);
 						dDurations.push_back(emptyDouble);
