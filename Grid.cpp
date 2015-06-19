@@ -16,6 +16,7 @@ Grid::Grid() {
 	this->numOfIterations = 1;
 	this->currentIteration = 0;
 	this->timeIncrement = 1;
+	this->pricingPolicy = 2;
 	this->size = 10;
 	this->baseSet.insert(Event());
 	allEvents.push_back(baseSet);
@@ -26,7 +27,8 @@ Grid::Grid() {
 Grid::Grid(double boardSize, int iterations) {
 	this->time = 0;
 	this->timeIncrement = 1;
-	cout << "Version 2015 June 17" << endl;
+	this->pricingPolicy = 2;
+	cout << "Version 2015 June 18" << endl; // update this date whenever new update
 	this->size = boardSize;
 	this->numOfIterations = iterations; // how did this get deleted
 	this->currentIteration = 0; // also this was deleted
@@ -194,6 +196,15 @@ void Grid::write_file(ofstream& writeFile) {
 	}
 	writeFile << endl; // end line
 	writeFile << endl; // blank line
+	writeFile << asterisks << endl;
+	writeFile << "LOT PRICING POLICY:" << endl;
+	writeFile << "Options:" << endl;
+	writeFile << "1 | Equal Static Pricing: all lots have the same price, which remains the same throughout the simulation" << endl;
+	writeFile << "2 | Random Static Pricing: lots have randomized prices, which remain the same throughout the simulation" << endl;
+	writeFile << "3 | Real-time, proportional dynamic pricing" << endl;
+	writeFile << asterisks << endl;
+	writeFile << pricingPolicy << endl;
+	writeFile << endl;	
 	writeFile << asterisks << endl;
 	writeFile << "LOT PRICES:" << endl;
 	writeFile << "Parking rate (price per unit of time) for each lot." << endl;
@@ -572,7 +583,6 @@ void Grid::read_file(ifstream& readFile) {
 	lotPrices.clear(); // clear up space in memory
 
 	// set up drivers
-	cout << 'c' << endl; // REMOVE
 	for (int ii = 0; ii < numOfIterations; ii++) {
 		currentIteration = ii;
 		for (int kk = 0; kk < dCounts[ii]; kk++) {

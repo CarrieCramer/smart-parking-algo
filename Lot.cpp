@@ -12,7 +12,7 @@ Lot::Lot() { // default constructor
 	this->numFree = 0;
 	this->numNotReserved = 0;
 	this->peopleLeaving = 0;
-	this->cost = 3;
+	this->cost = 3; // arbitrary value
 	this->world = NULL;
 }
 
@@ -23,7 +23,7 @@ Lot::Lot(int ID, Location loc, int totalSpots, Grid * as) {
 	this->numFree = capacity;
 	this->numNotReserved = capacity;
 	this->peopleLeaving = 0;
-	this->cost = 3;
+	this->cost = 3; // arbitrary value
 	this->world = as;
 }
 
