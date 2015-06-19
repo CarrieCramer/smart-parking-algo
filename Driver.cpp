@@ -85,6 +85,8 @@ double Driver::getTimeAtPark() { // find how long the car is at the park
 
 void Driver::goToPark() {
 	this->state = 'd'; // set to head towards parking lot
+	cout << "Driver " << getID() << ": Lot at ID " << reserved->getID() << "." << endl;
+	cout << "Distance: " << getDistToLot() << " Charge: " << reserved->getCost(timeAtPark) << endl;
 	setup_destination(reserved->getLocation()); // setup destination
 }
 
@@ -111,8 +113,6 @@ Lot* Driver::makeReservation(double timeParking) { // finds potential lots
 		}
 	}
 	if (lotVectSize != 0) {
-		cout << "Minimum lot at ID " << bestLotAt << "." << endl;
-		cout << "Distance: " << lotDist[bestLotAt] << " Charge: " << lotCharge[bestLotAt] << endl;
 		reservedPayoff = lotCost[bestLotAt];
 		return bestLot;
 	} else {
