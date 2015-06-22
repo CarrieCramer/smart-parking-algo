@@ -16,6 +16,7 @@ class Lot { // the ID of a location
 	public:
 		Lot();
 		Lot(int, Location, int, Grid *);
+		Lot(int, Location, int, double, Grid *); // for prices
 		
 		// numNotReserved is always less than or equal to numFree
 		int numTaken; // number of spots taken
