@@ -200,7 +200,10 @@ void display_help() {
 	cout << "Enter d to create a new destination for drivers." << endl;
 	cout << "Enter l to create a new lot." << endl;
 	cout << "Enter u to create a driver to park at these destinations and lots." << endl;
-	cout << "Enter r to advance the simulation by 1 time unit." << endl;
-	cout << "Enter g to advance the simulation by a longer time." << endl;
+	cout << "Enter r to advance the simulation to the next event." << endl;
+	cout << "Enter g to choose how long to advance a simulation." << endl;
+	cout << "Enter j to skip to the end of the simulation." << endl;
+	cout << "Enter w to save data to a file." << endl;
+	cout << "Enter o to read data from a file." << endl;
 	cout << "Enter q to quit." << endl;
 }
