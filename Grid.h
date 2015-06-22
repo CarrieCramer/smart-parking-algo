@@ -37,8 +37,10 @@ class Grid {
 		void setGridSize(double); // set grid size to different amount
 		double getGridSize();
 		double toNextEvent(); // Moves iterator to next event. Returns time to the next event
-		int getDestinationCount();
 		int getCurrentIteration();
+		int getDriverCount(); // get driver count for current iteration
+		int getLotCount(); // get lot count
+		int getDestinationCount(); // get number of destinations
 		vector<Lot *> getAllLots();
 		Destination * findDestinationByID(int);
 		

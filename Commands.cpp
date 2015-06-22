@@ -57,7 +57,6 @@ void do_commands(char input, Grid & world) {
 void do_new_driver_command(Grid & world) { 
 	// first check whether there are any destinations to go to
 	if (world.getDestinationCount() == 0) throw InvalidInput("Need more destinations to make a driver (type d to create one)");
-	int id;
 	int destID;
 	double arrivalTime;
 	double weight;
@@ -65,9 +64,7 @@ void do_new_driver_command(Grid & world) {
 	double maxDistance;
 	double x, y;
 	double timeAtPark;
-	cout << "Enter the ID of the driver. "; // asks for input on driver
-	cin >> id;
-	if (id < 0) throw InvalidInput("ID is too small");
+
 	cout << "What is the ID of the destination the driver going to? ";
 	cin >> destID;
 	Destination * goal = world.findDestinationByID(destID);
@@ -86,30 +83,31 @@ void do_new_driver_command(Grid & world) {
 	cin >> x >> y;
 	cout << "How long will you be parking? ";
 	cin >> timeAtPark;
-	world.addDriver(new Driver(id, arrivalTime, weight, maxDistance, maxCharge, Location(x,y), timeAtPark, goal, &world));
+	world.addDriver(new Driver(world.getDriverCount(), arrivalTime, weight, maxDistance, maxCharge, Location(x,y), timeAtPark, goal, &world), world.getCurrentIteration());
 }
 
 void do_new_lot_command(Grid & world) {
-	int id;
 	double x, y; // coordinates of grid
 	int totalSpots;
-	cout << "Enter the ID of the lot." << endl;
-	cin >> id;
+	double costPerUnit;
+
 	cout << "Enter the lot location (ex. 1.6 9): ";
 	cin >> x >> y;
 	cout << "Enter the total number of spots in the lot: ";
 	cin >> totalSpots;
-	world.addLot(new Lot(id, Location(x,y), totalSpots, &world));
+	cout << "Enter the cost of the lot per unit of time: " << endl;
+	cin >> costPerUnit;
+	cout << "Lot " << world.getLotCount() << " created" << endl;
+	world.addLot(new Lot(world.getLotCount(), Location(x,y), totalSpots, costPerUnit, &world));
 } 
 void do_new_destination_command(Grid & world) {
-	int id;
 	double x;
 	double y;
-	cout << "Enter the ID of the destination." << endl;
-	cin >> id;
+
 	cout << "Enter the destination location (ex. 4 2.3): ";
 	cin >> x >> y;
-	world.addDestination(new Destination(id, Location(x,y)));
+	cout << "Destination " << world.getDestinationCount() << " created" << endl;
+	world.addDestination(new Destination(world.getDestinationCount(), Location(x,y)));
 	return;
 } // input d to create new destination
 

@@ -34,7 +34,7 @@ Grid::Grid(double boardSize, int iterations) {
 	this->numOfIterations = iterations; // how did this get deleted
 	this->currentIteration = 0; // also this was deleted
 	this->baseSet.insert(Event()); // DOES NOT CHANGE
-
+	
 	vector<Driver *> emptyDriverVector;
 	for (int ii = 0; ii < numOfIterations; ii++) { // Add based on iterations
 		allUsers.push_back(emptyDriverVector);
@@ -67,7 +67,7 @@ vector<int> Grid::allocateParking() { // Called once each driver has a list of p
 void Grid::addDriver(Driver * toAdd, int iteration) {
 	int iterationNumber;
 	if (iteration != -1) {
-		iterationNumber = iteration;
+		iterationNumber = iteration; // set to current iteration if not set
 	} else iterationNumber = this->currentIteration;
 	allUsers[iterationNumber].push_back(toAdd);
 	return;
@@ -90,10 +90,6 @@ void Grid::addEvent(Event toAdd, int iteration) {
 	}
 	else iterationNumber = this->currentIteration;
 	allEvents[iterationNumber].insert(toAdd); // inserts and sorts event by time
-}
-
-int Grid::getDestinationCount() {
-	return allDestinations.size();
 }
 
 void Grid::setGridSize(double edgeLength) {
@@ -600,6 +596,18 @@ void Grid::read_file(ifstream& readFile) {
 
 	switchIteration(0);
 	return;
+}
+
+int Grid::getDriverCount() {
+	return allUsers[currentIteration].size();
+}
+
+int Grid::getLotCount() {
+	return allLots.size();
+}
+
+int Grid::getDestinationCount() {
+	return allDestinations.size();
 }
 
 int Grid::switchIteration(int newIt) { // switches iteration. Resets time. Returns iteration number.
