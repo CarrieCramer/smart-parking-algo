@@ -150,8 +150,8 @@ void Lot::show_status() {
 // Sends current occupancy rate, reserved rate, and cost to data attribute
 void Lot::sendData() {
 
-	// Send time
-	((world->data)->lotUpdateTimes).push_back(world->getTime());
+	// If Lot 0, sent time (only Lot 0 does this so that the time is only sent once for all Lots)
+	if (id == 0) ((world->data)->lotUpdateTimes).push_back(world->getTime());
 
 	// Send occupancy rate
 	(((world->data)->lotOccupancyRates)[id]).push_back(getOccupancyRate());

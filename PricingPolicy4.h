@@ -146,6 +146,7 @@ void updatePrice(Lot* lot, double timeCongested, double timeUnderused, double to
 	
 	// Set the Lot's cost variable to updatedPrice
 	lot->setCost(updatedPrice);
+
 }
 
 
