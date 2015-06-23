@@ -265,7 +265,6 @@ void Driver::show_status() { // output driver ID, location, destination, and lot
 
 // Adds data regarding reserved parking spot to the Driver's data attribute
 void Driver::sendData() {
-	cout << reservedPayoff << endl;
 	// Send payoff of parking in reserved Lot 
 	((world->data)->driverPayoffs).push_back(reservedPayoff);
 	// Send cost of parking in reserved Lot

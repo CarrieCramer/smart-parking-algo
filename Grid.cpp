@@ -23,6 +23,7 @@ Grid::Grid() { // not used at this time
 	allEvents.push_back(baseSet);
 	this->eventIt = allEvents[0].begin();
 	this->simulationOver[0] = false;
+	this->data = new Data(0);
 }
 
 Grid::Grid(double boardSize, int iterations) { 
@@ -42,6 +43,7 @@ Grid::Grid(double boardSize, int iterations) {
 		simulationOver.push_back(false);
 	}
 	this->eventIt = allEvents[0].begin(); // start at 1st event of 0th iter
+	this->data = new Data(0);
 }
 
 double Grid::getTime() {
@@ -75,6 +77,7 @@ void Grid::addDriver(Driver * toAdd, int iteration) {
 
 void Grid::addLot(Lot * toAdd) {
 	allLots.push_back(toAdd);
+	data->addLot();
 	return;
 }
 
@@ -590,6 +593,7 @@ void Grid::read_file(ifstream& readFile) {
 				dLocs[ii][kk], dDurations[ii][kk], destPoint, this), ii);
 		}
 	}
+	delete this->data;
 	// set up data
 	Data * d = new Data(lotCount);
 	this->data = d;
@@ -625,6 +629,7 @@ int Grid::switchIteration(int newIt) { // switches iteration. Resets time. Retur
 }
 
 void Grid::reset() { // reset everything back to original state
+	delete this->data;
 	this->time = 0;
 	this->timeIncrement = 1;
 	this->size = 10;
@@ -655,6 +660,7 @@ void Grid::reset() { // reset everything back to original state
 	}
 	this->addEvent(Event()); // base event
 	this->eventIt = allEvents[0].begin();
+	this->data = new Data(0);
 }
 
 bool Grid::update(double timing) { // Updates all elements of the grid.
