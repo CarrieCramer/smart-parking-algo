@@ -30,6 +30,7 @@ class Driver {
 		int getID(); // return id
 		bool isInIA(); // checks if driver is to be allocated immediately
 		Location getLocation(); // return location
+		Location getInitialLocation(); // return initial location
 		bool accept(Lot); // choose to accept the lot
 		Lot * makeReservation(double); // makes reservation. If not satisfied, then will try to find a better one
 		double getDistToDest(); // return distance from driver to destination
@@ -51,6 +52,7 @@ class Driver {
 	private:
 		int id;
 		Location location; // gets location on map (GPS realistically)
+		Location startLocation; // initial location on the map
 		char state; // state of the driver
 		double timeOfArrival; // exact time when the car will appear in the grid
 		double timeInReserve; // time spent in reserve queue. 0 if not in it

@@ -28,6 +28,7 @@ Driver::Driver(int ID, double arrivalTime, double weightScale,
 	this->maxWalkDist = maxDist;
 	this->maxCharge = maxPay;
 	this->location = loc;
+	this->startLocation = loc;
 	this->dest = toReach;
 	this->reserveSpot = -1;
 	this->world = as;
@@ -42,6 +43,10 @@ int Driver::getID() { // Function returns the ID value of driver
 
 Location Driver::getLocation() { // Returns driver's exact location
 	return location;
+}
+
+Location Driver::getInitialLocation() {
+	return startLocation;
 }
 
 bool Driver::accept(Lot) { // returns true if accepted, false if refused

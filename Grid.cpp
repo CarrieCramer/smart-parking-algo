@@ -29,7 +29,7 @@ Grid::Grid(double boardSize, int iterations) {
 	this->time = 0;
 	this->timeIncrement = 1;
 	this->pricingPolicy = 2;
-	cout << "Version 2015 June 19" << endl; // update this date whenever new update
+	cout << "Version 2015 June 23" << endl; // update this date whenever new update
 	this->size = boardSize;
 	this->numOfIterations = iterations; // how did this get deleted
 	this->currentIteration = 0; // also this was deleted
@@ -242,7 +242,7 @@ void Grid::write_file(ofstream& writeFile) {
 	writeFile << asterisks << endl;
 	for (int ii = 0; ii < numOfIterations; ii++) {
 		for (int jj = 0; jj < allUsers[ii].size(); jj++) {
-			writeFile << allUsers[ii][jj]->getLocation() << " ";
+			writeFile << allUsers[ii][jj]->getInitialLocation() << " ";
 		}
 		writeFile << endl;
 	}
@@ -268,7 +268,7 @@ void Grid::write_file(ofstream& writeFile) {
 	writeFile << asterisks << endl;
 	for (int ii = 0; ii < numOfIterations; ii++) {
 		for (int jj = 0; jj < allUsers[ii].size(); jj++) {
-			writeFile << allUsers[ii][jj]->dest->getID() << " ";
+			writeFile << allUsers[ii][jj]->getTimeAtPark() << " ";
 		}
 		writeFile << endl;
 	}
