@@ -575,8 +575,7 @@ void Grid::read_file(ifstream& readFile) {
 
 	// set up lots
 	for (int jj = 0; jj < lotCount; jj++) {
-		Lot * newLot = new Lot(jj, lotLocs[jj], lotCapacities[jj], this);
-		newLot->setCost(lotPrices[jj]);
+		Lot * newLot = new Lot(jj, lotLocs[jj], lotCapacities[jj], lotPrices[jj], this);
 		addLot(newLot);
 	}
 	lotLocs.clear();
@@ -627,6 +626,7 @@ int Grid::switchIteration(int newIt) { // switches iteration. Resets time. Retur
 			allUsers[currentIteration][ii]->resetLocation();
 		}
 		currentIteration = newIt; // set current iteration
+		this->simulationOver[newIt] = false; // set simulation to not over
 		return newIt;
 	}
 }
