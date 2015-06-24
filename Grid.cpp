@@ -283,7 +283,7 @@ void Grid::write_file(ofstream& writeFile) {
 	writeFile << asterisks << endl;
 	for (int ii = 0; ii < numOfIterations; ii++) {
 		for (int jj = 0; jj < allUsers[ii].size(); jj++) {
-			writeFile << allUsers[ii][jj]->maxWalkDist << " ";
+			writeFile << allUsers[ii][jj]->initmaxWalk << " ";
 		}
 		writeFile << endl;
 	}
@@ -296,7 +296,7 @@ void Grid::write_file(ofstream& writeFile) {
 	writeFile << asterisks << endl;
 	for (int ii = 0; ii < numOfIterations; ii++) {
 		for (int jj = 0; jj < allUsers[ii].size(); jj++) {
-			writeFile << allUsers[ii][jj]->maxCharge << " ";
+			writeFile << allUsers[ii][jj]->initmaxCharge << " ";
 		}
 		writeFile << endl;
 	}
@@ -622,6 +622,9 @@ int Grid::switchIteration(int newIt) { // switches iteration. Resets time. Retur
 		this->eventIt = allEvents[newIt].begin(); // change event iterator
 		for (int ii = 0; ii < allLots.size(); ii++) {
 			allLots[ii]->resetLot(); // reset lot info
+		}
+		for (int ii = 0; ii < allUsers.size(); ii++) {
+			allUsers[currentIteration][ii]->resetLocation();
 		}
 		currentIteration = newIt; // set current iteration
 		return newIt;
