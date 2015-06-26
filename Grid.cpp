@@ -23,13 +23,14 @@ Grid::Grid() { // not used at this time
 	allEvents.push_back(baseSet);
 	this->eventIt = allEvents[0].begin();
 	this->simulationOver[0] = false;
+	this->data = new Data(0);
 }
 
 Grid::Grid(double boardSize, int iterations) { 
 	this->time = 0;
 	this->timeIncrement = 1;
 	this->pricingPolicy = 2;
-	cout << "Version 2015 June 19" << endl; // update this date whenever new update
+	cout << "Version 2015 June 23" << endl; // update this date whenever new update
 	this->size = boardSize;
 	this->numOfIterations = iterations; // how did this get deleted
 	this->currentIteration = 0; // also this was deleted
@@ -42,6 +43,7 @@ Grid::Grid(double boardSize, int iterations) {
 		simulationOver.push_back(false);
 	}
 	this->eventIt = allEvents[0].begin(); // start at 1st event of 0th iter
+	this->data = new Data(0);
 }
 
 double Grid::getTime() {
@@ -75,6 +77,7 @@ void Grid::addDriver(Driver * toAdd, int iteration) {
 
 void Grid::addLot(Lot * toAdd) {
 	allLots.push_back(toAdd);
+	data->addLot();
 	return;
 }
 
@@ -242,7 +245,7 @@ void Grid::write_file(ofstream& writeFile) {
 	writeFile << asterisks << endl;
 	for (int ii = 0; ii < numOfIterations; ii++) {
 		for (int jj = 0; jj < allUsers[ii].size(); jj++) {
-			writeFile << allUsers[ii][jj]->getLocation() << " ";
+			writeFile << allUsers[ii][jj]->getInitialLocation() << " ";
 		}
 		writeFile << endl;
 	}
@@ -268,7 +271,7 @@ void Grid::write_file(ofstream& writeFile) {
 	writeFile << asterisks << endl;
 	for (int ii = 0; ii < numOfIterations; ii++) {
 		for (int jj = 0; jj < allUsers[ii].size(); jj++) {
-			writeFile << allUsers[ii][jj]->dest->getID() << " ";
+			writeFile << allUsers[ii][jj]->getTimeAtPark() << " ";
 		}
 		writeFile << endl;
 	}
@@ -280,7 +283,7 @@ void Grid::write_file(ofstream& writeFile) {
 	writeFile << asterisks << endl;
 	for (int ii = 0; ii < numOfIterations; ii++) {
 		for (int jj = 0; jj < allUsers[ii].size(); jj++) {
-			writeFile << allUsers[ii][jj]->maxWalkDist << " ";
+			writeFile << allUsers[ii][jj]->initmaxWalk << " ";
 		}
 		writeFile << endl;
 	}
@@ -293,7 +296,7 @@ void Grid::write_file(ofstream& writeFile) {
 	writeFile << asterisks << endl;
 	for (int ii = 0; ii < numOfIterations; ii++) {
 		for (int jj = 0; jj < allUsers[ii].size(); jj++) {
-			writeFile << allUsers[ii][jj]->maxCharge << " ";
+			writeFile << allUsers[ii][jj]->initmaxCharge << " ";
 		}
 		writeFile << endl;
 	}
@@ -572,8 +575,7 @@ void Grid::read_file(ifstream& readFile) {
 
 	// set up lots
 	for (int jj = 0; jj < lotCount; jj++) {
-		Lot * newLot = new Lot(jj, lotLocs[jj], lotCapacities[jj], this);
-		newLot->setCost(lotPrices[jj]);
+		Lot * newLot = new Lot(jj, lotLocs[jj], lotCapacities[jj], lotPrices[jj], this);
 		addLot(newLot);
 	}
 	lotLocs.clear();
@@ -590,6 +592,7 @@ void Grid::read_file(ifstream& readFile) {
 				dLocs[ii][kk], dDurations[ii][kk], destPoint, this), ii);
 		}
 	}
+	delete this->data;
 	// set up data
 	Data * d = new Data(lotCount);
 	this->data = d;
@@ -619,12 +622,17 @@ int Grid::switchIteration(int newIt) { // switches iteration. Resets time. Retur
 		for (int ii = 0; ii < allLots.size(); ii++) {
 			allLots[ii]->resetLot(); // reset lot info
 		}
+		for (int ii = 0; ii < allUsers.size(); ii++) {
+			allUsers[currentIteration][ii]->resetLocation();
+		}
 		currentIteration = newIt; // set current iteration
+		this->simulationOver[newIt] = false; // set simulation to not over
 		return newIt;
 	}
 }
 
 void Grid::reset() { // reset everything back to original state
+	delete this->data;
 	this->time = 0;
 	this->timeIncrement = 1;
 	this->size = 10;
@@ -655,6 +663,7 @@ void Grid::reset() { // reset everything back to original state
 	}
 	this->addEvent(Event()); // base event
 	this->eventIt = allEvents[0].begin();
+	this->data = new Data(0);
 }
 
 bool Grid::update(double timing) { // Updates all elements of the grid.

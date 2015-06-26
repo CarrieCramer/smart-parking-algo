@@ -131,6 +131,12 @@ void Data::writeLotData() {
 	}
 }
 
+void Data::addLot() { // Adds lot
+	lotOccupancyRates.resize(lotOccupancyRates.size()+1);
+	lotReservedRates.resize(lotReservedRates.size()+1);
+	lotCosts.resize(lotCosts.size()+1);
+}
+
 // Returns true if file exists, false if not
 bool fileExists(string& fileName) {
 	struct stat buffer;

@@ -19,6 +19,9 @@ public:
 	void writeDriverData();
 	void writeLotData();
 	
+	// Adds lots if new lots are initialized
+	void addLot();
+	
 	// Driver Data
 	// Index corresponds to Driver id
 

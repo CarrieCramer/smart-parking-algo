@@ -27,7 +27,10 @@ Driver::Driver(int ID, double arrivalTime, double weightScale,
 	this->timeAtPark = timeAtPark;
 	this->maxWalkDist = maxDist;
 	this->maxCharge = maxPay;
+	this->initmaxWalk = maxDist;
+	this->initmaxCharge = maxPay;
 	this->location = loc;
+	this->startLocation = loc;
 	this->dest = toReach;
 	this->reserveSpot = -1;
 	this->world = as;
@@ -42,6 +45,10 @@ int Driver::getID() { // Function returns the ID value of driver
 
 Location Driver::getLocation() { // Returns driver's exact location
 	return location;
+}
+
+Location Driver::getInitialLocation() {
+	return startLocation;
 }
 
 bool Driver::accept(Lot) { // returns true if accepted, false if refused
@@ -83,6 +90,13 @@ double Driver::getTimeAtPark() { // find how long the car is at the park
 	return timeAtPark;
 }
 
+void Driver::resetLocation() { // reset location and state
+	this->location = startLocation;
+	this->state = 'z';
+	this->maxWalkDist = initmaxWalk;
+	this->maxCharge = initmaxCharge;
+}
+
 void Driver::goToPark() {
 	this->state = 'd'; // set to head towards parking lot
 	cout << "Driver " << getID() << ": Lot at ID " << reserved->getID() << "." << endl;
@@ -103,7 +117,7 @@ Lot* Driver::makeReservation(double timeParking) { // finds potential lots
 	
 	int lotVectSize = feasLots.size();
 	int bestLotAt;
-	Lot* bestLot = NULL;
+	Lot* bestLot = nullptr;
 	double minCost = 10000; // arbitrarily large number. All costs are less than 10.
 	for (int ii = 0; ii < lotVectSize; ii++) {
 		if (lotCost[ii] < minCost) {
@@ -116,7 +130,7 @@ Lot* Driver::makeReservation(double timeParking) { // finds potential lots
 		reservedPayoff = lotCost[bestLotAt];
 		return bestLot;
 	} else {
-		return NULL; // no lots are available
+		return nullptr; // no lots are available
 	}
 }
 
@@ -160,7 +174,7 @@ bool Driver::update() { // update driver parking, returns true on state change
 		case 'z':
 			if (world->getTime() >= timeOfArrival) { // if car should arrive at this time
 				reserved = makeReservation(timeAtPark); // reserving spot
-				if (reserved != NULL) { // if found reservation
+				if (reserved != nullptr) { // if found reservation
 					reserved->addToQueue(this);
 				}
 				setup_destination(dest->getLocation()); // go to destination
@@ -177,7 +191,7 @@ bool Driver::update() { // update driver parking, returns true on state change
 				// set max walk distance and cost to maximum value
 			}
 			reserved = makeReservation(timeAtPark); // try reserving a spot again
-			if (reserved != NULL) { // if reservation exists
+			if (reserved != nullptr) { // if reservation exists
 				reserved->addToQueue(this); // add driver to reservation queue
 				return true;
 			}
@@ -260,7 +274,6 @@ void Driver::show_status() { // output driver ID, location, destination, and lot
 
 // Adds data regarding reserved parking spot to the Driver's data attribute
 void Driver::sendData() {
-	
 	// Send payoff of parking in reserved Lot 
 	((world->data)->driverPayoffs).push_back(reservedPayoff);
 	// Send cost of parking in reserved Lot
