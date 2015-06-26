@@ -22,6 +22,9 @@ int main() {
 	// Get grid size from user input
 	int gridSize = getGridSize();
 
+	// Get number of hours to simulate from user input
+	int numHours = getNumHours();
+
 	// Get average demand from user input
 	int avgDemand = getAvgDemand();
 	
@@ -36,6 +39,9 @@ int main() {
 	if (!randCapacIn) {
 		capac = getLotCapac();
 	}
+
+	// Get utilization rate from user input - avg fraction of all spots on the grid that are being utilized (reserved/occupied)
+	double utilRate = getUtilRate();
 
 	// Get pricing policy from user input
 	int pricePolicy = getPricePolicy();
@@ -100,7 +106,7 @@ int main() {
 	writeLotLocs(gridSize, numLots, config, engine);
 
 	// Write random parking lot capacities to config.txt
-	writeLotCapacities(randCapacIn, capac, avgDemand, numLots, config, engine);
+	int totalCapacity = writeLotCapacities(randCapacIn, capac, avgDemand, numLots, config, engine);
 
 	// Write the pricing policy to config.txt
 	writePricePolicy(pricePolicy, config);
@@ -111,12 +117,12 @@ int main() {
 	// Write average demand to config.txt
 	config << "****************************************************************************************************\n";
 	config << "AVERAGE DEMAND:\n";
-	config << "Average number of drivers that arrive per simulation iteration.\n";
+	config << "Average number of drivers that arrive per hour.\n";
 	config << "****************************************************************************************************\n";
 	config << avgDemand << "\n\n";
 
 	// Get driver arrival times and write number of drivers to config.txt 
-	list<list<double>> arrivals = generateArrivals(numIterations, avgDemand, config, engine);
+	list<list<double>> arrivals = generateArrivals(numIterations, numHours, avgDemand, config, engine);
 
 	// Write number of drivers to config.txt
 	list<int> numDrivers = writeNumDrivers(arrivals, config); 
@@ -131,7 +137,7 @@ int main() {
 	list<list<int>> dests = writeDriverDests(destProbs, numDrivers, config, engine);
 
 	// Write random driver durations to config.txt
-	writeDriverDurs(avgDurations, dests, config, engine);
+	writeDriverDurs(avgDemand, utilRate, totalCapacity, numDrivers, config, engine);
 
 	// Write random driver max walking distances to config.txt
 	writeDriverMaxWalkDists(gridSize, numDrivers, config, engine);

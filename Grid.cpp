@@ -683,7 +683,7 @@ bool Grid::update(double timing) { // Updates all elements of the grid.
 			updatePrices3(allLots);
 		}
 		else if (pricingPolicy == 4) {
-			updatePrices4(data->lotReservedRates, data-> lotUpdateTimes, allLots, 5); // 5 was chosen arbitrarily, should try different values
+			updatePrices4(data->lotReservedRates, data-> lotUpdateTimes, allLots, 2); // 5 was chosen arbitrarily, should try different values
 		}
 	}
 	return stateChanged;

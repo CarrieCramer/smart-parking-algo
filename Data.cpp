@@ -8,24 +8,14 @@
 using namespace std;
 
 Data::Data() {
-	
-	driverFileNum = 0;
-	driverFileName = "driver_data.csv";
-	lotFileNum = 0;
-	lotFileName = "lot_data.csv";
+
 }
 
 Data::Data(int numLots) {
 
-	driverFileNum = 0;
-	driverFileName = "driver_data.csv";
-	lotFileNum = 0;
-	lotFileName = "lot_data.csv";
-
 	lotOccupancyRates.resize(numLots);
 	lotReservedRates.resize(numLots);
 	lotCosts.resize(numLots);
-
 }
 
 void Data::writeToExcel() {
@@ -46,6 +36,8 @@ void Data::writeDriverData() {
 	vector<double>::iterator driverWaitTimesIt = driverWaitTimes.begin() + lastDriverCount;
 	vector<double>::iterator driverDriveTimesIt = driverDriveTimes.begin() + lastDriverCount;
 	vector<double>::iterator driverWalkDistsIt = driverWalkDists.begin() + lastDriverCount;
+	vector<double>::iterator driverArrivalTimesIt = driverArrivalTimes.begin() + lastDriverCount;
+	vector<double>::iterator driverDepartureTimesIt = driverDepartureTimes.begin() + lastDriverCount;
 
 	// Declare output stream that will be used to write to the CSV file
 	ofstream excelFile;
@@ -57,7 +49,7 @@ void Data::writeDriverData() {
 	static bool firstWrite = 1;
 	if (firstWrite) {
 		excelFile << "Driver Data" << endl;
-		excelFile << "Payoff of Reserved Spot, Cost of Reserved Spot, Waiting Time, Driving Time, Walking Distance" << endl;
+		excelFile << "Payoff of Reserved Spot, Cost of Reserved Spot, Waiting Time, Driving Time, Walking Distance, Arrival Time, Departure Time" << endl;
 		firstWrite = 0;
 	}
 
@@ -66,7 +58,7 @@ void Data::writeDriverData() {
 
 		// Write a new row of data for one driver
 		// Commas separate columns
-		excelFile << *driverPayoffsIt << "," << *driverCostsIt << "," << *driverWaitTimesIt << "," << *driverDriveTimesIt << "," << *driverWalkDistsIt << endl;
+		excelFile << *driverPayoffsIt << "," << *driverCostsIt << "," << *driverWaitTimesIt << "," << *driverDriveTimesIt << "," << *driverWalkDistsIt << "," << *driverArrivalTimesIt << "," << *driverDepartureTimesIt << "," << 0 << endl;
 
 		// Increment all iterators and the counter
 		driverPayoffsIt++;
@@ -74,6 +66,8 @@ void Data::writeDriverData() {
 		driverWaitTimesIt++;
 		driverDriveTimesIt++;
 		driverWalkDistsIt++;
+		driverArrivalTimesIt++;
+		driverDepartureTimesIt++;
 		lastDriverCount++;
 	}
 

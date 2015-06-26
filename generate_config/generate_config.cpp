@@ -29,11 +29,24 @@ int getGridSize() {
 	return gridSize;
 }
 
+// Obtain number of hours to simulate from user input
+int getNumHours() {
+
+	// Prompt user to enter the number of hours
+	cout << "\nEnter number of hours to simulate: ";
+
+	// Read in the number of hours
+	int numHours = 0;
+	cin >> numHours;
+
+	return numHours;
+}
+
 // Obtain average demand from user input
 int getAvgDemand() {
 
-	// Prompt user to enter the average demand (average number of drivers per simulation)
-	cout <<"\nEnter average demand: ";
+	// Prompt user to enter the average demand (average number of drivers per hour)
+	cout <<"\nEnter average demand (number of drivers that arrive per hour): ";
 
 	// Read in the average demand
 	int avgDemand = 0;
@@ -81,6 +94,19 @@ int getLotCapac() {
 	return capac;
 }
 
+// Obtain utilization rate 
+double getUtilRate() {
+
+	// Prompt user to enter utilization rate
+	cout << "\nEnter avg utilization rate (fraction of all parking spots that are being utilized by drivers): ";
+
+	// Read in utilization rate
+	double utilRate = 0;
+	cin >> utilRate;
+
+	return utilRate;
+}
+
 // Obtain lot pricing policy number
 int getPricePolicy() {
 
@@ -89,6 +115,7 @@ int getPricePolicy() {
 	cout << "1 | Equal Static Pricing: all lots have the same price, which remains the same throughout the simulation\n";
 	cout << "2 | Random Static Pricing: lots have randomized prices, which remain the same throughout the simulation\n";
 	cout << "3 | Real-time, proportional dynamic pricing\n";
+	cout << "4 | LA Express Park Dynamic Pricing\n";
 	cout << "Enter one of the numbers above to select a lot pricing policy: ";
 
 	// Read in lot policy number
@@ -278,12 +305,15 @@ void writeLotLocs(int gridSize, int numLots, ofstream& config, default_random_en
 }
 
 // Write random parking lot capacities to config
-void writeLotCapacities(bool randCapacIn, int capac, int avgDemand, int numLots, ofstream& config, default_random_engine& engine) {
+int writeLotCapacities(bool randCapacIn, int capac, int avgDemand, int numLots, ofstream& config, default_random_engine& engine) {
 
 	config << "****************************************************************************************************\n";
 	config << "LOT CAPACITIES:\n";
 	config << "Number of parking spots in each parking lot.\n";
 	config << "****************************************************************************************************\n";
+	
+	int totalCapacity = 0;
+	int currentCapacity;
 
 	if (randCapacIn) {
 		// Define a discrete Uniform(1,avgDemand) distribution
@@ -291,19 +321,22 @@ void writeLotCapacities(bool randCapacIn, int capac, int avgDemand, int numLots,
 
 		// Write random capacities to config
 		for (int i = 0; i < numLots; i++) {
-
-			config << distribution(engine) << " ";
+			currentCapacity = distribution(engine);
+			config << currentCapacity << " ";
+			totalCapacity += currentCapacity;
 		}
 	}
 	else {
 		// Write equal capacities to config
 		for (int i = 0; i < numLots; i++) {
-
+	
 			config << capac << " ";
 		}
+		totalCapacity = capac*numLots;
 	}
 
 	config << "\n\n";
+	return totalCapacity;
 }
 
 // Write the pricing policy to config
@@ -315,6 +348,7 @@ void writePricePolicy(int pricePolicy, ofstream& config) {
 	config << "1 | Equal Static Pricing: all lots have the same price, which remains the same throughout the simulation\n";
 	config << "2 | Random Static Pricing: lots have randomized prices, which remain the same throughout the simulation\n";
 	config << "3 | Real-time, proportional dynamic pricing\n";
+	config << "4 | LA Express Park Dynamic Pricing\n";
 	config << "****************************************************************************************************\n";
 	config << pricePolicy <<"\n\n";
 }
@@ -379,7 +413,7 @@ void writeLotPrices(int pricePolicy, double price, int numLots, ofstream& config
 }
 
 // Get driver arrival times and return them in a matrix
-list<list<double>> generateArrivals(int numIterations, int avgDemand, ofstream& config, default_random_engine& engine) {
+list<list<double>> generateArrivals(int numIterations, int numHours, int avgDemand, ofstream& config, default_random_engine& engine) {
 
 	//Define exponential distribution with arrival rate parameter 
 	exponential_distribution<double> distribution(avgDemand);
@@ -402,16 +436,20 @@ list<list<double>> generateArrivals(int numIterations, int avgDemand, ofstream& 
 		currentArrivals.clear();
 
 		t = 0;
-		
-		// Loop until a generated arrival time exceeds 1
-		while (t <= 1) {
 
-			// Generate next arrival interval and add it to t
-			t += distribution(engine);
+		// For each hour
+		for (int currentHour = 1; currentHour <= numHours; currentHour++) {
 
-			// Add arrival time to currentArrivals
-			if (t <= 1) {
-				currentArrivals.push_back(t);
+			// Loop until a generated arrival time exceeds the end of the current hour
+			while (t <= currentHour) {
+
+				// Generate next arrival interval and add it to t
+				t += distribution(engine);
+
+				// Add arrival time to currentArrivals
+				if (t <= currentHour) {
+					currentArrivals.push_back(t);
+				}
 			}
 		}
 
@@ -568,7 +606,7 @@ list<list<int>> writeDriverDests(list<double> destProbs, list<int> numDrivers, o
 }
 
 // Write random driver durations to config
-void writeDriverDurs(vector<double> avgDurations, list<list<int>> dests, ofstream& config, default_random_engine& engine) {
+void writeDriverDurs(int avgDemand, double utilRate, int totalCapacity, list<int> numDrivers, ofstream& config, default_random_engine& engine) {
 
 	config << "****************************************************************************************************\n";
 	config << "DRIVER DURATIONS:\n";
@@ -577,7 +615,7 @@ void writeDriverDurs(vector<double> avgDurations, list<list<int>> dests, ofstrea
 	config << "A duration greater than 1 means that the driver will stay beyond the end of the simulation iteration.\n";
 	config << "Each row corresponds to one simulation iteration.\n";
 	config << "****************************************************************************************************\n";
-
+	/*
 	// Iterate through each list of driver destinations stored in dests
 	for (list<list<int>>::iterator destsIt = dests.begin(); destsIt != dests.end(); destsIt++) {
 
@@ -588,6 +626,25 @@ void writeDriverDurs(vector<double> avgDurations, list<list<int>> dests, ofstrea
 			exponential_distribution<double> distribution(1 / (*(avgDurations.begin() + *currentDestsIt)));
 
 			// Write the random duration to config
+			config << distribution(engine) << " ";
+		}
+		// Go to the next line in config
+		config << "\n";
+	}
+	*/
+	exponential_distribution<double> distribution(avgDemand/(utilRate*totalCapacity)); // NEED TO NOT HARDCODE THIS
+
+	int currentNumDrivers = 0;
+
+	// Iterate through each value in numDrivers list 
+	for (list<int>::iterator numDriversIt = numDrivers.begin(); numDriversIt != numDrivers.end(); numDriversIt++) {
+
+		// Get the number of drivers in the current simulation iteration
+		currentNumDrivers = *numDriversIt;
+
+		// Write durations to config
+		for (int i = 0; i < currentNumDrivers; i++) {
+
 			config << distribution(engine) << " ";
 		}
 		// Go to the next line in config

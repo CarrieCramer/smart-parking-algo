@@ -13,6 +13,9 @@ int getNumIterations();
 // Obtain grid size from user input
 int getGridSize();
 
+// Obtain number of hours to simulate from user input
+int getNumHours();
+
 // Obtain average demand from user input
 int getAvgDemand();
 
@@ -24,6 +27,9 @@ bool randCapac();
 
 // Obtain lot capacity if user chooses to use equal lot capacities
 int getLotCapac();
+
+// Obtain utilization rate from user input - avg fraction of all spots on the grid that are being utilized (reserved/occupied)
+double getUtilRate();
 
 // Obtain lot pricing policy number
 int getPricePolicy();
@@ -53,7 +59,7 @@ vector<double> writeDestAvgDurs(int numDests, ofstream& config, default_random_e
 void writeLotLocs(int gridSize, int numLots, ofstream& config, default_random_engine& engine);
 
 // Write random parking lot capacities to config
-void writeLotCapacities(bool randCapacIn, int capac, int avgDemand, int numLots, ofstream& config, default_random_engine& engine);
+int writeLotCapacities(bool randCapacIn, int capac, int avgDemand, int numLots, ofstream& config, default_random_engine& engine);
 
 // Write the pricing policy to config
 void writePricePolicy(int pricePolicy, ofstream& config);
@@ -62,7 +68,7 @@ void writePricePolicy(int pricePolicy, ofstream& config);
 void writeLotPrices(int pricePolicy, double price, int numLots, ofstream& config, default_random_engine& engine);
 
 // Get driver arrival times and return them in a matrix
-list<list<double>> generateArrivals(int numIterations, int avgDemand, ofstream& config, default_random_engine& engine);
+list<list<double>> generateArrivals(int numIterations, int numHours, int avgDemand, ofstream& config, default_random_engine& engine);
 
 // Write number of drivers in each simulation iteration to config and return them in a list
 list<int> writeNumDrivers(list<list<double>> arrivals, ofstream& config);
@@ -77,7 +83,7 @@ void writeDriverLocs(int gridSize, list<int> numDrivers, ofstream& config, defau
 list<list<int>> writeDriverDests(list<double> destProbs, list<int> numDrivers, ofstream& config, default_random_engine& engine);
 
 // Write random driver durations to config
-void writeDriverDurs(vector<double> avgDurations, list<list<int>> dests, ofstream& config, default_random_engine& engine);
+void writeDriverDurs(int avgDemand, double utilRate, int totalCapacity, list<int> numDrivers, ofstream& config, default_random_engine& engine);
 
 // Write random driver max walking distances to config
 void writeDriverMaxWalkDists(int gridSize, list<int> numDrivers, ofstream& config, default_random_engine& engine);

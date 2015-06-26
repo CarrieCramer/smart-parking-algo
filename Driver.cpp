@@ -32,7 +32,7 @@ Driver::Driver(int ID, double arrivalTime, double weightScale,
 	this->reserveSpot = -1;
 	this->world = as;
 	this->state = 'z';
-	this->speed = 100; // set speed to 5 by default
+	this->speed = (world->getGridSize())/0.25; // set speed so that it takes a time of 0.25 to drive across the grid
 	world->addEvent(Event(this->timeOfArrival, this, 'n'), world->getCurrentIteration());
 }
 
@@ -260,7 +260,7 @@ void Driver::show_status() { // output driver ID, location, destination, and lot
 
 // Adds data regarding reserved parking spot to the Driver's data attribute
 void Driver::sendData() {
-	cout << reservedPayoff << endl;
+	
 	// Send payoff of parking in reserved Lot 
 	((world->data)->driverPayoffs).push_back(reservedPayoff);
 	// Send cost of parking in reserved Lot
@@ -272,7 +272,13 @@ void Driver::sendData() {
 	// Send driving time from arrival location to reserved Lot
 	timeArrivedAtPark = this->getTimeArrivedAtPark();
 	((world->data)->driverDriveTimes).push_back(timeArrivedAtPark - timeOfArrival);
-
+	
 	// Send walking distance from reserved Lot to destination
 	((world->data)->driverWalkDists).push_back(dist(reserved->getLocation(), dest->getLocation()));
+
+	// Send arrival time
+	((world->data)->driverArrivalTimes).push_back(timeOfArrival);
+
+	// Send departure time
+	((world->data)->driverDepartureTimes).push_back(timeArrivedAtPark + timeAtPark);
 }

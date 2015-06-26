@@ -27,6 +27,8 @@ public:
 	vector<double> driverWaitTimes;		// Amount of time from arrival until the Driver's reservation is made 
 	vector<double> driverDriveTimes;	// Amount of time from arrival until the Driver arrives at its parking spot 
 	vector<double> driverWalkDists;		// Walking distance between Driver's assigned Lot and Destination 
+	vector<double> driverArrivalTimes;	
+	vector<double> driverDepartureTimes;
 	
 	// Lot Data
 	// First dimension index corresponds to Lot id
@@ -37,16 +39,6 @@ public:
 	vector<vector<double>> lotCosts;			// Lot cost
 
 	vector<double> lotUpdateTimes;
-
-	// Variables used for naming the CSV files 
-
-	int driverFileNum; 
-	string driverFileName;
-	int lotFileNum;
-	string lotFileName;
 };
-
-// Returns true if file exists, false if not
-bool fileExists(string& fileName);
 
 #endif
