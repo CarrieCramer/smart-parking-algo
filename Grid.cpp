@@ -138,6 +138,10 @@ int Grid::getCurrentIteration() {
 	return this->currentIteration;
 }
 
+int Grid::getIterationCount() { // returns number of iterations
+	return this->numberOfIterations;
+}
+
 void Grid::write_file(ofstream& writeFile) {
 	string asterisks = "****************************************************************************************************";
 	string simItNotice = "Each row corresponds to one simulation iteration.";
