@@ -139,7 +139,7 @@ int Grid::getCurrentIteration() {
 }
 
 int Grid::getIterationCount() { // returns number of iterations
-	return this->numberOfIterations;
+	return this->numOfIterations;
 }
 
 void Grid::write_file(ofstream& writeFile) {
