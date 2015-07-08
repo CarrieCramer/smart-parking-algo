@@ -46,9 +46,9 @@ int main() {
 	// Get pricing policy from user input
 	int pricePolicy = getPricePolicy();
 	
-	// If price policy 1 or 3 is chosen, get initial lot price from user input
+	// If price policy 2 is not chosen, get initial lot price from user input
 	double price = 0;
-	if ((pricePolicy == 1) || (pricePolicy == 3)) {
+	if (pricePolicy != 2) {
 		price = getLotPrice();
 	}
 	

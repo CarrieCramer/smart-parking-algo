@@ -146,12 +146,12 @@ vector<Lot *> Driver::findLots(double timeParking) {
 		if (allLots[ii]->isFull() == false) { // won't add lot that has no spaces available
 			distance = dist(allLots[ii]->getLocation(), dest->getLocation()); // calculate distance
 			if (distance <= this->maxWalkDist) { // if destination within walking distance
-				charge = allLots[ii]->getCost(timeParking); // calculate cost
-				if (charge <= this->maxCharge) { // if cost within specified range
+				charge = allLots[ii]->getCost(timeParking + dist(this->location, allLots[ii]->getLocation())/this->speed); // calculate cost
+				if (allLots[ii]->getCost(1.0) <= this->maxCharge) { // if cost within specified range
 					lotsAvailable.push_back(allLots[ii]); // add lot to lots available
 					lotDist.push_back(distance);
 					lotCharge.push_back(charge);
-					cost = importanceWeight*(charge/maxCharge) + (1-importanceWeight)*(distance/maxWalkDist);
+					cost = (importanceWeight*(charge)+(1 - importanceWeight)*(distance / world->getGridSize()));
 					lotCost.push_back(cost);
 				}
 			}
@@ -186,8 +186,8 @@ bool Driver::update() { // update driver parking, returns true on state change
 			break;
 		case 'n': // drive towards destination, but waiting for lots
 			if (update_location() == true){ // Move the car. If lot not reached:
-				this->maxWalkDist = numeric_limits<double>::max();
-				this->maxCharge = numeric_limits<double>::max();
+				this->maxWalkDist = world->getGridSize();
+				this->maxCharge = 1.0;
 				// set max walk distance and cost to maximum value
 			}
 			reserved = makeReservation(timeAtPark); // try reserving a spot again

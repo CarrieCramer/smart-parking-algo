@@ -10,6 +10,8 @@
 #include "InputHandling.h"
 #include "PricingPolicy3.h"
 #include "PricingPolicy4.h"
+#include "PricingPolicy5.h"
+#include "PricingPolicy6.h"
 using namespace std;
 
 Grid::Grid() { // not used at this time
@@ -692,7 +694,13 @@ bool Grid::update(double timing) { // Updates all elements of the grid.
 			updatePrices3(allLots);
 		}
 		else if (pricingPolicy == 4) {
-			updatePrices4(data->lotReservedRates, data-> lotUpdateTimes, allLots, 2); // 5 was chosen arbitrarily, should try different values
+			updatePrices4(data->lotReservedRates, data->lotUpdateTimes, allLots, this->time, 0.1); 
+		}
+		else if (pricingPolicy == 5) {
+			updatePrices5(data->lotUpdateTimes, allLots, data->lotReservedRates);
+		}
+		else if (pricingPolicy == 6) {
+			updatePrices6(allLots);
 		}
 	}
 	return stateChanged;
