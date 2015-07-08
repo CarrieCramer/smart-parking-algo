@@ -129,7 +129,7 @@ Lot* Driver::makeReservation(double timeParking) { // finds potential lots
 	if (lotVectSize != 0) {
 		reservedPayoff = lotCost[bestLotAt];
 		return bestLot;
-	} else {
+	} else { // idea for later: increment max walk distance and charge in the event of no lots available
 		return nullptr; // no lots are available
 	}
 }

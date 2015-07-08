@@ -38,6 +38,7 @@ class Grid {
 		double getGridSize();
 		double toNextEvent(); // Moves iterator to next event. Returns time to the next event
 		int getCurrentIteration();
+		int getIterationCount();
 		int getDriverCount(); // get driver count for current iteration
 		int getLotCount(); // get lot count
 		int getDestinationCount(); // get number of destinations
