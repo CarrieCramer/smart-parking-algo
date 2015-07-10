@@ -32,7 +32,7 @@ Grid::Grid(double boardSize, int iterations) {
 	this->time = 0;
 	this->timeIncrement = 1;
 	this->pricingPolicy = 2;
-	cout << "Version 2015 June 23" << endl; // update this date whenever new update
+	cout << "Version 2015 July 10" << endl; // update this date whenever new update
 	this->size = boardSize;
 	this->numOfIterations = iterations; // how did this get deleted
 	this->currentIteration = 0; // also this was deleted
@@ -609,6 +609,9 @@ void Grid::read_file(ifstream& readFile) {
 
 int Grid::getDriverCount() {
 	return allUsers[currentIteration].size();
+}
+int Grid::getDriverCount(int iteration) {
+	return allUsers[iteration].size();
 }
 
 int Grid::getLotCount() {

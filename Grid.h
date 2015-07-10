@@ -40,6 +40,7 @@ class Grid {
 		int getCurrentIteration();
 		int getIterationCount();
 		int getDriverCount(); // get driver count for current iteration
+		int getDriverCount(int); // get driver count for specific iteration
 		int getLotCount(); // get lot count
 		int getDestinationCount(); // get number of destinations
 		vector<Lot *> getAllLots();
