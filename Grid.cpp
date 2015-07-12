@@ -127,6 +127,45 @@ vector<Lot *> Grid::getAllLots() {
 	return this->allLots;
 }
 
+vector<Location> Grid::getDestLocations() {
+	vector<Location> allLocs;
+	for (int ii = 0; ii < allDestinations.size(); ii++) {
+		allLocs.push_back(allDestinations[ii]->getLocation());
+	}
+	return allLocs;
+}
+
+vector<Location> Grid::getLotLocations() {
+	vector<Location> allLocs;
+	for (int ii = 0; ii < allLots.size(); ii++) {
+		allLocs.push_back(allLots[ii]->getLocation());
+	}
+	return allLocs;
+}
+
+vector<Location> Grid::getDriverLocations() {
+	vector<Location> allLocs;
+	Driver * toCheck;
+	for (int ii = 0; ii < allUsers[currentIteration].size(); ii++) {
+		toCheck = allUsers[currentIteration][ii];
+		if (toCheck->getState() != 'z') {
+		allLocs.push_back(toCheck->getLocation());
+		}
+	}
+	return allLocs;
+}
+vector<Location> Grid::getDriverLocations(int iteration) {
+	vector<Location> allLocs;
+	Driver * toCheck;
+	for (int ii = 0; ii < allUsers[iteration].size(); ii++) {
+		toCheck = allUsers[iteration][ii];
+		if (toCheck->getState() != 'z') {
+		allLocs.push_back(toCheck->getLocation());
+		}
+	}
+	return allLocs;
+}
+
 Destination * Grid::findDestinationByID(int correctID) {
 	for (int ii = 0; ii < allDestinations.size(); ii++) {
 		if (allDestinations[ii]->getID() == correctID) { // correct destination found

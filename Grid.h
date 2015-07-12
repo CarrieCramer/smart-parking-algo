@@ -44,6 +44,10 @@ class Grid {
 		int getLotCount(); // get lot count
 		int getDestinationCount(); // get number of destinations
 		vector<Lot *> getAllLots();
+		vector<Location> getDestLocations();
+		vector<Location> getLotLocations();
+		vector<Location> getDriverLocations();
+		vector<Location> getDriverLocations(int);
 		Destination * findDestinationByID(int);
 		
 		void write_file(ofstream&); // Write file in grid
