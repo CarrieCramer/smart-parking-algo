@@ -1,0 +1,30 @@
+﻿Build started 7/13/2015 4:12:47 PM.
+     1>Project "C:\Users\Edward\Documents\Visual Studio 2013\Projects\smart_parking_gui\smart_parking_gui\smart_parking_gui.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _UNICODE /D UNICODE /D _AFXDLL /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt smart_parking_guiDlg.cpp
+         smart_parking_guiDlg.cpp
+     1>c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_parking_gui\smart_parking_guidlg.cpp(165): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Edward\Documents\Visual Studio 2013\Projects\smart_parking_gui\Debug\smart_parking_gui.exe" /INCREMENTAL /NOLOGO /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /manifestinput:"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\Include\Manifest\dpiaware.manifest" /DEBUG /PDB:"C:\Users\Edward\Documents\Visual Studio 2013\Projects\smart_parking_gui\Debug\smart_parking_gui.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /ENTRY:"wWinMainCRTStartup" /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Edward\Documents\Visual Studio 2013\Projects\smart_parking_gui\Debug\smart_parking_gui.lib" /MACHINE:X86 Debug\smart_parking_gui.res
+         Debug\Cadd_Destination.obj
+         Debug\Cadd_Driver.obj
+         Debug\Cadd_Lot.obj
+         Debug\Commands.obj
+         Debug\Data.obj
+         Debug\Destination.obj
+         Debug\DrawGrid.obj
+         Debug\Driver.obj
+         Debug\DriveVector.obj
+         Debug\Event.obj
+         Debug\Grid.obj
+         Debug\Location.obj
+         Debug\Lot.obj
+         Debug\smart_parking_gui.obj
+         Debug\smart_parking_guiDlg.obj
+         Debug\stdafx.obj
+         smart_parking_gui.vcxproj -> C:\Users\Edward\Documents\Visual Studio 2013\Projects\smart_parking_gui\Debug\smart_parking_gui.exe
+     1>Done Building Project "C:\Users\Edward\Documents\Visual Studio 2013\Projects\smart_parking_gui\smart_parking_gui\smart_parking_gui.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:12.98

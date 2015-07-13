@@ -105,6 +105,10 @@ double Grid::getGridSize() {
 	return this->size;
 }
 
+Event Grid::getCurrentEvent() {
+	return *eventIt; // returns current event
+}
+
 double Grid::toNextEvent() { // Moves set iterator to next event
 	while (eventIt->getTime() <= this->time && !simulationOver[currentIteration]) { // while event has lower time than current time
 		++eventIt; // go to next event

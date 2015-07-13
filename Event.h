@@ -13,6 +13,7 @@
 #ifndef EVENT_H
 #define EVENT_H
 
+#include <iostream>
 class Driver;
 
 class Event {
@@ -21,7 +22,7 @@ class Event {
 		Event(double, Driver *, char);
 		double getTime() const;
 		char getType() const;
-		
+		std::ostream& operator << (std::ostream &);
 	private:
 		double time;
 		Driver * eventDriver; // driver that caused the event

@@ -35,6 +35,7 @@ class Grid {
 		void addLot(Lot *); // add lot to allLots
 		void addDestination(Destination *); // add destination
 		void setGridSize(double); // set grid size to different amount
+		Event getCurrentEvent(); // gets current event
 		double getGridSize();
 		double toNextEvent(); // Moves iterator to next event. Returns time to the next event
 		int getCurrentIteration();

@@ -31,5 +31,26 @@ bool operator< (const Event& e1, const Event& e2)
 	return (e1.getTime() < e2.getTime());
 } // Used in order to use with sets.
 
+std::ostream& Event::operator << (std::ostream &os) {
+	os << "Event " << time << ": Driver " << eventDriver->getID();
+	switch(type) {
+		case 'n':
+			os << " has appeared at point " << eventDriver->getLocation() << ".\n";
+			break;
+		case 's':
+			os << " has found parking lot " << eventDriver->reserved->getID() << ".\n";
+			break;
+		case 'p':
+			os << " has parked at " << eventDriver->reserved->getID() << ".\n";
+			break;
+		case 'd':
+			os << " has left the map.\n";
+			break;
+		default:
+			os << " has done an undefined event.\n";
+	}
+	return os;
+}
+
 // Solution: Once they arrive at their destination before getting a reservation,
 // then they can try to set their max distance and max cost to absolute max
