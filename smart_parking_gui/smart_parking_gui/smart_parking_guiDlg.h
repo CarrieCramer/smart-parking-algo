@@ -47,6 +47,8 @@ private:
 	CString m_IterationEcho;
 	CWnd * gridDrawSurface;
 	CDC * gridDraw;
+	CBrush * gridBrush;
+	CPen * gridPen;
 	bool destDrawn;
 	bool lotDrawn;
 	void DrawGrid(); // draws the entire grid

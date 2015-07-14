@@ -124,7 +124,7 @@ void Csmart_parking_guiDlg::DrawGrid() {
 	gridDrawSurface->GetWindowRect(&gridBase);
 	this->ScreenToClient(&gridBase);
 	CPoint bottomRight = gridBase.TopLeft();
-	bottomRight += CPoint(250, 250);
+	bottomRight += CPoint(275, 275);
 	gridBase.BottomRight() = bottomRight;
 	gridBase.NormalizeRect();
 	gridDraw->Rectangle(gridBase);
@@ -133,10 +133,10 @@ void Csmart_parking_guiDlg::DrawGrid() {
 	double proportion = (baseRectWidth / world->getGridSize());
 	// Draw destinations. Set boolean to check if all are drawn yet
 		CBrush brushDest(RGB(165, 42, 42));
-		CBrush* pOldBrush = gridDraw->SelectObject(&brushDest);
+		gridBrush = gridDraw->SelectObject(&brushDest);
 		CPen penBlack;
 		penBlack.CreatePen(PS_SOLID, 1, RGB(0, 0, 0));
-		CPen* pOldPen = gridDraw->SelectObject(&penBlack);
+		gridPen = gridDraw->SelectObject(&penBlack);
 		vector <Location> destLoc = world->getDestLocations();
 		int xCenter;
 		int yCenter;
@@ -145,11 +145,11 @@ void Csmart_parking_guiDlg::DrawGrid() {
 			yCenter = (int)round(gridBase.TopLeft().y + destLoc[ii].y*proportion);
 			gridDraw->Rectangle(xCenter - 2, yCenter-2, xCenter+2, yCenter+2);
 		}
-		gridDraw->SelectObject(pOldBrush);
+		gridDraw->SelectObject(gridBrush);
 		destDrawn = true;
 	// Draw lots.
 		CBrush brushLot(RGB(35, 62, 148));
-		pOldBrush = gridDraw->SelectObject(&brushLot);
+		gridBrush = gridDraw->SelectObject(&brushLot);
 		vector<Location> lotLoc = world->getLotLocations();
 		for (size_t ii = 0; ii < lotLoc.size(); ii++) { // draw blue circle
 			xCenter = (int)round(gridBase.TopLeft().x + lotLoc[ii].x*proportion);
@@ -157,8 +157,8 @@ void Csmart_parking_guiDlg::DrawGrid() {
 			gridDraw->Ellipse(xCenter-2, yCenter-2, xCenter+2, yCenter+2);
 		}
 		lotDrawn = true;
-		gridDraw->SelectObject(pOldBrush);
-		gridDraw->SelectObject(pOldPen);
+		gridDraw->SelectObject(gridBrush);
+		gridDraw->SelectObject(gridPen);
 	// Draw drivers
 	vector<Location> driverLoc = world->getDriverLocations(); // get all drivers currently visible on screen
 	for (size_t ii = 0; ii < driverLoc.size(); ii++) { // draw red dot
@@ -196,10 +196,13 @@ void Csmart_parking_guiDlg::OnBnClickedBOpenConfig()
 		m_VSliderIteration.SetRange(0, (world->getIterationCount() - 1), TRUE);
 		m_VSliderIteration.SetPos(0);
 		m_IterationEcho.Format(_T("%d/%d"), 0, world->getIterationCount() - 1);
+		m_GridSize = world->getGridSize(); // double
+		m_EchoSize.Format(_T("Grid size: %g"), m_GridSize);
 		//Change the window's title to the opened file's title.
 		CString fileName = fileDlg.GetFileTitle();
 
 		SetWindowText(fileName);
+
 	}
 	UpdateData(FALSE);
 }
@@ -240,28 +243,26 @@ void Csmart_parking_guiDlg::OnBnClickedBNextevent()
 {
 	// TODO: Add your control notification handler code here
 	run_simulation(*world);
-	m_GridSize = world->getGridSize(); // double
 	m_TimeDisplay = world->getTime(); // double
-	m_EchoSize.Format(_T("Grid size: %g"), m_GridSize);
 	m_EchoTime.Format(_T("Time: %g"), m_TimeDisplay);
-	// m_EchoStatus << world->getCurrentEvent();
 	UpdateData(FALSE);
 	Invalidate();
 	GetDlgItem(IDC_ST_GRIDSIZE)->RedrawWindow();
 	GetDlgItem(IDC_ST_TIME)->RedrawWindow();
+	GetDlgItem(IDC_GRID_BOX)->RedrawWindow();
 }
 
 void Csmart_parking_guiDlg::OnBnClickedBSimend() // On clicking, simulation jumps to the very end.
 {
-	jump_to_end(*world);
-	m_GridSize = world->getGridSize();
-	m_TimeDisplay = world->getTime();
-	m_EchoSize.Format(_T("Grid size: %g"), m_GridSize);
-	m_EchoTime.Format(_T("Time: %g"), m_TimeDisplay);
-	UpdateData(FALSE);
-	Invalidate();
-	GetDlgItem(IDC_ST_GRIDSIZE)->RedrawWindow();
-	GetDlgItem(IDC_ST_TIME)->RedrawWindow();
+	while (!world->simulationOver[world->getCurrentIteration()]) {
+		run_simulation(*world);
+		m_TimeDisplay = world->getTime(); // double
+		m_EchoTime.Format(_T("Time: %g"), m_TimeDisplay);
+		UpdateData(FALSE);
+		OnPaint();
+		// AfxPumpMessage(); // should prevent "not responding" from displaying
+		// Sleep(50); // program stops responding at times with a sleep message
+	}
 }
 
 void Csmart_parking_guiDlg::OnBnClickedBNewdest()
