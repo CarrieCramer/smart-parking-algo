@@ -12,6 +12,7 @@
 #include "Commands.h" // Used to handle commands
 #include "Grid.h" // Contains the grid
 #include <string>
+#include <sstream>
 #include <cmath>
 #include <io.h>
 #include <fcntl.h>
@@ -57,6 +58,7 @@ BEGIN_MESSAGE_MAP(Csmart_parking_guiDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_B_SIMEND, &Csmart_parking_guiDlg::OnBnClickedBSimend)
 	ON_BN_CLICKED(IDC_B_SHOWSTATUS, &Csmart_parking_guiDlg::OnBnClickedBShowstatus)
 	ON_WM_VSCROLL()
+	ON_WM_DROPFILES()
 END_MESSAGE_MAP()
 
 
@@ -248,6 +250,9 @@ void Csmart_parking_guiDlg::OnBnClickedBNextevent()
 	run_simulation(*world);
 	m_TimeDisplay = world->getTime(); // double
 	m_EchoTime.Format(_T("Time: %g"), m_TimeDisplay);
+	oss << world->getCurrentEvent();
+	CString c_status(oss.str().c_str());
+	m_EchoStatus = c_status;
 	UpdateData(FALSE);
 	Invalidate();
 	GetDlgItem(IDC_ST_GRIDSIZE)->RedrawWindow();
@@ -261,6 +266,8 @@ void Csmart_parking_guiDlg::OnBnClickedBSimend() // On clicking, simulation jump
 		run_simulation(*world);
 		m_TimeDisplay = world->getTime(); // double
 		m_EchoTime.Format(_T("Time: %g"), m_TimeDisplay);
+		oss << world->getCurrentEvent();
+		CString c_status(oss.str().c_str());
 		UpdateData(FALSE);
 		OnPaint();
 		// AfxPumpMessage(); // should prevent "not responding" from displaying
@@ -341,4 +348,43 @@ void Csmart_parking_guiDlg::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScro
 		UpdateData(FALSE);
 	}
 	CDialogEx::OnVScroll(nSBCode, nPos, pScrollBar);
+}
+
+
+void Csmart_parking_guiDlg::OnDropFiles(HDROP dropInfo)
+{
+	// Read file dropped in
+	CString sFile; 
+    DWORD   nBuffer = 0; 
+ 
+    // Get the number of files dropped 
+    int nFilesDropped = DragQueryFile (dropInfo, 0xFFFFFFFF, NULL, 0); 
+ 
+    for(int i=0; i<nFilesDropped; i++) 
+    { 
+        // Get the buffer size of the file. 
+        nBuffer = DragQueryFile (dropInfo, i, NULL, 0); 
+ 
+        // Get path and name of the file 
+        DragQueryFile (dropInfo, i, sFile.GetBuffer (nBuffer + 1), nBuffer + 1); 
+        sFile.ReleaseBuffer (); 
+         
+		CT2CA converter(sFile);
+		std::string fileToOpen(converter);
+		// TODO: Open Grid file
+		open_file(*world, fileToOpen);
+		m_VSliderIteration.SetRange(0, (world->getIterationCount() - 1), TRUE);
+		m_VSliderIteration.SetPos(0);
+		m_IterationEcho.Format(_T("%d/%d"), 0, world->getIterationCount() - 1);
+		m_GridSize = world->getGridSize(); // double
+		m_EchoSize.Format(_T("Grid size: %g"), m_GridSize);
+		//Change the window's title to the opened file's title.
+		CString fileName = sFile;
+
+		SetWindowText(fileName);
+    } 
+ 
+    // Free the memory block containing the dropped-file information 
+    DragFinish(dropInfo); 
+	CDialogEx::OnDropFiles(dropInfo);
 }

@@ -6,6 +6,7 @@
 
 #include "Grid.h"
 #include "afxcmn.h"
+#include <sstream>
 class Grid;
 // Csmart_parking_guiDlg dialog
 class Csmart_parking_guiDlg : public CDialogEx
@@ -51,6 +52,7 @@ private:
 	CPen * gridPen;
 	bool destDrawn;
 	bool lotDrawn;
+	std::ostringstream oss; // used to display events
 	void DrawGrid(); // draws the entire grid
 	void show_events(); // shows events as they happen
 public:
@@ -61,4 +63,5 @@ public:
 	afx_msg void OnBnClickedBShowstatus();
 	CSliderCtrl m_VSliderIteration;
 	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	afx_msg void OnDropFiles(HDROP hDropInfo);
 };

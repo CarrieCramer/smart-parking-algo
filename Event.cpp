@@ -31,23 +31,27 @@ bool operator< (const Event& e1, const Event& e2)
 	return (e1.getTime() < e2.getTime());
 } // Used in order to use with sets.
 
-std::ostream& Event::operator << (std::ostream &os) {
-	os << "Event " << time << ": Driver " << eventDriver->getID();
-	switch(type) {
+std::ostream& operator << (std::ostream &os, const Event& event) {
+	if (event.eventDriver != nullptr) {
+		os << "Event " << event.getTime() << ": Driver " << event.eventDriver->getID();
+			switch(event.type) {
 		case 'n':
-			os << " has appeared at point " << eventDriver->getLocation() << ".\n";
+			os << " has appeared at point " << event.eventDriver->getLocation() << ".\n";
 			break;
 		case 's':
-			os << " has found parking lot " << eventDriver->reserved->getID() << ".\n";
+			os << " has found parking lot " << event.eventDriver->reserved->getID() << ".\n";
 			break;
 		case 'p':
-			os << " has parked at " << eventDriver->reserved->getID() << ".\n";
+			os << " has parked at " << event.eventDriver->reserved->getID() << ".\n";
 			break;
 		case 'd':
 			os << " has left the map.\n";
 			break;
 		default:
 			os << " has done an undefined event.\n";
+		}
+	} else {
+		os << "Event 0: Start\n";
 	}
 	return os;
 }

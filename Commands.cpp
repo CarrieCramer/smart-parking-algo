@@ -117,8 +117,18 @@ void display_status(Grid & world) {
 
 void run_simulation(Grid & world) { // run simulation to end
 	cout << "Advancing to next event in simulation" << endl;
+	cout << world.getCurrentEvent();
 	world.update(world.toNextEvent());
 	world.show_status();
+}
+
+void jump_to_end(Grid & world) {
+	// Continues updating until the end of the simulation.
+	while (!world.simulationOver[world.getCurrentIteration()]) {
+		world.update(world.toNextEvent());
+	}
+	world.show_status();
+	return;
 }
 
 void write_file(Grid & world) { // write data to file
@@ -168,15 +178,6 @@ void advance_by_simulation(Grid & world) { // input g
 		timePassed += timeIncrement;
 	}
 	world.show_status();
-}
-
-void jump_to_end(Grid & world) {
-	// Continues updating until the end of the simulation.
-	while (!world.simulationOver[world.getCurrentIteration()]) {
-		world.update(world.toNextEvent());
-	}
-	world.show_status();
-	return;
 }
 
 void reset_simulation(Grid & world) {

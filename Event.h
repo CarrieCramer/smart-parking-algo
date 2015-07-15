@@ -22,7 +22,7 @@ class Event {
 		Event(double, Driver *, char);
 		double getTime() const;
 		char getType() const;
-		std::ostream& operator << (std::ostream &);
+		friend std::ostream& operator << (std::ostream &, const Event& event);
 	private:
 		double time;
 		Driver * eventDriver; // driver that caused the event
