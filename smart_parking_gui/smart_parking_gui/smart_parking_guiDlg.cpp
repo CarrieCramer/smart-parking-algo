@@ -30,7 +30,7 @@ Csmart_parking_guiDlg::Csmart_parking_guiDlg(CWnd* pParent /*=NULL*/)
 	, m_IterationEcho(_T("0/4"))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
-		this->world = new Grid(10, 5); // default grid
+		this->world = new Grid(50, 5); // default grid
 		destDrawn = false;
 		lotDrawn = false;
 }
@@ -124,7 +124,8 @@ void Csmart_parking_guiDlg::DrawGrid() {
 	gridDrawSurface->GetWindowRect(&gridBase);
 	this->ScreenToClient(&gridBase);
 	CPoint bottomRight = gridBase.TopLeft();
-	bottomRight += CPoint(275, 275);
+	int rectSize = 260;
+	bottomRight += CPoint(rectSize, rectSize);
 	gridBase.BottomRight() = bottomRight;
 	gridBase.NormalizeRect();
 	gridDraw->Rectangle(gridBase);
@@ -162,7 +163,9 @@ void Csmart_parking_guiDlg::DrawGrid() {
 	// Draw drivers
 	vector<Location> driverLoc = world->getDriverLocations(); // get all drivers currently visible on screen
 	for (size_t ii = 0; ii < driverLoc.size(); ii++) { // draw red dot
-		gridDraw->SetPixel(gridBase.TopLeft().x + driverLoc[ii].x*proportion, gridBase.TopLeft().y + driverLoc[ii].y*proportion, RGB(255, 0, 0));
+		xCenter = (int)round(gridBase.TopLeft().x + driverLoc[ii].x*proportion);
+		yCenter = (int)round(gridBase.TopLeft().y + driverLoc[ii].y*proportion);
+		gridDraw->SetPixel(xCenter, yCenter, RGB(255, 0, 0));
 	}
 }
 
@@ -306,7 +309,8 @@ void Csmart_parking_guiDlg::OnBnClickedBNewdriver() // Opens a dialog to input a
 		UpdateData(TRUE);
 		Cadd_Driver Dlg(world->getDriverCount(), this);
 		if (Dlg.DoModal() == IDOK) {
-
+			Driver * newDriver = new Driver(world->getDriverCount(), Dlg.m_ArrivalTime, Dlg.m_WeightScale, Dlg.m_MaxDist, Dlg.m_MaxLotCharge, Location(Dlg.m_LocX, Dlg.m_LocY), Dlg.m_TimeAtPark, world->findDestinationByID(Dlg.m_DestID), world);
+			addDriver(newDriver, Dlg.m_Iteration);
 		}
 		UpdateData(FALSE);
 	}

@@ -15,8 +15,13 @@ Cadd_Driver::Cadd_Driver(int inputID, CWnd* pParent /*=NULL*/)
 	: CDialogEx(Cadd_Driver::IDD, pParent)
 	, m_DestID(0)
 	, m_LocX(0)
-	, m_LocY(_T(""))
+	, m_LocY(0)
 	, m_WeightScale(0)
+	, m_ArrivalTime(0)
+	, m_TimeAtPark(0)
+	, m_MaxDist(0)
+	, m_MaxLotCharge(0)
+	, m_Iteration(0)
 {
 
 }
@@ -32,8 +37,12 @@ void Cadd_Driver::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_E_LOCX, m_LocX);
 	DDX_Text(pDX, IDC_E_LOCY, m_LocY);
 	DDX_Control(pDX, IDC_SLIDER1, m_HSliderWeight);
-	DDX_Control(pDX, IDC_ET_WEIGHTEDIT, m_WeightSeen);
-	DDX_Text(pDX, IDC_EDIT1, m_WeightScale);
+	DDX_Text(pDX, IDC_ET_WEIGHTEDIT, m_WeightScale);
+	DDX_Text(pDX, IDC_ET_ARRIVAL, m_ArrivalTime);
+	DDX_Text(pDX, IDC_ET_PARKTIME, m_TimeAtPark);
+	DDX_Text(pDX, IDC_ET_MAXDIST, m_MaxDist);
+	DDX_Text(pDX, IDC_ET_MAXCHARGE, m_MaxLotCharge);
+	DDX_Text(pDX, IDC_ET_ITER, m_Iteration);
 }
 
 

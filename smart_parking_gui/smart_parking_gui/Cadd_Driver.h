@@ -23,11 +23,15 @@ protected:
 public:
 	int m_DestID;
 	double m_LocX;
-	CString m_LocY;
+	double m_LocY;
 private:
 	CSliderCtrl m_HSliderWeight;
-	CEdit m_WeightSeen;
 public:
 	// should be changeable by the slider later
 	double m_WeightScale;
+	double m_ArrivalTime;
+	double m_TimeAtPark;
+	double m_MaxDist;
+	double m_MaxLotCharge;
+	int m_Iteration;
 };
