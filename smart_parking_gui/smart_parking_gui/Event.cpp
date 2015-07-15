@@ -36,24 +36,25 @@ std::ostream& operator << (std::ostream &os, const Event& event) {
 		os << "Event " << event.getTime() << ": Driver " << event.eventDriver->getID();
 		switch (event.type) {
 		case 'n':
-			os << " has appeared at point " << event.eventDriver->getLocation() << ".\n";
+			os << " has appeared at point " << event.eventDriver->getLocation() << ".";
 			break;
 		case 's':
-			os << " has found parking lot " << event.eventDriver->reserved->getID() << ".\n";
+			os << " has found parking lot " << event.eventDriver->reserved->getID() << ".";
 			break;
 		case 'p':
-			os << " has parked at " << event.eventDriver->reserved->getID() << ".\n";
+			os << " has parked at Lot " << event.eventDriver->reserved->getID() << ".";
 			break;
 		case 'd':
-			os << " has left the map.\n";
+			os << " has left the map.";
 			break;
 		default:
-			os << " has done an undefined event.\n";
+			os << " has done an undefined event.";
 		}
 	}
 	else {
 		os << "Event 0: Start\n";
 	}
+	os << "\r\n";
 	return os;
 }
 

@@ -76,6 +76,7 @@ BOOL Csmart_parking_guiDlg::OnInitDialog()
 	// TODO: Add extra initialization here
 	gridDrawSurface = (CWnd *)this->GetDlgItem(IDC_GRID_BOX);
 	gridDraw = gridDrawSurface->GetDC();
+	pEdit = (CEdit*)GetDlgItem(IDC_ST_STATUS);
 	// add command to draw stuff here
 	m_VSliderIteration.SetRange(0, (world->getIterationCount()-1), TRUE);
 	m_VSliderIteration.SetPos(0);
@@ -126,7 +127,7 @@ void Csmart_parking_guiDlg::DrawGrid() {
 	gridDrawSurface->GetWindowRect(&gridBase);
 	this->ScreenToClient(&gridBase);
 	CPoint bottomRight = gridBase.TopLeft();
-	int rectSize = 260;
+	int rectSize = 400;
 	bottomRight += CPoint(rectSize, rectSize);
 	gridBase.BottomRight() = bottomRight;
 	gridBase.NormalizeRect();
@@ -146,7 +147,7 @@ void Csmart_parking_guiDlg::DrawGrid() {
 		for (size_t ii = 0; ii < destLoc.size(); ii++) { // draw brown circle
 			xCenter = (int)round(gridBase.TopLeft().x + destLoc[ii].x*proportion);
 			yCenter = (int)round(gridBase.TopLeft().y + destLoc[ii].y*proportion);
-			gridDraw->Rectangle(xCenter - 2, yCenter-2, xCenter+2, yCenter+2);
+			gridDraw->Rectangle(xCenter - 4, yCenter-4, xCenter+4, yCenter+4);
 		}
 		gridDraw->SelectObject(gridBrush);
 		destDrawn = true;
@@ -157,7 +158,7 @@ void Csmart_parking_guiDlg::DrawGrid() {
 		for (size_t ii = 0; ii < lotLoc.size(); ii++) { // draw blue circle
 			xCenter = (int)round(gridBase.TopLeft().x + lotLoc[ii].x*proportion);
 			yCenter = (int)round(gridBase.TopLeft().y + lotLoc[ii].y*proportion);
-			gridDraw->Ellipse(xCenter-2, yCenter-2, xCenter+2, yCenter+2);
+			gridDraw->Ellipse(xCenter-3, yCenter-3, xCenter+3, yCenter+3);
 		}
 		lotDrawn = true;
 		gridDraw->SelectObject(gridBrush);
@@ -167,7 +168,7 @@ void Csmart_parking_guiDlg::DrawGrid() {
 	for (size_t ii = 0; ii < driverLoc.size(); ii++) { // draw red dot
 		xCenter = (int)round(gridBase.TopLeft().x + driverLoc[ii].x*proportion);
 		yCenter = (int)round(gridBase.TopLeft().y + driverLoc[ii].y*proportion);
-		gridDraw->SetPixel(xCenter, yCenter, RGB(255, 0, 0));
+		gridDraw->Rectangle(xCenter - 1, yCenter - 1, xCenter + 1, yCenter + 1);
 	}
 }
 
@@ -258,6 +259,8 @@ void Csmart_parking_guiDlg::OnBnClickedBNextevent()
 	GetDlgItem(IDC_ST_GRIDSIZE)->RedrawWindow();
 	GetDlgItem(IDC_ST_TIME)->RedrawWindow();
 	GetDlgItem(IDC_GRID_BOX)->RedrawWindow();
+	GetDlgItem(IDC_ST_STATUS)->RedrawWindow();
+	pEdit->LineScroll(pEdit->GetLineCount());
 }
 
 void Csmart_parking_guiDlg::OnBnClickedBSimend() // On clicking, simulation jumps to the very end.
@@ -266,10 +269,13 @@ void Csmart_parking_guiDlg::OnBnClickedBSimend() // On clicking, simulation jump
 		run_simulation(*world);
 		m_TimeDisplay = world->getTime(); // double
 		m_EchoTime.Format(_T("Time: %g"), m_TimeDisplay);
-		oss << world->getCurrentEvent();
+		if (!world->simulationOver[world->getCurrentIteration()]) oss << world->getCurrentEvent();
 		CString c_status(oss.str().c_str());
+		m_EchoStatus = c_status;
 		UpdateData(FALSE);
 		OnPaint();
+		GetDlgItem(IDC_ST_STATUS)->RedrawWindow();
+		pEdit->LineScroll(pEdit->GetLineCount());
 		// AfxPumpMessage(); // should prevent "not responding" from displaying
 		// Sleep(50); // program stops responding at times with a sleep message
 	}
@@ -336,13 +342,16 @@ void Csmart_parking_guiDlg::OnBnClickedBShowstatus()
 void Csmart_parking_guiDlg::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	// TODO: Add your message handler code here and/or call default
-	if (pScrollBar == (CScrollBar *)&m_VSliderIteration) {
+	if (pScrollBar == (CScrollBar *)&m_VSliderIteration) { // if scrolling the iteration bar
 		int value = m_VSliderIteration.GetPos();
 		m_IterationEcho.Format(_T("%d/%d"), value, world->getIterationCount()-1);
 		if (value != world->getCurrentIteration()) {
 			world->switchIteration(value);
 			m_TimeDisplay = world->getTime();
 			m_EchoTime.Format(_T("Time: %g"), m_TimeDisplay);
+			oss.str(""); // reset status
+			CString c_status(oss.str().c_str());
+			m_EchoStatus = c_status;
 			Invalidate();
 		}
 		UpdateData(FALSE);

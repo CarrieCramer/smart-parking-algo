@@ -50,6 +50,7 @@ private:
 	CDC * gridDraw;
 	CBrush * gridBrush;
 	CPen * gridPen;
+	CEdit* pEdit;
 	bool destDrawn;
 	bool lotDrawn;
 	std::ostringstream oss; // used to display events
