@@ -76,6 +76,10 @@ bool Lot::isFull() {
 	}
 }
 
+int Lot::getOpenSpots() {
+	return numFree;
+}
+
 double Lot::getOccupancyRate() {
 	return ((capacity-numFree)/double(capacity));
 }

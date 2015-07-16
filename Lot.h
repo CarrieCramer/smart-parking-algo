@@ -19,7 +19,6 @@ class Lot { // the ID of a location
 		Lot(int, Location, int, double, Grid *); // for prices
 		
 		// numNotReserved is always less than or equal to numFree
-		int numTaken; // number of spots taken
 		int getID(); // return ID
 		double getOccupancyRate(); // ratio of taken spots to capacity
 		double getReservedRate(); // ratio of reserved spots to capacity
@@ -29,6 +28,7 @@ class Lot { // the ID of a location
 		void driverHasParked(); // the driver has parked
 		
 		Location getLocation(); // return location
+		int getOpenSpots(); // get total number of open spots
 		int getCapacity(); // get capacity of parking
 		double getCost(double); // get cost to use parking lot
 		void setCost(double); // set cost to use parking lot

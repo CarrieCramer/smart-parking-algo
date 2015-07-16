@@ -153,12 +153,22 @@ void Csmart_parking_guiDlg::DrawGrid() {
 		destDrawn = true;
 	// Draw lots.
 		CBrush brushLot(RGB(35, 62, 148));
+		gridDraw->SetTextColor(RGB(35, 62, 148));
+		// gridDraw->SetBkMode(TRANSPARENT);
 		gridBrush = gridDraw->SelectObject(&brushLot);
 		vector<Location> lotLoc = world->getLotLocations();
-		for (size_t ii = 0; ii < lotLoc.size(); ii++) { // draw blue circle
+		vector<int> lotSpots;
+		vector<Lot *> allLots = world->getAllLots();
+		for (size_t ii = 0; ii < allLots.size(); ii++) {
+			lotSpots.push_back(allLots[ii]->getOpenSpots());
+		}
+		for (size_t ii = 0; ii < lotLoc.size(); ii++) { // draw blue circle and number
 			xCenter = (int)round(gridBase.TopLeft().x + lotLoc[ii].x*proportion);
 			yCenter = (int)round(gridBase.TopLeft().y + lotLoc[ii].y*proportion);
 			gridDraw->Ellipse(xCenter-3, yCenter-3, xCenter+3, yCenter+3);
+			CString echoNum;
+			echoNum.Format(_T("%d"), lotSpots[ii]);
+			gridDraw->TextOutW(xCenter + 4, yCenter + 1, echoNum);
 		}
 		lotDrawn = true;
 		gridDraw->SelectObject(gridBrush);
@@ -276,7 +286,7 @@ void Csmart_parking_guiDlg::OnBnClickedBSimend() // On clicking, simulation jump
 		OnPaint();
 		GetDlgItem(IDC_ST_STATUS)->RedrawWindow();
 		pEdit->LineScroll(pEdit->GetLineCount());
-		// AfxPumpMessage(); // should prevent "not responding" from displaying
+		// theApp.PumpMessage(); // should prevent "not responding" from displaying
 		// Sleep(50); // program stops responding at times with a sleep message
 	}
 }

@@ -2,7 +2,9 @@ c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_pa
 c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_parking_gui\debug\vc120.pdb
 c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_parking_gui\debug\vc120.idb
 c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_parking_gui\debug\stdafx.obj
-c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_parking_gui\debug\smart_parking_gui.obj
+c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_parking_gui\debug\cadd_destination.obj
+c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_parking_gui\debug\cadd_driver.obj
+c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_parking_gui\debug\cadd_lot.obj
 c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_parking_gui\debug\commands.obj
 c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_parking_gui\debug\data.obj
 c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_parking_gui\debug\destination.obj
@@ -12,20 +14,42 @@ c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_pa
 c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_parking_gui\debug\grid.obj
 c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_parking_gui\debug\location.obj
 c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_parking_gui\debug\lot.obj
+c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_parking_gui\debug\smart_parking_gui.obj
 c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_parking_gui\debug\smart_parking_guidlg.obj
-c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_parking_gui\debug\cadd_destination.obj
-c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_parking_gui\debug\cadd_driver.obj
-c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_parking_gui\debug\cadd_lot.obj
+c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_parking_gui\debug\drawgrid.obj
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\debug\smart_parking_gui.pch
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\debug\vc120.pdb
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\debug\vc120.idb
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\debug\stdafx.obj
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\debug\cadd_destination.obj
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\debug\cadd_driver.obj
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\debug\cadd_lot.obj
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\debug\commands.obj
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\debug\data.obj
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\debug\destination.obj
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\debug\drawgrid.obj
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\debug\driver.obj
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\debug\drivevector.obj
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\debug\event.obj
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\debug\grid.obj
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\debug\location.obj
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\debug\lot.obj
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\debug\smart_parking_gui.obj
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\debug\smart_parking_guidlg.obj
 c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\debug\smart_parking_gui.ilk
 c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\debug\smart_parking_gui.exe
 c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\debug\smart_parking_gui.pdb
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\debug\smart_parking_gui.ilk
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\debug\smart_parking_gui.exe
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\debug\smart_parking_gui.pdb
 c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_parking_gui\debug\smart_parking_gui.res
-c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_parking_gui\debug\smart_pa.78e40cfa.tlog\cl.command.1.tlog
-c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_parking_gui\debug\smart_pa.78e40cfa.tlog\cl.read.1.tlog
-c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_parking_gui\debug\smart_pa.78e40cfa.tlog\cl.write.1.tlog
-c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_parking_gui\debug\smart_pa.78e40cfa.tlog\link.command.1.tlog
-c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_parking_gui\debug\smart_pa.78e40cfa.tlog\link.read.1.tlog
-c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_parking_gui\debug\smart_pa.78e40cfa.tlog\link.write.1.tlog
-c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_parking_gui\debug\smart_pa.78e40cfa.tlog\rc.command.1.tlog
-c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_parking_gui\debug\smart_pa.78e40cfa.tlog\rc.read.1.tlog
-c:\users\edward\documents\visual studio 2013\projects\smart_parking_gui\smart_parking_gui\debug\smart_pa.78e40cfa.tlog\rc.write.1.tlog
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\debug\smart_parking_gui.res
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\debug\smart_pa.78e40cfa.tlog\cl.command.1.tlog
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\debug\smart_pa.78e40cfa.tlog\cl.read.1.tlog
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\debug\smart_pa.78e40cfa.tlog\cl.write.1.tlog
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\debug\smart_pa.78e40cfa.tlog\link.command.1.tlog
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\debug\smart_pa.78e40cfa.tlog\link.read.1.tlog
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\debug\smart_pa.78e40cfa.tlog\link.write.1.tlog
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\debug\smart_pa.78e40cfa.tlog\rc.command.1.tlog
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\debug\smart_pa.78e40cfa.tlog\rc.read.1.tlog
+c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\debug\smart_pa.78e40cfa.tlog\rc.write.1.tlog
