@@ -59,6 +59,8 @@ BEGIN_MESSAGE_MAP(Csmart_parking_guiDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_B_SHOWSTATUS, &Csmart_parking_guiDlg::OnBnClickedBShowstatus)
 	ON_WM_VSCROLL()
 	ON_WM_DROPFILES()
+	ON_WM_TIMER()
+	ON_BN_CLICKED(IDC_B_SIMPAUSE, &Csmart_parking_guiDlg::OnBnClickedBSimpause)
 END_MESSAGE_MAP()
 
 
@@ -77,6 +79,9 @@ BOOL Csmart_parking_guiDlg::OnInitDialog()
 	gridDrawSurface = (CWnd *)this->GetDlgItem(IDC_GRID_BOX);
 	gridDraw = gridDrawSurface->GetDC();
 	pEdit = (CEdit*)GetDlgItem(IDC_ST_STATUS);
+	updateMs = 50;
+	CButton * pauseSimButton = (CButton *)this->GetDlgItem(IDC_B_SIMPAUSE);
+	pauseSimButton->EnableWindow(FALSE);
 	// add command to draw stuff here
 	m_VSliderIteration.SetRange(0, (world->getIterationCount()-1), TRUE);
 	m_VSliderIteration.SetPos(0);
@@ -258,36 +263,32 @@ void Csmart_parking_guiDlg::OnBnClickedBSaveconfig()
 void Csmart_parking_guiDlg::OnBnClickedBNextevent()
 {
 	// TODO: Add your control notification handler code here
-	run_simulation(*world);
-	m_TimeDisplay = world->getTime(); // double
-	m_EchoTime.Format(_T("Time: %g"), m_TimeDisplay);
-	oss << world->getCurrentEvent();
-	CString c_status(oss.str().c_str());
-	m_EchoStatus = c_status;
-	UpdateData(FALSE);
-	Invalidate();
-	GetDlgItem(IDC_ST_GRIDSIZE)->RedrawWindow();
-	GetDlgItem(IDC_ST_TIME)->RedrawWindow();
-	GetDlgItem(IDC_GRID_BOX)->RedrawWindow();
-	GetDlgItem(IDC_ST_STATUS)->RedrawWindow();
-	pEdit->LineScroll(pEdit->GetLineCount());
+	if (!world->simulationOver[world->getCurrentIteration()]) {
+		run_simulation(*world);
+		m_TimeDisplay = world->getTime(); // double
+		m_EchoTime.Format(_T("Time: %g"), m_TimeDisplay);
+		oss << world->getCurrentEvent();
+		CString c_status(oss.str().c_str());
+		m_EchoStatus = c_status;
+		UpdateData(FALSE);
+		Invalidate();
+		GetDlgItem(IDC_ST_GRIDSIZE)->RedrawWindow();
+		GetDlgItem(IDC_ST_TIME)->RedrawWindow();
+		GetDlgItem(IDC_GRID_BOX)->RedrawWindow();
+		GetDlgItem(IDC_ST_STATUS)->RedrawWindow();
+		pEdit->LineScroll(pEdit->GetLineCount());
+	}
+	else {
+		AfxMessageBox(_T("Simulation over."));
+	}
 }
 
 void Csmart_parking_guiDlg::OnBnClickedBSimend() // On clicking, simulation jumps to the very end.
 {
-	while (!world->simulationOver[world->getCurrentIteration()]) {
-		run_simulation(*world);
-		m_TimeDisplay = world->getTime(); // double
-		m_EchoTime.Format(_T("Time: %g"), m_TimeDisplay);
-		if (!world->simulationOver[world->getCurrentIteration()]) oss << world->getCurrentEvent();
-		CString c_status(oss.str().c_str());
-		m_EchoStatus = c_status;
-		UpdateData(FALSE);
-		OnPaint();
-		GetDlgItem(IDC_ST_STATUS)->RedrawWindow();
-		pEdit->LineScroll(pEdit->GetLineCount());
-		// theApp.PumpMessage(); // should prevent "not responding" from displaying
-		// Sleep(50); // program stops responding at times with a sleep message
+	if (!world->simulationOver[world->getCurrentIteration()]) {
+		m_nSimTimer = SetTimer(1, updateMs, nullptr); // updates every 50 ms
+		CButton * pauseSimButton = (CButton *)this->GetDlgItem(IDC_B_SIMPAUSE);
+		pauseSimButton->EnableWindow(TRUE);
 	}
 }
 
@@ -406,4 +407,32 @@ void Csmart_parking_guiDlg::OnDropFiles(HDROP dropInfo)
     // Free the memory block containing the dropped-file information 
     DragFinish(dropInfo); 
 	CDialogEx::OnDropFiles(dropInfo);
+}
+
+
+void Csmart_parking_guiDlg::OnTimer(UINT_PTR nIDEvent)
+{
+	// TODO: Add your message handler code here and/or call default
+	run_simulation(*world);
+	m_TimeDisplay = world->getTime(); // double
+	m_EchoTime.Format(_T("Time: %g"), m_TimeDisplay);
+	if (!world->simulationOver[world->getCurrentIteration()]) oss << world->getCurrentEvent();
+	else {
+		KillTimer(nIDEvent); // end usage of timer
+		CButton * pauseSimButton = (CButton *)this->GetDlgItem(IDC_B_SIMPAUSE);
+		pauseSimButton->EnableWindow(FALSE);
+	}
+	CString c_status(oss.str().c_str());
+	m_EchoStatus = c_status;
+	UpdateData(FALSE);
+	Invalidate();
+	GetDlgItem(IDC_ST_STATUS)->RedrawWindow();
+	pEdit->LineScroll(pEdit->GetLineCount());
+	CDialogEx::OnTimer(nIDEvent);
+}
+
+
+void Csmart_parking_guiDlg::OnBnClickedBSimpause()
+{
+	KillTimer(m_nSimTimer); // stop simulation timer
 }

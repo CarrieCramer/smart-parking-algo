@@ -36,6 +36,7 @@ public:
 	afx_msg void OnBnClickedBOpenConfig();
 	afx_msg void OnBnClickedBSaveconfig();
 	afx_msg void OnBnClickedBNextevent();
+	int updateMs; // set update time
 	void addDestination(Destination *);
 	void addLot(Lot *);
 	void addDriver(Driver *, int); // requires iteration
@@ -53,6 +54,7 @@ private:
 	CEdit* pEdit;
 	bool destDrawn;
 	bool lotDrawn;
+	UINT_PTR m_nSimTimer; // timer used for autorun simulation
 	std::ostringstream oss; // used to display events
 	void DrawGrid(); // draws the entire grid
 	void show_events(); // shows events as they happen
@@ -65,4 +67,6 @@ public:
 	CSliderCtrl m_VSliderIteration;
 	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg void OnDropFiles(HDROP hDropInfo);
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg void OnBnClickedBSimpause();
 };
