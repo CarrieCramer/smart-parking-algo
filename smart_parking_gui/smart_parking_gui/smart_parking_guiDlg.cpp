@@ -29,6 +29,7 @@ Csmart_parking_guiDlg::Csmart_parking_guiDlg(CWnd* pParent /*=NULL*/)
 	, m_EchoTime(_T("Time: "))
 	, m_EchoStatus(_T("Open"))
 	, m_IterationEcho(_T("0/4"))
+	, m_RadioTextDisplay(0)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 		this->world = new Grid(50, 5); // default grid
@@ -44,6 +45,7 @@ void Csmart_parking_guiDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_ST_STATUS, m_EchoStatus);
 	DDX_Text(pDX, IDC_ITCOUNT, m_IterationEcho);
 	DDX_Control(pDX, IDC_SLIDE_ITER, m_VSliderIteration);
+	DDX_Radio(pDX, IDC_RADIO_EVENT, m_RadioTextDisplay);
 }
 
 BEGIN_MESSAGE_MAP(Csmart_parking_guiDlg, CDialogEx)
@@ -61,6 +63,8 @@ BEGIN_MESSAGE_MAP(Csmart_parking_guiDlg, CDialogEx)
 	ON_WM_DROPFILES()
 	ON_WM_TIMER()
 	ON_BN_CLICKED(IDC_B_SIMPAUSE, &Csmart_parking_guiDlg::OnBnClickedBSimpause)
+	ON_BN_CLICKED(IDC_RADIO_EVENT, &Csmart_parking_guiDlg::OnBnClickedRadio)
+	ON_BN_CLICKED(IDC_RADIO_STATUS, &Csmart_parking_guiDlg::OnBnClickedRadio)
 END_MESSAGE_MAP()
 
 
@@ -80,9 +84,11 @@ BOOL Csmart_parking_guiDlg::OnInitDialog()
 	gridDraw = gridDrawSurface->GetDC();
 	pEdit = (CEdit*)GetDlgItem(IDC_ST_STATUS);
 	updateMs = 50;
+	fileOpen = ""; // empty string
 	CButton * pauseSimButton = (CButton *)this->GetDlgItem(IDC_B_SIMPAUSE);
 	pauseSimButton->EnableWindow(FALSE);
 	// add command to draw stuff here
+	m_RadioTextDisplay = 0;
 	m_VSliderIteration.SetRange(0, (world->getIterationCount()-1), TRUE);
 	m_VSliderIteration.SetPos(0);
 	m_IterationEcho.Format(_T("%d/%d"), 0, world->getIterationCount()-1);
@@ -212,6 +218,7 @@ void Csmart_parking_guiDlg::OnBnClickedBOpenConfig()
 		CString m_strPathname = fileDlg.GetPathName();
 		CT2CA converter(m_strPathname);
 		std::string fileToOpen(converter);
+		fileOpen = fileToOpen;
 		// TODO: Open Grid file
 		open_file(*world, fileToOpen);
 		m_VSliderIteration.SetRange(0, (world->getIterationCount() - 1), TRUE);
@@ -226,10 +233,6 @@ void Csmart_parking_guiDlg::OnBnClickedBOpenConfig()
 
 	}
 	UpdateData(FALSE);
-}
-
-void Csmart_parking_guiDlg::show_events() {
-
 }
 
 void Csmart_parking_guiDlg::OnBnClickedBSaveconfig()
@@ -268,9 +271,7 @@ void Csmart_parking_guiDlg::OnBnClickedBNextevent()
 		m_TimeDisplay = world->getTime(); // double
 		m_EchoTime.Format(_T("Time: %g"), m_TimeDisplay);
 		oss << world->getCurrentEvent();
-		CString c_status(oss.str().c_str());
-		m_EchoStatus = c_status;
-		UpdateData(FALSE);
+		displayText();
 		Invalidate();
 		GetDlgItem(IDC_ST_GRIDSIZE)->RedrawWindow();
 		GetDlgItem(IDC_ST_TIME)->RedrawWindow();
@@ -391,6 +392,7 @@ void Csmart_parking_guiDlg::OnDropFiles(HDROP dropInfo)
          
 		CT2CA converter(sFile);
 		std::string fileToOpen(converter);
+		fileOpen = fileToOpen;
 		// TODO: Open Grid file
 		open_file(*world, fileToOpen);
 		m_VSliderIteration.SetRange(0, (world->getIterationCount() - 1), TRUE);
@@ -422,12 +424,9 @@ void Csmart_parking_guiDlg::OnTimer(UINT_PTR nIDEvent)
 		CButton * pauseSimButton = (CButton *)this->GetDlgItem(IDC_B_SIMPAUSE);
 		pauseSimButton->EnableWindow(FALSE);
 	}
-	CString c_status(oss.str().c_str());
-	m_EchoStatus = c_status;
-	UpdateData(FALSE);
+	displayText();
 	Invalidate();
 	GetDlgItem(IDC_ST_STATUS)->RedrawWindow();
-	pEdit->LineScroll(pEdit->GetLineCount());
 	CDialogEx::OnTimer(nIDEvent);
 }
 
@@ -435,4 +434,25 @@ void Csmart_parking_guiDlg::OnTimer(UINT_PTR nIDEvent)
 void Csmart_parking_guiDlg::OnBnClickedBSimpause()
 {
 	KillTimer(m_nSimTimer); // stop simulation timer
+}
+
+void Csmart_parking_guiDlg::OnBnClickedRadio()
+{
+	// TODO: Add your control notification handler code here
+	displayText();
+	return;
+}
+
+void Csmart_parking_guiDlg::displayText() { // Displays text based on the radio button display
+	UpdateData(TRUE);
+	CString c_status;
+	if (m_RadioTextDisplay == 1) { // display status if unchecked
+		c_status = (world->show_status().c_str());
+	}
+	else { // display events
+		c_status = (oss.str().c_str());
+		pEdit->LineScroll(pEdit->GetLineCount()); // scroll to bottom to see last event
+	}
+	m_EchoStatus = c_status;
+	UpdateData(FALSE);
 }

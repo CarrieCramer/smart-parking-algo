@@ -55,9 +55,10 @@ private:
 	bool destDrawn;
 	bool lotDrawn;
 	UINT_PTR m_nSimTimer; // timer used for autorun simulation
+	std::string fileOpen; // name of the currently open file
 	std::ostringstream oss; // used to display events
 	void DrawGrid(); // draws the entire grid
-	void show_events(); // shows events as they happen
+	void displayText(); // displays text on status screen
 public:
 	afx_msg void OnBnClickedBNewdest();
 	afx_msg void OnBnClickedBNewlot();
@@ -69,4 +70,6 @@ public:
 	afx_msg void OnDropFiles(HDROP hDropInfo);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnBnClickedBSimpause();
+	int m_RadioTextDisplay;
+	afx_msg void OnBnClickedRadio();
 };

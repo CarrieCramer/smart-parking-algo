@@ -16,11 +16,6 @@ class Driver;
 class Lot;
 class Event;
 
-
-// BUGS:
-// Run it event by event, causes error.
-// Run all events together, occasionally too many people park.
-
 class Grid {
 	public:
 		Grid();
@@ -62,7 +57,7 @@ class Grid {
 		vector<bool> simulationOver; // checks the finished state of iteration
 		
 		bool update(double timing = 1); // updates the entire grid
-		void show_status(); // shows status of all items
+		string show_status(); // shows status of all items
 
 		Data* data; // Data object that Drivers and Lots will send data to
 		

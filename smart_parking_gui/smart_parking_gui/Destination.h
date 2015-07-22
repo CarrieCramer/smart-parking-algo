@@ -4,6 +4,7 @@
 #define DESTINATION_H
 
 #include "Location.h"
+#include <string>
 
 class Destination {
 	public:
@@ -16,7 +17,7 @@ class Destination {
 		double getRate(); // get rate of people entering to calculate costs
 		
 		bool update();
-		void show_status(); // show status of destination
+		std::string show_status(); // show status of destination
 	private:
 		int id;
 		Location location;

@@ -7,6 +7,7 @@
 #include "Event.h"
 #include <cmath>
 #include <iostream>
+#include <sstream>
 #include <limits> // for maximum double value
 using namespace std;
 
@@ -254,22 +255,28 @@ char Driver::getState() {
 	return this->state;
 }
 
-void Driver::show_status() { // output driver ID, location, destination, and lot if applicable
+string Driver::show_status() { // output driver ID, location, destination, and lot if applicable
+	ostringstream output;
+	output << "Driver " << this->id;
 	switch (this->state) {
 		case 'n': // seeking lots
-			cout << "Driver " << this->id << " located at " << this->location << " is seeking lots and heading for Destination " << dest->getID() << endl;
+			output << " located at " << this->location << " is seeking lots and heading for Destination " << dest->getID();
 			break;
 		case 'd': // heading to lot
-			cout << "Driver " << this->id << " located at " << this->location << " is heading to Lot " << reserved->getID() << endl;
+			output << " located at " << this->location << " is heading to Lot " << reserved->getID();
 			break;
 		case 'p': // parking
-			cout << "Driver " << this->id << " located at " << this->location << " is parked at Lot " << reserved->getID() << endl;
+			output << " located at " << this->location << " is parked at Lot " << reserved->getID();
 			break;
 		case 'g':
-			cout << "Driver " << this->id << " has left the map." << endl;
+			output << " has left the map.";
+			break;
 		default:
+			output.str(std::string()); // empty string
 			break; // do nothing
 	}
+	output << "\r\n"; // newline
+	return output.str();
 }
 
 // Adds data regarding reserved parking spot to the Driver's data attribute

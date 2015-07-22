@@ -7,6 +7,7 @@
 #include "Grid.h"
 #include "Driver.h"
 #include <vector>
+#include <string>
 using namespace std;
 
 class Grid;
@@ -36,7 +37,7 @@ class Lot { // the ID of a location
 		void resetLot(); // Reset lot's empty spaces
 		void addToQueue(Driver *); // add driver to queue of parkers
 		bool update(); // update number of spots
-		void show_status(); // shows status of parking lot
+		std::string show_status(); // shows status of parking lot
 		void sendData(); // sends current occupancy rate, reserved rate, and cost to data attribute
 
 	private:

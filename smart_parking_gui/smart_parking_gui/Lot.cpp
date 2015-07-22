@@ -3,6 +3,7 @@
 #include "Lot.h"
 #include "Location.h"
 #include <iostream>
+#include <sstream>
 using namespace std;
 
 Lot::Lot() { // default constructor
@@ -152,12 +153,13 @@ Location Lot::getLocation() {
 	return this->location;
 }
 
-void Lot::show_status() {
-	cout << "Lot " << this->getID();
-	cout << " located at " << this->getLocation();
-	cout << " has " << numFree << " out of " << capacity;
-	cout << " spaces free." << endl;
-	return;
+std::string Lot::show_status() {
+	std::ostringstream output;
+	output << "Lot " << this->getID();
+	output << " located at " << this->getLocation();
+	output << " has " << numFree << " out of " << capacity;
+	output << " spaces free.\r\n";
+	return output.str();
 }
 
 // Sends current occupancy rate, reserved rate, and cost to data attribute
