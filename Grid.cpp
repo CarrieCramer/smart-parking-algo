@@ -740,17 +740,19 @@ bool Grid::update(double timing) { // Updates all elements of the grid.
 			} // keep updating after that
 		}
 		data->writeToExcel();
-		if (pricingPolicy == 3) {
-			updatePrices3(allLots);
-		}
-		else if (pricingPolicy == 4) {
-			updatePrices4(data->lotReservedRates, data->lotUpdateTimes, allLots, this->time, 0.1); 
-		}
-		else if (pricingPolicy == 5) {
-			updatePrices5(data->lotUpdateTimes, allLots, data->lotReservedRates);
-		}
-		else if (pricingPolicy == 6) {
-			updatePrices6(allLots);
+		switch (pricingPolicy) {
+			case 3:
+				updatePrices3(allLots);
+				break;
+			case 4:
+				updatePrices4(data->lotReservedRates, data->lotUpdateTimes, allLots, this->time, 0.1); 
+				break;
+			case 5:
+				updatePrices5(data->lotUpdateTimes, allLots, data->lotReservedRates);
+				break;
+			case 6:
+				updatePrices6(allLots);
+				break;
 		}
 	}
 	return stateChanged;

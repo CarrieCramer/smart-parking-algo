@@ -448,11 +448,12 @@ void Csmart_parking_guiDlg::displayText() { // Displays text based on the radio 
 	CString c_status;
 	if (m_RadioTextDisplay == 1) { // display status if unchecked
 		c_status = (world->show_status().c_str());
+		m_EchoStatus = c_status;
 	}
 	else { // display events
 		c_status = (oss.str().c_str());
+		m_EchoStatus = c_status;
 		pEdit->LineScroll(pEdit->GetLineCount()); // scroll to bottom to see last event
 	}
-	m_EchoStatus = c_status;
 	UpdateData(FALSE);
 }
