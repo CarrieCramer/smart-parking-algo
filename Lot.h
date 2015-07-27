@@ -17,6 +17,7 @@ class Lot { // the ID of a location
 		Lot();
 		Lot(int, Location, int, Grid *);
 		Lot(int, Location, int, double, Grid *); // for prices
+		Lot(int, Location, int, double, char, Grid *); // for lot type
 		
 		// numNotReserved is always less than or equal to numFree
 		int getID(); // return ID
@@ -25,7 +26,7 @@ class Lot { // the ID of a location
 		bool isFull(); // detects if lot is full
 		
 		void releaseDriver(); // releases driver
-		void driverHasParked(); // the driver has parked
+		void driverHasParked(bool reserveCheck = true); // the driver has parked
 		
 		Location getLocation(); // return location
 		int getOpenSpots(); // get total number of open spots
@@ -33,6 +34,7 @@ class Lot { // the ID of a location
 		double getCost(double); // get cost to use parking lot
 		void setCost(double); // set cost to use parking lot
 		double getBaseCost(); // get the BASE value of the cost to use
+		char getLotType(); // get the type of the lot
 		void resetLot(); // Reset lot's empty spaces
 		void addToQueue(Driver *); // add driver to queue of parkers
 		bool update(); // update number of spots
@@ -46,6 +48,12 @@ class Lot { // the ID of a location
 		vector<Driver*> driversToPark;
 		int numFree; // spots not visually taken. Once car parks, this decreases.
 		int numNotReserved; // spots not reserved. Once driver reserves, this decreases.
+		char lotType; // lot type
+		/*
+			type 'r': reservation only. reserved as soon as it's ordered.
+			type 'e': either reservation or not
+			type 'n': no reservations used
+		*/
 		Location location; // location of lot
 		int capacity; // can be 1 for individual or total for parking lots
 		double cost;
