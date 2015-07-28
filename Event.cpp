@@ -47,6 +47,8 @@ std::ostream& operator << (std::ostream &os, const Event& event) {
 		case 'd':
 			os << " has left the map.\n";
 			break;
+		case 'x':
+			os << " is still seeking lots.\n";
 		default:
 			os << " has done an undefined event.\n";
 		}

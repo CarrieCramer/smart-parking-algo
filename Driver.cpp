@@ -99,6 +99,10 @@ void Driver::resetLocation() { // reset location and state
 
 void Driver::goToPark() {
 	this->state = 'd'; // set to head towards parking lot
+	double expectedParkingTime = this->getTimeArrivedAtPark();
+	world->addEvent(Event(world->getTime(), this, 's'));
+	world->addEvent(Event(expectedParkingTime, this, 'p'));
+	sendData();
 	cout << "Driver " << getID() << ": Lot at ID " << reserved->getID() << "." << endl;
 	cout << "Distance: " << getDistToLot() << " Charge: " << reserved->getCost(timeAtPark) << endl;
 	setup_destination(reserved->getLocation()); // setup destination
@@ -222,8 +226,9 @@ bool Driver::update() { // update driver parking, returns true on state change
 				if (reserved != nullptr) { // if found reservation
 					if (reservingLot == true) { // lot is reserved
 						reserved->addToQueue(this);
-					} 
-					goToPark();
+					} else {
+						goToPark();
+					}
 				} else {
 					setup_destination(dest->getLocation()); // go to destination
 					this->state = 'n';
@@ -236,7 +241,7 @@ bool Driver::update() { // update driver parking, returns true on state change
 		case 'n': // drive towards destination, but waiting for lots
 			if (update_location() == true){ // Move the car. If lot not reached:
 				this->maxWalkDist = world->getGridSize();
-				this->maxCharge = 1.0;
+				this->maxCharge = 10.0;
 				// set max walk distance and cost to maximum value
 			}
 			reserved = makeReservation(timeAtPark); // try reserving a spot again
@@ -255,6 +260,7 @@ bool Driver::update() { // update driver parking, returns true on state change
 				if (reservingLot == false) { // If lot not reserved
 					if (reserved->isFull()) {
 						this->state = 'n'; // still searching for lots
+						world->addEvent(Event(world->getTime(), this, 'x'));
 						return true; // end update here
 					} else {
 						reserved->driverHasParked(false); // make sure to reduce reserved spots
@@ -284,10 +290,10 @@ bool Driver::update() { // update driver parking, returns true on state change
 }
 
 bool Driver::update_location() { // Moves towards destination. Return true if reached.
-	DriveVector distDiff = travelPoint-location;
 	double totalDistance = dist(travelPoint,location);
+	DriveVector distDiff = (travelPoint-location)*(1/totalDistance);
     if (totalDistance != 0) { // check if destination is the same place or not
-      this->driveDirection = (travelPoint - location) * ((this->speed/totalDistance)*world->timeIncrement); // delta equation
+      this->driveDirection = distDiff * (this->speed*world->timeIncrement); // delta equation
     }
 	if (fabs(distDiff.x) <= fabs(driveDirection.x) && fabs(distDiff.y) <= fabs(driveDirection.y)) { // if driver can reach
 		location = travelPoint; // set location to destination
