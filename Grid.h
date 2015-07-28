@@ -16,11 +16,6 @@ class Driver;
 class Lot;
 class Event;
 
-
-// BUGS:
-// Run it event by event, causes error.
-// Run all events together, occasionally too many people park.
-
 class Grid {
 	public:
 		Grid();

@@ -8,13 +8,14 @@ using namespace std;
 
 Lot::Lot() { // default constructor
 	this->id = 0;
-	this->location = Location(0,0);
+	this->location = Location(0, 0);
 	this->capacity = 0;
 	this->numFree = 0;
 	this->numNotReserved = 0;
 	this->peopleLeaving = 0;
 	this->cost = 3; // arbitrary value
-	this->world = NULL;
+	this->lotType = 'r';
+	this->world = nullptr;
 }
 
 Lot::Lot(int ID, Location loc, int totalSpots, Grid * as) {
@@ -25,6 +26,7 @@ Lot::Lot(int ID, Location loc, int totalSpots, Grid * as) {
 	this->numNotReserved = capacity;
 	this->peopleLeaving = 0;
 	this->cost = 3; // arbitrary value
+	this->lotType = 'r';
 	this->world = as;
 }
 
@@ -36,12 +38,29 @@ Lot::Lot(int ID, Location loc, int totalSpots, double costPerUnit, Grid * as) {
 	this->numNotReserved = capacity;
 	this->peopleLeaving = 0;
 	this->cost = costPerUnit; // arbitrary value
+	this->lotType = 'r';
+	this->world = as;
+}
+
+Lot::Lot(int ID, Location loc, int totalSpots, double costPerUnit, char lotType, Grid * as) {
+	this->id = ID;
+	this->location = loc;
+	this->capacity = totalSpots;
+	this->numFree = capacity;
+	this->numNotReserved = capacity;
+	this->peopleLeaving = 0;
+	this->cost = costPerUnit; // arbitrary value
+	this->lotType = lotType;
 	this->world = as;
 }
 
 double Lot::getCost(double timeParked) {
 	// SAMPLE COST FUNCTION
 	return cost*timeParked;
+}
+
+char Lot::getLotType() {
+	return lotType;
 }
 
 double Lot::getBaseCost() {
@@ -99,8 +118,11 @@ void Lot::releaseDriver() {
 	return;
 }
 
-void Lot::driverHasParked() { // note that a driver has parked
+void Lot::driverHasParked(bool reserveCheck) { // note that a driver has parked
 	this->numFree--;
+	if (reserveCheck == false) { // if driver didn't reserve
+		this->numNotReserved--;
+	}
 }
 
 bool Lot::update() { // Updates lot information

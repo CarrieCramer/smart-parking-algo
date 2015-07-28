@@ -380,12 +380,14 @@ void Grid::read_file(ifstream& readFile) {
 	Location locationRead;
 	int intRead;
 	double doubleRead;
+	char charRead;
 	vector<Location> destLocs;
 	vector<double> destProbs;
 	vector<double> destAvgDur;
 	vector<Location> lotLocs;
 	vector<int> lotCapacities;
 	vector<double> lotPrices;
+	vector<char> lotTypes;
 
 	vector<int> emptyInt;
 	vector<double> emptyDouble;
@@ -451,6 +453,7 @@ void Grid::read_file(ifstream& readFile) {
 					else if (currentlyRead == "DRIVER MAX WALKING DISTANCES:") state = 19;
 					else if (currentlyRead == "DRIVER MAX PRICES:") state = 20;
 					else if (currentlyRead == "DRIVER IMPORTANCE WEIGHTS:") state = 21;
+					else if (currentlyRead == "LOT TYPES:") state = 22;
 					else {
 						throw InvalidInput("Error: File variable read incorrectly.");
 					}
@@ -539,6 +542,14 @@ void Grid::read_file(ifstream& readFile) {
 					state = 0;
 					readVal = false;
 					break; // to be added
+				case 22: // lot type
+					for (int ii = 0; ii < lotCount; ii++) {
+						iss >> charRead;
+						lotTypes.push_back(charRead);
+					}
+					state = 0;
+					readVal = false;
+					break;
 				case 13: // average demand
 					state = 0;
 					readVal = false;
@@ -624,7 +635,7 @@ void Grid::read_file(ifstream& readFile) {
 
 	// set up lots
 	for (int jj = 0; jj < lotCount; jj++) {
-		Lot * newLot = new Lot(jj, lotLocs[jj], lotCapacities[jj], lotPrices[jj], this);
+		Lot * newLot = new Lot(jj, lotLocs[jj], lotCapacities[jj], lotPrices[jj], lotTypes[jj], this);
 		addLot(newLot);
 	}
 	lotLocs.clear();

@@ -60,7 +60,7 @@ class Driver {
 		char state; // state of the driver
 		double timeOfArrival; // exact time when the car will appear in the grid
 		double timeInReserve; // time spent in reserve queue. 0 if not in it
-		int reserveSpot; // 0 or -1 if not reserved, else ID of reserved spot
+		bool reservingLot; // if true, has reserved lot. Otherwise, driver is not reserving.
 		double timeArrivedAtPark; // when the car arrives at the parking lot
 		double timeAtPark; // how long the driver wishes to park for
 

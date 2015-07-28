@@ -61,6 +61,9 @@ void writeLotLocs(int gridSize, int numLots, ofstream& config, default_random_en
 // Write random parking lot capacities to config
 int writeLotCapacities(bool randCapacIn, int capac, int avgDemand, int numLots, ofstream& config, default_random_engine& engine);
 
+// Write the lot types to config
+void writeLotTypes(int numLots, ofstream& config, default_random_engine& engine);
+
 // Write the pricing policy to config
 void writePricePolicy(int pricePolicy, ofstream& config);
 

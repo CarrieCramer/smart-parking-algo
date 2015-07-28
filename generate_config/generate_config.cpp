@@ -339,6 +339,36 @@ int writeLotCapacities(bool randCapacIn, int capac, int avgDemand, int numLots, 
 	return totalCapacity;
 }
 
+// Write the lot types to config
+void writeLotTypes(int numLots, ofstream& config, default_random_engine& engine) {
+	const int numOfLotTypes = 3;
+	config << "****************************************************************************************************\n";
+	config << "LOT TYPES:\n";
+	config << "Types of parking at the parking lot.\n";
+	config << "****************************************************************************************************\n";
+	
+	char lotType;
+	int distResult;
+	uniform_int_distribution<int> distribution(1, numOfLotTypes);
+	
+	for (int i = 0; i < numLots; i++) {
+		distResult = distribution(engine);
+		switch (distResult) {
+			case 1:
+				lotType = 'r';
+				break;
+			case 2:
+				lotType = 'e';
+				break;
+			default:
+				lotType = 'n';
+		}
+		config << lotType << " ";
+	}
+	
+	config << "\n\n";
+}
+
 // Write the pricing policy to config
 void writePricePolicy(int pricePolicy, ofstream& config) {
 
