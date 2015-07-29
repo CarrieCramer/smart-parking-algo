@@ -100,8 +100,10 @@ void Driver::resetLocation() { // reset location and state
 
 void Driver::goToPark() {
 	this->state = 'd'; // set to head towards parking lot
-	cout << "Driver " << getID() << ": Lot at ID " << reserved->getID() << "." << endl;
-	cout << "Distance: " << getDistToLot() << " Charge: " << reserved->getCost(timeAtPark) << endl;
+	double expectedParkingTime = this->getTimeArrivedAtPark();
+	world->addEvent(Event(world->getTime(), this, 's'));
+	world->addEvent(Event(expectedParkingTime, this, 'p'));
+	sendData();
 	setup_destination(reserved->getLocation()); // setup destination
 }
 
@@ -130,7 +132,7 @@ Lot* Driver::makeReservation(double timeParking) { // finds potential lots
 				reservingLot = true;
 				break;
 			case 'e':
-				if (feasLots[ii]->getReservedRate() < 0.7) { // placeholder 		
+				if (feasLots[ii]->getReservedRate() < world->occupationRate) { // placeholder 		
 					reservingLot = false;
 				}
 				else {
@@ -175,7 +177,7 @@ vector<Lot *> Driver::findLots(double timeParking) {
 					}
 					break;
 				case 'e':
-					if (allLots[ii]->getReservedRate() < 0.7) { // placeholder 
+					if (allLots[ii]->getReservedRate() < world->occupationRate) { // placeholder 
 						charge = allLots[ii]->getCost(timeParking); // calculate cost
 						reservingLot = false;
 					}

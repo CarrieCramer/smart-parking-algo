@@ -23,6 +23,8 @@ class Grid {
 		Grid(double, int);
 		double timeIncrement; // this should stay constant through the simulation
 		
+		double occupationRate;
+
 		double getTime(); // return time
 		vector<int> allocateParking(); // allocate parking for all waiting and reserved users
 		void addDriver(Driver *, int iteration = -1); // add driver to allUsers for the current iteration
