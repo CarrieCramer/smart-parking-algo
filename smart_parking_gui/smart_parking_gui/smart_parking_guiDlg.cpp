@@ -270,9 +270,11 @@ void Csmart_parking_guiDlg::OnBnClickedBNextevent()
 		run_simulation(*world);
 		m_TimeDisplay = world->getTime(); // double
 		m_EchoTime.Format(_T("Time: %g"), m_TimeDisplay);
+		UpdateData(FALSE);
 		oss << world->getCurrentEvent();
 		displayText();
 		Invalidate();
+		UpdateData(FALSE);
 		GetDlgItem(IDC_ST_GRIDSIZE)->RedrawWindow();
 		GetDlgItem(IDC_ST_TIME)->RedrawWindow();
 		GetDlgItem(IDC_GRID_BOX)->RedrawWindow();
@@ -418,6 +420,7 @@ void Csmart_parking_guiDlg::OnTimer(UINT_PTR nIDEvent)
 	run_simulation(*world);
 	m_TimeDisplay = world->getTime(); // double
 	m_EchoTime.Format(_T("Time: %g"), m_TimeDisplay);
+	UpdateData(FALSE);
 	if (!world->simulationOver[world->getCurrentIteration()]) oss << world->getCurrentEvent();
 	else {
 		KillTimer(nIDEvent); // end usage of timer
@@ -427,6 +430,7 @@ void Csmart_parking_guiDlg::OnTimer(UINT_PTR nIDEvent)
 	displayText();
 	Invalidate();
 	GetDlgItem(IDC_ST_STATUS)->RedrawWindow();
+	pEdit->LineScroll(pEdit->GetLineCount());
 	CDialogEx::OnTimer(nIDEvent);
 }
 

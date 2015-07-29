@@ -281,7 +281,7 @@ bool Driver::update() { // update driver parking, returns true on state change
 		break;
 	case 'p': // parking
 		if ((timeArrivedAtPark + timeAtPark) - world->getTime() < 0.00000001) { // floating-point error handling
-			departLot(); // leave the lotb
+			departLot(); // leave the lot
 			return true;
 		}
 		else {

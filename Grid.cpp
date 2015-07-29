@@ -21,6 +21,7 @@ Grid::Grid() { // not used at this time
 	this->timeIncrement = 1;
 	this->pricingPolicy = 2;
 	this->size = 10;
+	this->occupationRate = 0.7;
 	this->baseSet.insert(Event());
 	allEvents.push_back(baseSet);
 	this->eventIt = allEvents[0].begin();
@@ -34,6 +35,7 @@ Grid::Grid(double boardSize, int iterations) {
 	this->pricingPolicy = 2;
 	cout << "Version 2015 July 10" << endl; // update this date whenever new update
 	this->size = boardSize;
+	this->occupationRate = 0.7;
 	this->numOfIterations = iterations; // how did this get deleted
 	this->currentIteration = 0; // also this was deleted
 	this->baseSet.insert(Event()); // DOES NOT CHANGE
@@ -454,6 +456,7 @@ void Grid::read_file(ifstream& readFile) {
 					else if (currentlyRead == "DRIVER MAX PRICES:") state = 20;
 					else if (currentlyRead == "DRIVER IMPORTANCE WEIGHTS:") state = 21;
 					else if (currentlyRead == "LOT TYPES:") state = 22;
+					else if (currentlyRead == "MAX OCCUPATION RATE:") state = 23;
 					else {
 						throw InvalidInput("Error: File variable read incorrectly.");
 					}
@@ -607,6 +610,12 @@ void Grid::read_file(ifstream& readFile) {
 						dImportanceWeight[iterationToAdd].push_back(doubleRead);
 					}
 					iterationToAdd++;
+					break;
+				case 23:
+					iss >> doubleRead;
+					occupationRate = doubleRead;
+					state = 0;
+					readVal = false;
 					break;
 				default:
 					throw InvalidInput("File reading state corrupted");

@@ -133,7 +133,7 @@ Lot* Driver::makeReservation(double timeParking) { // finds potential lots
 					reservingLot = true;
 					break;
 				case 'e':
-					if (feasLots[ii]->getReservedRate() < 0.7) { // placeholder 
+					if (feasLots[ii]->getReservedRate() < world->occupationRate) { // placeholder 
 						reservingLot = false;
 					} else {
 						reservingLot = true;
@@ -177,7 +177,7 @@ vector<Lot *> Driver::findLots(double timeParking) {
 						}
 					break;
 					case 'e':
-						if (allLots[ii]->getReservedRate() < 0.7) { // placeholder 
+						if (allLots[ii]->getReservedRate() < world->occupationRate) { // placeholder 
 							charge = allLots[ii]->getCost(timeParking); // calculate cost
 							reservingLot = false;
 						} else {

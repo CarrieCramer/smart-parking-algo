@@ -113,7 +113,6 @@ double Grid::toNextEvent() { // Moves set iterator to next event
 	while (eventIt->getTime() <= this->time && !simulationOver[currentIteration]) { // while event has lower time than current time
 		++eventIt; // go to next event
 		if (eventIt == allEvents[currentIteration].end()) {
-			cout << "Simulation over." << endl;
 			simulationOver[currentIteration] = true;
 			return 0; // return 0
 		}

@@ -177,6 +177,16 @@ Location Lot::getLocation() {
 
 std::string Lot::show_status() {
 	std::ostringstream output;
+	switch (lotType) {
+	case 'r':
+		output << "Reservation-Only ";
+		break;
+	case 'e':
+		output << "Choice-reserved ";
+		break;
+	default:
+		output << "Non-Reservation ";
+	}
 	output << "Lot " << this->getID();
 	output << " located at " << this->getLocation();
 	output << " has " << numFree << " out of " << capacity;
