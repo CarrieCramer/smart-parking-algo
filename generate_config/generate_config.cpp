@@ -125,6 +125,16 @@ int getPricePolicy() {
 	return pricePolicy;
 }
 
+double getOccupationRate() {
+	// Prompt user to enter occupation rate
+	
+	cout << "Enter the occupation rate for non-reserving drivers.\n";
+	double rate = 0;
+	cin >> rate;
+	
+	return rate;
+}
+
 /*
 // Obtain whether lot prices are equal or random from user input
 bool randPrice() {
@@ -440,6 +450,16 @@ void writeLotPrices(int pricePolicy, double price, int numLots, ofstream& config
 		}
 	}
 	*/
+}
+
+void writeOccupationRate(double rate, ofstream& config) {
+	config << "****************************************************************************************************\n";
+	config << "MAX OCCUPATION RATE:\n";
+	config << "The ratio of non-reserved parking spaces to all parking spaces needed for\n";
+	config << "a person to consider reserving a parking space at a lot of type 'e'.\n";
+	config << "****************************************************************************************************\n";
+	
+	config << rate << "\n\n";
 }
 
 // Get driver arrival times and return them in a matrix

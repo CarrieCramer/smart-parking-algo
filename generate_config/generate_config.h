@@ -34,6 +34,9 @@ double getUtilRate();
 // Obtain lot pricing policy number
 int getPricePolicy();
 
+// Obtain occupation rate of optionally-reserved lots
+double getOccupationRate();
+
 // Obtain whether lot prices are equal or random from user input
 bool randPrice();
 
@@ -69,6 +72,9 @@ void writePricePolicy(int pricePolicy, ofstream& config);
 
 // Write random parking lot prices to config
 void writeLotPrices(int pricePolicy, double price, int numLots, ofstream& config, default_random_engine& engine);
+
+// Write occupation rate of optional-reserve lots to config
+void writeOccupationRate(double rate, ofstream& config);
 
 // Get driver arrival times and return them in a matrix
 list<list<double>> generateArrivals(int numIterations, int numHours, int avgDemand, ofstream& config, default_random_engine& engine);

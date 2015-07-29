@@ -46,6 +46,9 @@ int main() {
 	// Get pricing policy from user input
 	int pricePolicy = getPricePolicy();
 	
+	// Get max occupation rate from user input
+	double occupationRate = getOccupationRate();
+	
 	// If price policy 2 is not chosen, get initial lot price from user input
 	double price = 0;
 	if (pricePolicy != 2) {
@@ -116,6 +119,9 @@ int main() {
 	// Write random parking lot prices to config.txt
 	writeLotPrices(pricePolicy, price, numLots, config, engine);
 
+	// Write lot occupation rate to config.txt
+	writeOccupationRate(occupationRate, config);
+	
 	// Write average demand to config.txt
 	config << "****************************************************************************************************\n";
 	config << "AVERAGE DEMAND:\n";
