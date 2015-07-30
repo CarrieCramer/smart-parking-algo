@@ -248,6 +248,15 @@ void Grid::write_file(ofstream& writeFile) {
 	writeFile << endl; // end line
 	writeFile << endl; // blank line
 	writeFile << asterisks << endl;
+	writeFile << "LOT CAPACITIES:" << endl;
+	writeFile << "Types of parking at the parking lot." << endl;
+	writeFile << asterisks << endl;
+	for (int ii = 0; ii < allLots.size(); ii++) {
+		writeFile << allLots[ii]->getLotType() << ' ';
+	}
+	writeFile << endl; // end line
+	writeFile << endl; // blank line
+	writeFile << asterisks << endl;
 	writeFile << "LOT PRICING POLICY:" << endl;
 	writeFile << "Options:" << endl;
 	writeFile << "1 | Equal Static Pricing: all lots have the same price, which remains the same throughout the simulation" << endl;
@@ -266,6 +275,14 @@ void Grid::write_file(ofstream& writeFile) {
 	}
 	writeFile << endl;
 	writeFile << endl;
+	writeFile << asterisks << endl;
+	writeFile << "MAX OCCUPATION RATE:" << endl;
+	writeFile << "The ratio of non-reserved parking spaces to all parking spaces needed for" << endl;
+	writeFile << "a person to consider reserving a parking space at a lot of type 'e'." << endl;
+	writeFile << asterisks << endl;
+	writeFile << this->occupationRate;
+	writeFile << endl;
+	writeFile << endl;	
 	writeFile << asterisks << endl;
 	writeFile << "DRIVER COUNT:" << endl;
 	writeFile << "Number of drivers that arrives during each simulation iteration." << endl;

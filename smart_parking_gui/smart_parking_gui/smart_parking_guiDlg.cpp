@@ -230,7 +230,9 @@ void Csmart_parking_guiDlg::OnBnClickedBOpenConfig()
 		CString fileName = fileDlg.GetFileTitle();
 
 		SetWindowText(fileName);
-
+		displayText();
+		Invalidate();
+		GetDlgItem(IDC_ST_STATUS)->RedrawWindow();
 	}
 	UpdateData(FALSE);
 }
@@ -406,6 +408,10 @@ void Csmart_parking_guiDlg::OnDropFiles(HDROP dropInfo)
 		CString fileName = sFile;
 
 		SetWindowText(fileName);
+
+		displayText();
+		Invalidate();
+		GetDlgItem(IDC_ST_STATUS)->RedrawWindow();
     } 
  
     // Free the memory block containing the dropped-file information 
