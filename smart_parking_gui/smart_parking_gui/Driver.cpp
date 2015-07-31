@@ -96,6 +96,8 @@ void Driver::resetLocation() { // reset location and state
 	this->state = 'z';
 	this->maxWalkDist = initmaxWalk;
 	this->maxCharge = initmaxCharge;
+	this->reservingLot = false;
+	reserved = nullptr;
 }
 
 void Driver::goToPark() {
@@ -167,7 +169,7 @@ vector<Lot *> Driver::findLots(double timeParking) {
 				switch (allLots[ii]->getLotType()) {
 				case 'r':
 					charge = allLots[ii]->getCost(timeParking + dist(this->location, allLots[ii]->getLocation()) / this->speed); // calculate cost
-					if (allLots[ii]->getCost(1.0) <= this->maxCharge) { // if cost within specified range
+					if (charge/timeParking <= this->maxCharge) { // if cost within specified range
 						lotsAvailable.push_back(allLots[ii]); // add lot to lots available
 						lotDist.push_back(distance);
 						lotCharge.push_back(charge);
@@ -185,7 +187,7 @@ vector<Lot *> Driver::findLots(double timeParking) {
 						charge = allLots[ii]->getCost(timeParking + dist(this->location, allLots[ii]->getLocation()) / this->speed); // calculate cost
 						reservingLot = true;
 					}
-					if (allLots[ii]->getCost(1.0) <= this->maxCharge) { // if cost within specified range
+					if (charge / timeParking <= this->maxCharge) { // if cost within specified range
 						lotsAvailable.push_back(allLots[ii]); // add lot to lots available
 						lotDist.push_back(distance);
 						lotCharge.push_back(charge);
@@ -196,7 +198,7 @@ vector<Lot *> Driver::findLots(double timeParking) {
 				default:
 					charge = allLots[ii]->getCost(timeParking); // calculate cost
 					reservingLot = false;
-					if (allLots[ii]->getCost(1.0) <= this->maxCharge) { // if cost within specified range
+					if (charge / timeParking <= this->maxCharge) { // if cost within specified range
 						lotsAvailable.push_back(allLots[ii]); // add lot to lots available
 						lotDist.push_back(distance);
 						lotCharge.push_back(charge);
@@ -260,14 +262,12 @@ bool Driver::update() { // update driver parking, returns true on state change
 		break;
 	case 'd': // drive towards parking lot
 		if (update_location() == true) { // move car and check if arrived at parking lot
-			if (reservingLot == false) { // If lot not reserved
-				if (reserved->isFull()) {
-					this->state = 'n'; // still searching for lots
-					return true; // end update here
-				}
-				else {
-					reserved->driverHasParked(false); // make sure to reduce reserved spots
-				}
+			if (reserved->isFull()) {
+				this->state = 'n'; // still searching for lots
+				return true; // end update here
+			}
+			if (reservingLot == false) {
+				reserved->driverHasParked(false);
 			}
 			else {
 				reserved->driverHasParked(true); // show the driver has parked

@@ -35,6 +35,7 @@ Csmart_parking_guiDlg::Csmart_parking_guiDlg(CWnd* pParent /*=NULL*/)
 		this->world = new Grid(50, 5); // default grid
 		destDrawn = false;
 		lotDrawn = false;
+		FONT_SIZE = 100;
 }
 
 void Csmart_parking_guiDlg::DoDataExchange(CDataExchange* pDX)
@@ -82,6 +83,7 @@ BOOL Csmart_parking_guiDlg::OnInitDialog()
 	// TODO: Add extra initialization here
 	gridDrawSurface = (CWnd *)this->GetDlgItem(IDC_GRID_BOX);
 	gridDraw = gridDrawSurface->GetDC();
+	gridFont.CreatePointFont(FONT_SIZE, _T("Arial"), gridDraw);
 	pEdit = (CEdit*)GetDlgItem(IDC_ST_STATUS);
 	updateMs = 50;
 	fileOpen = ""; // empty string
@@ -169,17 +171,24 @@ void Csmart_parking_guiDlg::DrawGrid() {
 		gridBrush = gridDraw->SelectObject(&brushLot);
 		vector<Location> lotLoc = world->getLotLocations();
 		vector<int> lotSpots;
+		vector<double> lotCosts;
 		vector<Lot *> allLots = world->getAllLots();
+		p_oldFont = gridDraw->SelectObject(&gridFont);
 		for (size_t ii = 0; ii < allLots.size(); ii++) {
 			lotSpots.push_back(allLots[ii]->getOpenSpots());
+			lotCosts.push_back(allLots[ii]->getBaseCost());
 		}
 		for (size_t ii = 0; ii < lotLoc.size(); ii++) { // draw blue circle and number
 			xCenter = (int)round(gridBase.TopLeft().x + lotLoc[ii].x*proportion);
 			yCenter = (int)round(gridBase.TopLeft().y + lotLoc[ii].y*proportion);
 			gridDraw->Ellipse(xCenter-3, yCenter-3, xCenter+3, yCenter+3);
-			CString echoNum;
-			echoNum.Format(_T("%d"), lotSpots[ii]);
-			gridDraw->TextOutW(xCenter + 4, yCenter + 1, echoNum);
+			CString echoSpots;
+			echoSpots.Format(_T("%d"), lotSpots[ii]);
+			CString echoBaseCost;
+			echoBaseCost.Format(_T("%.3f"), lotCosts[ii]);
+			SetBkMode(*gridDraw, TRANSPARENT);
+			gridDraw->TextOutW(xCenter + 4, yCenter, echoSpots);
+			gridDraw->TextOutW(xCenter + 4, yCenter + FONT_SIZE/9, echoBaseCost);
 		}
 		lotDrawn = true;
 		gridDraw->SelectObject(gridBrush);

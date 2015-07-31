@@ -28,7 +28,7 @@ class Driver {
 		Destination * dest;
 				
 		int getID(); // return id
-		bool isInIA(); // checks if driver is to be allocated immediately
+		bool isInIA(); // checks if driver is to be allocated immediately (not yet used)
 		Location getLocation(); // return location
 		Location getInitialLocation(); // return initial location
 		bool accept(Lot); // choose to accept the lot

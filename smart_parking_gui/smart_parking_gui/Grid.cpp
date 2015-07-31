@@ -707,12 +707,12 @@ int Grid::switchIteration(int newIt) { // switches iteration. Resets time. Retur
 		return -1; // doesn't count
 	} else {
 		this->time = 0;
-		this->eventIt = allEvents[newIt].begin(); // change event iterator
+		this->eventIt = allEvents[newIt].begin(); // change event iterator to beginning
 		for (int ii = 0; ii < allLots.size(); ii++) {
 			allLots[ii]->resetLot(); // reset lot info
 		}
 		for (int ii = 0; ii < allUsers.size(); ii++) {
-			allUsers[currentIteration][ii]->resetLocation();
+			allUsers[currentIteration][ii]->resetLocation(); // reset location of all drivers
 		}
 		currentIteration = newIt; // set current iteration
 		this->simulationOver[newIt] = false; // set simulation to not over

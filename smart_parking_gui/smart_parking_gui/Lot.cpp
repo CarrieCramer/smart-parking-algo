@@ -89,7 +89,7 @@ int Lot::getCapacity() {
 }
 
 bool Lot::isFull() {
-	if (numNotReserved <= 0) {
+	if (numNotReserved <= 0 || numFree <= 0) {
 		return true;
 	} else {
 		return false;

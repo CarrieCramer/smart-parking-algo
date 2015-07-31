@@ -47,13 +47,18 @@ private:
 	double m_TimeDisplay;
 	double m_GridSize;
 	CString m_IterationEcho;
+	// Graphics based inits
 	CWnd * gridDrawSurface;
 	CDC * gridDraw;
 	CBrush * gridBrush;
 	CPen * gridPen;
 	CEdit* pEdit;
+	CFont gridFont;
+	CFont * p_oldFont;
 	bool destDrawn;
 	bool lotDrawn;
+	int FONT_SIZE; // size of font
+	// Loading stuff
 	UINT_PTR m_nSimTimer; // timer used for autorun simulation
 	std::string fileOpen; // name of the currently open file
 	std::ostringstream oss; // used to display events
