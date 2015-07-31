@@ -262,7 +262,7 @@ bool Driver::update() { // update driver parking, returns true on state change
 		break;
 	case 'd': // drive towards parking lot
 		if (update_location() == true) { // move car and check if arrived at parking lot
-			if (reserved->isFull()) {
+			if (reserved->getOpenSpots() <= 0) {
 				this->state = 'n'; // still searching for lots
 				return true; // end update here
 			}
