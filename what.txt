@@ -1,0 +1,151 @@
+****************************************************************************************************
+NUMBER OF ITERATIONS:
+During each iteration, a new set of drivers with random attributes will be generated.
+The grid, lot, and destination attributes will remain the same throughout all iterations.
+****************************************************************************************************
+1
+
+****************************************************************************************************
+GRID SIZE:
+The grid represents a 2-D, square, Cartesian space, with its lower left corner at (0, 0).
+The grid size is a positive integer value representing the maximum x and y-coordinates.
+****************************************************************************************************
+1000
+
+****************************************************************************************************
+DESTINATION COUNT:
+Total number of destinations on the grid.
+****************************************************************************************************
+2
+
+****************************************************************************************************
+DESTINATION LOCATIONS:
+Coordinates of each destination in the format: (x1,y1) (x2,y2) (x3,y3) ...
+The coordinates are real numbers that do not exceed the grid size.
+****************************************************************************************************
+(471.866,687.363) (242.714,353.325) 
+
+****************************************************************************************************
+DESTINATION PROBABILITIES:
+Probability that each destination will be chosen by a particular driver.
+These values must add to 1.
+****************************************************************************************************
+0.177387 0.822613 
+
+****************************************************************************************************
+DESTINATION AVERAGE DURATIONS:
+Average amount of time that drivers spend at each destination.
+Note that the simulation time is normalized from 0 to 1.
+****************************************************************************************************
+0.609041 0.397046 
+
+****************************************************************************************************
+LOT COUNT:
+Total number of parking lots on the grid.
+****************************************************************************************************
+3
+
+****************************************************************************************************
+LOT LOCATIONS:
+Coordinates of each lot in the format: (x1,y1) (x2,y2) (x3,y3) ...
+The coordinates are real numbers that do not exceed the grid size.
+****************************************************************************************************
+(697.011,581.385) (580.172,896.584) (183.143,226.491) 
+
+****************************************************************************************************
+LOT CAPACITIES:
+Number of parking spots in each parking lot.
+****************************************************************************************************
+1 1 2 
+
+****************************************************************************************************
+LOT TYPES:
+Types of parking at the parking lot.
+****************************************************************************************************
+r r r
+
+****************************************************************************************************
+LOT PRICING POLICY:
+Options:
+1 | Equal Static Pricing: all lots have the same price, which remains the same throughout the simulation
+2 | Random Static Pricing: lots have randomized prices, which remain the same throughout the simulation
+3 | Real-time, proportional dynamic pricing
+4 | LA Express Park Dynamic Pricing
+****************************************************************************************************
+3
+
+****************************************************************************************************
+LOT PRICES:
+Parking rate (price per unit of time) for each lot.
+Note that parking rates are normalized from 0 to 1.
+****************************************************************************************************
+0.488 0.488 0.488 
+
+****************************************************************************************************
+AVERAGE DEMAND:
+Average number of drivers that arrive per hour.
+****************************************************************************************************
+2
+
+****************************************************************************************************
+DRIVER COUNT:
+Number of drivers that arrives during each simulation iteration.
+Each row corresponds to one simulation iteration.
+****************************************************************************************************
+1
+
+****************************************************************************************************
+DRIVER ARRIVAL TIMES:
+Arrival times of each driver in ascending order.
+Note that the simulation time is normalized from 0 to 1.
+Each row corresponds to one simulation iteration.
+****************************************************************************************************
+0.377653 
+
+****************************************************************************************************
+DRIVER ARRIVAL LOCATIONS:
+Coordinates of the location of each driver at its arrival time in the format: (x1,y1) (x2,y2) (x3,y3) ...
+The coordinates are real numbers that do not exceed the grid size.
+Each row corresponds to one simulation iteration.
+****************************************************************************************************
+(894.385,915.756) 
+
+****************************************************************************************************
+DRIVER DESTINATIONS:
+ID number of each driver's destination.
+Each row corresponds to one simulation iteration.
+****************************************************************************************************
+1 
+
+****************************************************************************************************
+DRIVER DURATIONS:
+The amount of time that each driver will remain at its parking spot after arriving at the lot.
+Note that the simulation time is normalized from 0 to 1.
+A duration greater than 1 means that the driver will stay beyond the end of the simulation iteration.
+Each row corresponds to one simulation iteration.
+****************************************************************************************************
+1.23407 
+
+****************************************************************************************************
+DRIVER MAX WALKING DISTANCES:
+The maximum distance that each driver is willing to walk from its assigned lot to its destination.
+Each row corresponds to one simulation iteration.
+****************************************************************************************************
+530.22 
+
+****************************************************************************************************
+DRIVER MAX PRICES:
+The maximum parking rate (price per unit time) that each driver is willing to pay.
+Note that parking rates are normalized from 0 to 1.
+Each row corresponds to one simulation iteration.
+****************************************************************************************************
+0.263538 
+
+****************************************************************************************************
+DRIVER IMPORTANCE WEIGHTS:
+A value for each driver representing the relative importance of parking price vs. walking distance.
+These weights are real and normalized from 0 to 1.
+Each row corresponds to one simulation iteration.
+****************************************************************************************************
+0.525636 
+

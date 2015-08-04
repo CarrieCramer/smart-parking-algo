@@ -70,6 +70,14 @@ void Cgenerate_config::OnBnClickedOk()
 	
 	CDialogEx::OnOK();
 	// Run generate_config files
+	ofstream config;
+	if (newConfigFileName.IsEmpty()) {
+		config.open("config.txt");
+	}
+	else {
+		config.open(newConfigFileName);
+	}
+
 }
 
 
