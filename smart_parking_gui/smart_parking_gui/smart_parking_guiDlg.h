@@ -69,7 +69,6 @@ public:
 	afx_msg void OnBnClickedBNewlot();
 	afx_msg void OnBnClickedBNewdriver();
 	afx_msg void OnBnClickedBSimend();
-	afx_msg void OnBnClickedBShowstatus();
 	CSliderCtrl m_VSliderIteration;
 	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg void OnDropFiles(HDROP hDropInfo);
@@ -77,4 +76,5 @@ public:
 	afx_msg void OnBnClickedBSimpause();
 	int m_RadioTextDisplay;
 	afx_msg void OnBnClickedRadio();
+	afx_msg void OnBnClickedBGeneratedata();
 };

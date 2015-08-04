@@ -9,6 +9,7 @@
 #include "Cadd_Destination.h"
 #include "Cadd_Lot.h"
 #include "Cadd_Driver.h"
+#include "Cgenerate_config.h"
 #include "Commands.h" // Used to handle commands
 #include "Grid.h" // Contains the grid
 #include <string>
@@ -59,13 +60,13 @@ BEGIN_MESSAGE_MAP(Csmart_parking_guiDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_B_NEWLOT, &Csmart_parking_guiDlg::OnBnClickedBNewlot)
 	ON_BN_CLICKED(IDC_B_NEWDRIVER, &Csmart_parking_guiDlg::OnBnClickedBNewdriver)
 	ON_BN_CLICKED(IDC_B_SIMEND, &Csmart_parking_guiDlg::OnBnClickedBSimend)
-	ON_BN_CLICKED(IDC_B_SHOWSTATUS, &Csmart_parking_guiDlg::OnBnClickedBShowstatus)
 	ON_WM_VSCROLL()
 	ON_WM_DROPFILES()
 	ON_WM_TIMER()
 	ON_BN_CLICKED(IDC_B_SIMPAUSE, &Csmart_parking_guiDlg::OnBnClickedBSimpause)
 	ON_BN_CLICKED(IDC_RADIO_EVENT, &Csmart_parking_guiDlg::OnBnClickedRadio)
 	ON_BN_CLICKED(IDC_RADIO_STATUS, &Csmart_parking_guiDlg::OnBnClickedRadio)
+	ON_BN_CLICKED(IDC_B_GENERATEDATA, &Csmart_parking_guiDlg::OnBnClickedBGeneratedata)
 END_MESSAGE_MAP()
 
 
@@ -290,7 +291,6 @@ void Csmart_parking_guiDlg::OnBnClickedBNextevent()
 		GetDlgItem(IDC_ST_TIME)->RedrawWindow();
 		GetDlgItem(IDC_GRID_BOX)->RedrawWindow();
 		GetDlgItem(IDC_ST_STATUS)->RedrawWindow();
-		pEdit->LineScroll(pEdit->GetLineCount());
 	}
 	else {
 		AfxMessageBox(_T("Simulation over."));
@@ -357,12 +357,15 @@ void Csmart_parking_guiDlg::OnBnClickedBNewdriver() // Opens a dialog to input a
 	}
 }
 
-void Csmart_parking_guiDlg::OnBnClickedBShowstatus()
+void Csmart_parking_guiDlg::OnBnClickedBGeneratedata()
 {
-	// TODO: Add your control notification handler code here
-
+	UpdateData(TRUE);
+	Cgenerate_config Dlg(this);
+	if (Dlg.DoModal() == IDOK) {
+		
+	}
+	UpdateData(FALSE);
 }
-
 
 void Csmart_parking_guiDlg::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
@@ -445,7 +448,6 @@ void Csmart_parking_guiDlg::OnTimer(UINT_PTR nIDEvent)
 	displayText();
 	Invalidate();
 	GetDlgItem(IDC_ST_STATUS)->RedrawWindow();
-	pEdit->LineScroll(pEdit->GetLineCount());
 	CDialogEx::OnTimer(nIDEvent);
 }
 

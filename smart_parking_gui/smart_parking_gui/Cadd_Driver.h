@@ -26,6 +26,8 @@ public:
 	double m_LocY;
 private:
 	CSliderCtrl m_HSliderWeight;
+	int maxSlideValue;
+	bool scrolling;
 public:
 	// should be changeable by the slider later
 	double m_WeightScale;
@@ -34,4 +36,9 @@ public:
 	double m_MaxDist;
 	double m_MaxLotCharge;
 	int m_Iteration;
+	CEdit ScaleRead;
+	afx_msg void OnEnChangeEtWeightedit();
+	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	virtual BOOL OnInitDialog();
+	CString m_EchoID;
 };

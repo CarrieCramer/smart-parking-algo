@@ -109,7 +109,12 @@ double Grid::getGridSize() {
 }
 
 Event Grid::getCurrentEvent() {
-	return *eventIt; // returns current event
+	if (allEvents[currentIteration].size() > 1) {
+		return *eventIt; // returns current event
+	}
+	else {
+		return Event(0, nullptr, 'z');
+	}
 }
 
 double Grid::toNextEvent() { // Moves set iterator to next event

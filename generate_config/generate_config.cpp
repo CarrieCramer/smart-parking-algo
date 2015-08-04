@@ -116,6 +116,8 @@ int getPricePolicy() {
 	cout << "2 | Random Static Pricing: lots have randomized prices, which remain the same throughout the simulation\n";
 	cout << "3 | Real-time, proportional dynamic pricing\n";
 	cout << "4 | LA Express Park Dynamic Pricing\n";
+	cout << "5 | Proportional-Derivative Dynamic Pricing\n";
+	cout << "6 | Uber Dynamic Pricing\n";
 	cout << "Enter one of the numbers above to select a lot pricing policy: ";
 
 	// Read in lot policy number

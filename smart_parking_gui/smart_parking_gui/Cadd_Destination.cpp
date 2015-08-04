@@ -16,10 +16,10 @@ Cadd_Destination::Cadd_Destination(int destID, CWnd* pParent /*=NULL*/)
 	: CDialogEx(Cadd_Destination::IDD, pParent)
 	, m_LocationX(0)
 	, m_LocationY(0)
-	, m_EchoDestId(_T("This destination will have id: 0."))
+	, m_EchoDestId(_T("This destination will have ID: 0."))
 {
 	this->destID = destID;
-	m_EchoDestId.Format(_T("This destination will have id: %d."), destID); // Changes number to new ID
+	m_EchoDestId.Format(_T("This destination will have ID: %d."), destID); // Changes number to new ID
 }
 
 Cadd_Destination::~Cadd_Destination()

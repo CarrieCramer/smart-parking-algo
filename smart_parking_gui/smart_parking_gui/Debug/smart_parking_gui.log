@@ -1,15 +1,15 @@
-﻿Build started 7/31/2015 4:42:54 PM.
+﻿Build started 8/4/2015 5:43:36 PM.
      1>Project "C:\Users\Edward\Documents\2014-2015 BU Sophomore Year\Job\Smart Parking\parkingSimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\smart_parking_gui.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _UNICODE /D UNICODE /D _AFXDLL /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Driver.cpp
-         Driver.cpp
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\driver.cpp(165): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\driver.cpp(296): warning C4715: 'Driver::update' : not all control paths return a value
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _UNICODE /D UNICODE /D _AFXDLL /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Cadd_Driver.cpp
+         Cadd_Driver.cpp
+     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\cadd_driver.cpp(86): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Edward\Documents\2014-2015 BU Sophomore Year\Job\Smart Parking\parkingSimulator\smart-parking-algo\smart_parking_gui\Debug\smart_parking_gui.exe" /INCREMENTAL /NOLOGO /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /manifestinput:"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\Include\Manifest\dpiaware.manifest" /DEBUG /PDB:"C:\Users\Edward\Documents\2014-2015 BU Sophomore Year\Job\Smart Parking\parkingSimulator\smart-parking-algo\smart_parking_gui\Debug\smart_parking_gui.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /ENTRY:"wWinMainCRTStartup" /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Edward\Documents\2014-2015 BU Sophomore Year\Job\Smart Parking\parkingSimulator\smart-parking-algo\smart_parking_gui\Debug\smart_parking_gui.lib" /MACHINE:X86 Debug\smart_parking_gui.res
          Debug\Cadd_Destination.obj
          Debug\Cadd_Driver.obj
          Debug\Cadd_Lot.obj
+         Debug\Cgenerate_config.obj
          Debug\Commands.obj
          Debug\Data.obj
          Debug\Destination.obj
@@ -28,4 +28,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:06.16
+Time Elapsed 00:00:04.20

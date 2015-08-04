@@ -23,17 +23,11 @@ public:
 	double m_LocationX;
 	double m_LocationY;
 	int m_ParkSpaceCount;
-	int pricingPolicy;
 private:
-	// currently 6 pricing policies
-	CSliderCtrl m_HSliderPolicy;
-	CString m_EchoPolicyDesc;
 	int IDvalue;
+	CString m_EchoLotID;
 public:
 	double m_BaseCost;
-	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);	
 	virtual BOOL OnInitDialog();
-	afx_msg void OnBnClickedOk();
-private:
-	CString m_EchoLotID;
+	afx_msg void OnBnClickedOk();	
 };

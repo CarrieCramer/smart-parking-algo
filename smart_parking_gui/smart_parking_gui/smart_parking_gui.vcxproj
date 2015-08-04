@@ -104,6 +104,7 @@
     <ClInclude Include="Cadd_Destination.h" />
     <ClInclude Include="Cadd_Driver.h" />
     <ClInclude Include="Cadd_Lot.h" />
+    <ClInclude Include="Cgenerate_config.h" />
     <ClInclude Include="DrawGrid.h" />
     <ClInclude Include="GridDrawer.h" />
     <ClInclude Include="Commands.h" />
@@ -128,6 +129,7 @@
     <ClCompile Include="Cadd_Destination.cpp" />
     <ClCompile Include="Cadd_Driver.cpp" />
     <ClCompile Include="Cadd_Lot.cpp" />
+    <ClCompile Include="Cgenerate_config.cpp" />
     <ClCompile Include="Commands.cpp" />
     <ClCompile Include="Data.cpp" />
     <ClCompile Include="Destination.cpp" />
