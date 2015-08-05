@@ -147,10 +147,12 @@ bool Lot::update() { // Updates lot information
 			driversToPark[ii]->goToPark(); // head to parking
 		}
 		numNotReserved -= driversToPark.size(); // reduce size of reserve queue
+		numNewReservations = driversToPark.size(); // set numNewReservations to number of drivers who made a reservation during this function call
 	} else { // reserve as many as possible
 		for (int ii = 0; ii < numNotReserved; ii++) {
 			driversToPark[ii]->goToPark(); // head to parking
 		}
+		numNewReservations = numNotReserved; // set numNewReservations to number of drivers who made a reservation during this function call
 		numNotReserved = 0;
 	}
 	// Send data 

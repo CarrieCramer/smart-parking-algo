@@ -12,6 +12,7 @@
 #include "PricingPolicy4.h"
 #include "PricingPolicy5.h"
 #include "PricingPolicy6.h"
+#include "PricingPolicy7.h"
 using namespace std;
 
 Grid::Grid() { // not used at this time
@@ -789,6 +790,9 @@ bool Grid::update(double timing) { // Updates all elements of the grid.
 				break;
 			case 6:
 				updatePrices6(allLots);
+				break;
+			case 7:
+				updatePrices7(allLots, this->time, (*allDestinations.begin())->getLocation(), this->size);
 				break;
 		}
 	}

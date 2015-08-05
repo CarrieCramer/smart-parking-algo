@@ -40,6 +40,7 @@ class Lot { // the ID of a location
 		bool update(); // update number of spots
 		void show_status(); // shows status of parking lot
 		void sendData(); // sends current occupancy rate, reserved rate, and cost to data attribute
+		int numNewReservations; // Number of new reservations made in current event. Set in Lot::update(). Used in pricingPolicy7.
 
 	private:
 		int id;
