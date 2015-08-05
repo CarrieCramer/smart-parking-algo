@@ -1,5 +1,6 @@
 #include <iostream>
 #include <limits>
+#include <string>
 #include "generate_config.h"
 
 
@@ -191,14 +192,45 @@ bool randDestProbs() {
 	return destProbs;
 }
 
+const std::string asterisks = "****************************************************************************************************\n";
+
+// Write iteration count to config
+void writeIterations(int numIterations, ofstream& config) {
+	config << asterisks;
+	config << "NUMBER OF ITERATIONS:\n";
+	config << "During each iteration, a new set of drivers with random attributes will be generated.\n";
+	config << "The grid, lot, and destination attributes will remain the same throughout all iterations.\n";
+	config << asterisks;
+	config << numIterations << "\n\n";
+}
+
+// Write grid size to config
+void writeGridSize(double gridSize, ofstream& config) {
+	config << asterisks;
+	config << "GRID SIZE:\n";
+	config << "The grid represents a 2-D, square, Cartesian space, with its lower left corner at (0, 0).\n";
+	config << "The grid size is a positive integer value representing the maximum x and y-coordinates.\n";
+	config << asterisks;
+	config << gridSize << "\n\n";
+}
+
+// Write destination count to config
+void writeDestCount(int numDests, ofstream& config) {
+	config << asterisks;
+	config << "DESTINATION COUNT:\n";
+	config << "Total number of destinations on the grid.\n";
+	config << asterisks;
+	config << numDests << "\n\n";
+}
+
 // Write random destination locations to output stream
 void writeDestLocs(int gridSize, int numDests, ofstream& config, default_random_engine& engine) {
 
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 	config << "DESTINATION LOCATIONS:\n";
 	config << "Coordinates of each destination in the format: (x1,y1) (x2,y2) (x3,y3) ...\n";
 	config << "The coordinates are real numbers that do not exceed the grid size.\n";
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 
 	// Define a continuous Uniform(0,gridSize) distribution
 	uniform_real_distribution<double> distribution(0, gridSize);
@@ -215,11 +247,11 @@ void writeDestLocs(int gridSize, int numDests, ofstream& config, default_random_
 // Write destination probabilities (probability that a driver will choose that destination) to config and return the probabilities in a list
 list<double> writeDestProbs(bool randDestProbsIn, int numDests, ofstream& config, default_random_engine& engine) {
 
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 	config << "DESTINATION PROBABILITIES:\n";
 	config << "Probability that each destination will be chosen by a particular driver.\n";
 	config << "These values must add to 1.\n";
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 
 	// Define list that will hold all destination probabilities
 	list<double> destProbs;
@@ -271,11 +303,11 @@ list<double> writeDestProbs(bool randDestProbsIn, int numDests, ofstream& config
 // Write random destination average durations to config
 vector<double> writeDestAvgDurs(int numDests, ofstream& config, default_random_engine& engine) {
 
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 	config << "DESTINATION AVERAGE DURATIONS:\n";
 	config << "Average amount of time that drivers spend at each destination.\n";
 	config << "Note that the simulation time is normalized from 0 to 1.\n";
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 
 	// Define a continuous Uniform(0,1) distribution
 	uniform_real_distribution<double> distribution(0, 1);
@@ -294,14 +326,22 @@ vector<double> writeDestAvgDurs(int numDests, ofstream& config, default_random_e
 	return avgDurations;
 }
 
+void writeLotCount(int numLots, ofstream& config) {
+	config << asterisks;
+	config << "LOT COUNT:\n";
+	config << "Total number of parking lots on the grid.\n";
+	config << asterisks;
+	config << numLots << "\n\n";
+}
+
 //Write random lot locations to config
 void writeLotLocs(int gridSize, int numLots, ofstream& config, default_random_engine& engine) {
 
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 	config << "LOT LOCATIONS:\n";
 	config << "Coordinates of each lot in the format: (x1,y1) (x2,y2) (x3,y3) ...\n";
 	config << "The coordinates are real numbers that do not exceed the grid size.\n";
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 
 
 	// Define a continuous Uniform(0,gridSize) distribution
@@ -319,10 +359,10 @@ void writeLotLocs(int gridSize, int numLots, ofstream& config, default_random_en
 // Write random parking lot capacities to config
 int writeLotCapacities(bool randCapacIn, int capac, int avgDemand, int numLots, ofstream& config, default_random_engine& engine) {
 
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 	config << "LOT CAPACITIES:\n";
 	config << "Number of parking spots in each parking lot.\n";
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 	
 	int totalCapacity = 0;
 	int currentCapacity;
@@ -354,10 +394,10 @@ int writeLotCapacities(bool randCapacIn, int capac, int avgDemand, int numLots, 
 // Write the lot types to config
 void writeLotTypes(int numLots, ofstream& config, default_random_engine& engine) {
 	const int numOfLotTypes = 3;
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 	config << "LOT TYPES:\n";
 	config << "Types of parking at the parking lot.\n";
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 	
 	char lotType;
 	int distResult;
@@ -384,25 +424,25 @@ void writeLotTypes(int numLots, ofstream& config, default_random_engine& engine)
 // Write the pricing policy to config
 void writePricePolicy(int pricePolicy, ofstream& config) {
 
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 	config << "LOT PRICING POLICY:\n";
 	config << "Options:\n";
 	config << "1 | Equal Static Pricing: all lots have the same price, which remains the same throughout the simulation\n";
 	config << "2 | Random Static Pricing: lots have randomized prices, which remain the same throughout the simulation\n";
 	config << "3 | Real-time, proportional dynamic pricing\n";
 	config << "4 | LA Express Park Dynamic Pricing\n";
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 	config << pricePolicy <<"\n\n";
 }
 
 // Write random parking lot prices to config
 void writeLotPrices(int pricePolicy, double price, int numLots, ofstream& config, default_random_engine& engine) {
 
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 	config << "LOT PRICES:\n";
 	config << "Parking rate (price per unit of time) for each lot.\n";
 	config << "Note that parking rates are normalized from 0 to 1.\n";
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 
 	switch (pricePolicy) {
 	
@@ -455,13 +495,22 @@ void writeLotPrices(int pricePolicy, double price, int numLots, ofstream& config
 }
 
 void writeOccupationRate(double rate, ofstream& config) {
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 	config << "MAX OCCUPATION RATE:\n";
 	config << "The ratio of non-reserved parking spaces to all parking spaces needed for\n";
 	config << "a person to consider reserving a parking space at a lot of type 'e'.\n";
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 	
 	config << rate << "\n\n";
+}
+
+// Write average demand
+void writeAvgDemand(int avgDemand, ofstream& config) {
+	config << asterisks;
+	config << "AVERAGE DEMAND:\n";
+	config << "Average number of drivers that arrive per hour.\n";
+	config << asterisks;
+	config << avgDemand << "\n\n";
 }
 
 // Get driver arrival times and return them in a matrix
@@ -515,11 +564,11 @@ list<list<double>> generateArrivals(int numIterations, int numHours, int avgDema
 // Write number of drivers in each simulation iteration to config and return them in a list
 list<int> writeNumDrivers(list<list<double>> arrivals, ofstream& config) {
 
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 	config << "DRIVER COUNT:\n";
 	config << "Number of drivers that arrives during each simulation iteration.\n";
 	config << "Each row corresponds to one simulation iteration.\n";
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 
 	// Stores the number of drivers in each simulation iteration
 	list<int> numDrivers;
@@ -547,12 +596,12 @@ list<int> writeNumDrivers(list<list<double>> arrivals, ofstream& config) {
 // Write driver arrival times to config
 void writeDriverArrivals(list<list<double>> arrivals, ofstream& config) {
 
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 	config << "DRIVER ARRIVAL TIMES:\n";
 	config << "Arrival times of each driver in ascending order.\n";
 	config << "Note that the simulation time is normalized from 0 to 1.\n";
 	config << "Each row corresponds to one simulation iteration.\n";
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 
 	// Iterate through 1st dimension of arrivals
 	for (list<list<double>>::iterator arrivalsIt = arrivals.begin(); arrivalsIt != arrivals.end(); arrivalsIt++) {
@@ -573,12 +622,12 @@ void writeDriverArrivals(list<list<double>> arrivals, ofstream& config) {
 // Write random driver arrival locations to config
 void writeDriverLocs(int gridSize, list<int> numDrivers, ofstream& config, default_random_engine& engine) {
 
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 	config << "DRIVER ARRIVAL LOCATIONS:\n";
 	config << "Coordinates of the location of each driver at its arrival time in the format: (x1,y1) (x2,y2) (x3,y3) ...\n";
 	config << "The coordinates are real numbers that do not exceed the grid size.\n";
 	config << "Each row corresponds to one simulation iteration.\n";
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 
 	// Define a continuous Uniform(0,gridSize) distribution
 	uniform_real_distribution<double> distribution(0, gridSize);
@@ -606,11 +655,11 @@ void writeDriverLocs(int gridSize, list<int> numDrivers, ofstream& config, defau
 // Write random driver destinations to config and return list of destinations
 list<list<int>> writeDriverDests(list<double> destProbs, list<int> numDrivers, ofstream& config, default_random_engine& engine) {
 
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 	config << "DRIVER DESTINATIONS:\n";
 	config << "ID number of each driver's destination.\n";
 	config << "Each row corresponds to one simulation iteration.\n";
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 
 	// Define a discrete distribution over the destination IDs based on the destination probabilities
 	list<double>::iterator it = destProbs.begin();
@@ -660,13 +709,13 @@ list<list<int>> writeDriverDests(list<double> destProbs, list<int> numDrivers, o
 // Write random driver durations to config
 void writeDriverDurs(int avgDemand, double utilRate, int totalCapacity, list<int> numDrivers, ofstream& config, default_random_engine& engine) {
 
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 	config << "DRIVER DURATIONS:\n";
 	config << "The amount of time that each driver will remain at its parking spot after arriving at the lot.\n";
 	config << "Note that the simulation time is normalized from 0 to 1.\n";
 	config << "A duration greater than 1 means that the driver will stay beyond the end of the simulation iteration.\n";
 	config << "Each row corresponds to one simulation iteration.\n";
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 	/*
 	// Iterate through each list of driver destinations stored in dests
 	for (list<list<int>>::iterator destsIt = dests.begin(); destsIt != dests.end(); destsIt++) {
@@ -709,11 +758,11 @@ void writeDriverDurs(int avgDemand, double utilRate, int totalCapacity, list<int
 // Write random driver max walking distances to config
 void writeDriverMaxWalkDists(int gridSize, list<int> numDrivers, ofstream& config, default_random_engine& engine) {
 
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 	config << "DRIVER MAX WALKING DISTANCES:\n";
 	config << "The maximum distance that each driver is willing to walk from its assigned lot to its destination.\n";
 	config << "Each row corresponds to one simulation iteration.\n";
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 
 	// Define a continuous Uniform(0,gridSize) distribution 
 	uniform_real_distribution<double> distribution(0, gridSize);
@@ -734,12 +783,12 @@ void writeDriverMaxWalkDists(int gridSize, list<int> numDrivers, ofstream& confi
 // Write random driver max prices to config
 void writeDriverMaxPrices(list<int> numDrivers, ofstream& config, default_random_engine& engine) {
 
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 	config << "DRIVER MAX PRICES:\n";
 	config << "The maximum parking rate (price per unit time) that each driver is willing to pay.\n";
 	config << "Note that parking rates are normalized from 0 to 1.\n";
 	config << "Each row corresponds to one simulation iteration.\n";
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 
 	// Define a continuous Uniform(0,1) distribution 
 	uniform_real_distribution<double> distribution(0, 1);
@@ -760,12 +809,12 @@ void writeDriverMaxPrices(list<int> numDrivers, ofstream& config, default_random
 // Write random driver importance weight to config
 void writeDriverImportWeights(list<int> numDrivers, ofstream& config, default_random_engine& engine) {
 
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 	config << "DRIVER IMPORTANCE WEIGHTS:\n";
 	config << "A value for each driver representing the relative importance of parking price vs. walking distance.\n";
 	config << "These weights are real and normalized from 0 to 1.\n";
 	config << "Each row corresponds to one simulation iteration.\n";
-	config << "****************************************************************************************************\n";
+	config << asterisks;
 
 	// Define a continuous Uniform(0,1) distribution 
 	uniform_real_distribution<double> distribution(0, 1);

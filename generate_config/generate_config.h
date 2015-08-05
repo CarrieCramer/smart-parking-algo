@@ -49,6 +49,15 @@ int getNumDests();
 // Obtain whether destination probabilities are equal or random from user input
 bool randDestProbs();
 
+// Write iteration count to config
+void writeIterations(int numIterations, ofstream& config);
+
+// Write grid size to config
+void writeGridSize(double gridSize, ofstream& config);
+
+// Write destination count to config
+void writeDestCount(int numDests, ofstream& config);
+
 // Write random destination locations to config
 void writeDestLocs(int gridSize, int numDests, ofstream& config, default_random_engine& engine);
 
@@ -57,6 +66,9 @@ list<double> writeDestProbs(bool randDestProbsIn, int numDests, ofstream& config
 
 // Write random destination average durations to config
 vector<double> writeDestAvgDurs(int numDests, ofstream& config, default_random_engine& engine);
+
+// Write lot count to config
+void writeLotCount(int numLots, ofstream& config);
 
 // Write random parking lot locations to config
 void writeLotLocs(int gridSize, int numLots, ofstream& config, default_random_engine& engine);
@@ -75,6 +87,9 @@ void writeLotPrices(int pricePolicy, double price, int numLots, ofstream& config
 
 // Write occupation rate of optional-reserve lots to config
 void writeOccupationRate(double rate, ofstream& config);
+
+// Write average demand
+void writeAvgDemand(int avgDemand, ofstream& config);
 
 // Get driver arrival times and return them in a matrix
 list<list<double>> generateArrivals(int numIterations, int numHours, int avgDemand, ofstream& config, default_random_engine& engine);

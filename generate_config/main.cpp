@@ -67,27 +67,13 @@ int main() {
 	config.open("config.txt");
 
 	// Write number of iterations to config.txt
-	config << "****************************************************************************************************\n";
-	config << "NUMBER OF ITERATIONS:\n";
-	config << "During each iteration, a new set of drivers with random attributes will be generated.\n";
-	config << "The grid, lot, and destination attributes will remain the same throughout all iterations.\n";
-	config << "****************************************************************************************************\n";
-	config << numIterations << "\n\n";
+	writeIterations(numIterations, config);
 
 	// Write grid size to config.txt
-	config << "****************************************************************************************************\n";
-	config << "GRID SIZE:\n";
-	config << "The grid represents a 2-D, square, Cartesian space, with its lower left corner at (0, 0).\n";
-	config << "The grid size is a positive integer value representing the maximum x and y-coordinates.\n";
-	config << "****************************************************************************************************\n";
-	config << gridSize << "\n\n";
+	writeGridSize(gridSize, config);
 
 	// Write number of destinations to config.txt
-	config << "****************************************************************************************************\n";
-	config << "DESTINATION COUNT:\n";
-	config << "Total number of destinations on the grid.\n";
-	config << "****************************************************************************************************\n";
-	config << numDests << "\n\n";
+	writeDestCount(numDests, config);
 
 	// Write random destination locations to config.txt
 	writeDestLocs(gridSize, numDests, config, engine);
@@ -99,11 +85,7 @@ int main() {
 	vector<double> avgDurations = writeDestAvgDurs(numDests, config, engine);
 
 	// Write number of lots to config.txt
-	config << "****************************************************************************************************\n";
-	config << "LOT COUNT:\n";
-	config << "Total number of parking lots on the grid.\n";
-	config << "****************************************************************************************************\n";
-	config << numLots << "\n\n";
+	writeLotCount(numLots, config);
 	
 	// Write random parking lot locations to config.txt
 	writeLotLocs(gridSize, numLots, config, engine);
@@ -123,11 +105,7 @@ int main() {
 	writeOccupationRate(occupationRate, config);
 	
 	// Write average demand to config.txt
-	config << "****************************************************************************************************\n";
-	config << "AVERAGE DEMAND:\n";
-	config << "Average number of drivers that arrive per hour.\n";
-	config << "****************************************************************************************************\n";
-	config << avgDemand << "\n\n";
+	writeAvgDemand(avgDemand, config);
 
 	// Get driver arrival times and write number of drivers to config.txt 
 	list<list<double>> arrivals = generateArrivals(numIterations, numHours, avgDemand, config, engine);
