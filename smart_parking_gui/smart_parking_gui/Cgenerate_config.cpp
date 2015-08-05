@@ -23,9 +23,12 @@ Cgenerate_config::Cgenerate_config(CWnd* pParent /*=NULL*/)
 	, m_occuRate(0)
 	, m_LotPrice(0)
 	, m_RandDestProbs(FALSE)
+	, m_RandCapacIn(FALSE)
+	, m_Capac(0)
 {
 	engine = default_random_engine(random_device{}());
 	pricingPolicy = 1;
+	m_Capac = 0;
 }
 
 Cgenerate_config::~Cgenerate_config()
@@ -51,6 +54,10 @@ void Cgenerate_config::DoDataExchange(CDataExchange* pDX)
 	DDV_MinMaxDouble(pDX, m_occuRate, 0, 1);
 	DDX_Control(pDX, IDC_POLICYDESCRIPTION, m_EchoDescription);
 	DDX_Check(pDX, IDC_CHECKDESTPROBS, m_RandDestProbs);
+	DDX_Check(pDX, IDC_CHECKLOTCAPS, m_RandCapacIn);
+	DDX_Control(pDX, IDC_LOTCAPACITY, LotCapacityBox);
+	DDX_Text(pDX, IDC_LOTCAPACITY, m_Capac);
+	DDX_Control(pDX, IDC_CHECKLOTCAPS, m_RLCCheckbox);
 }
 
 
@@ -58,6 +65,7 @@ BEGIN_MESSAGE_MAP(Cgenerate_config, CDialogEx)
 	ON_BN_CLICKED(IDOK, &Cgenerate_config::OnBnClickedOk)
 	ON_BN_CLICKED(IDC_B_BROWSE, &Cgenerate_config::OnBnClickedBBrowse)
 	ON_WM_HSCROLL()
+	ON_BN_CLICKED(IDC_CHECKLOTCAPS, &Cgenerate_config::OnBnClickedChecklotcaps)
 END_MESSAGE_MAP()
 
 
@@ -67,9 +75,8 @@ END_MESSAGE_MAP()
 
 void Cgenerate_config::OnBnClickedOk()
 {
-	
-	CDialogEx::OnOK();
 	// Run generate_config files
+	UpdateData(TRUE);
 	ofstream config;
 	if (newConfigFileName.IsEmpty()) {
 		config.open("config.txt");
@@ -78,6 +85,34 @@ void Cgenerate_config::OnBnClickedOk()
 		config.open(newConfigFileName);
 	}
 
+	// Write information to config
+	writeIterations(m_ItNumber, config);
+	writeGridSize(m_GridSize, config);
+	writeDestCount(m_DestCount, config);
+	writeDestLocs(m_GridSize, m_DestCount, config, engine);
+	std::list<double> destProbs = writeDestProbs(m_RandDestProbs, m_DestCount, config, engine);
+	vector<double> avgDurations = writeDestAvgDurs(m_DestCount, config, engine);
+	writeLotCount(m_LotCount, config);
+	writeLotLocs(m_GridSize, m_LotCount, config, engine);
+	int totalCapacity = writeLotCapacities(m_RandCapacIn, m_Capac, m_AvgDemand, m_LotCount, config, engine);
+	writeLotTypes(m_LotCount, config, engine);
+	writePricePolicy(pricingPolicy, config);
+	writeLotPrices(pricingPolicy, m_LotPrice, m_LotCount, config, engine);
+	writeOccupationRate(m_occuRate, config);
+	writeAvgDemand(m_AvgDemand, config);
+	std::list<std::list<double> > arrivals = generateArrivals(m_ItNumber, m_SimuHours, m_AvgDemand, config, engine);
+	std::list<int> numDrivers = writeNumDrivers(arrivals, config);
+	writeDriverArrivals(arrivals, config);
+	writeDriverLocs(m_GridSize, numDrivers, config, engine);
+	std::list<std::list<int> > dests = writeDriverDests(destProbs, numDrivers, config, engine);
+	writeDriverDurs(m_AvgDemand, m_utilRate, totalCapacity, numDrivers, config, engine);
+	writeDriverMaxWalkDists(m_GridSize, numDrivers, config, engine);
+	writeDriverMaxPrices(numDrivers, config, engine);
+	writeDriverImportWeights(numDrivers, config, engine);
+	
+	config.close();
+
+	CDialogEx::OnOK();
 }
 
 
@@ -86,7 +121,7 @@ void Cgenerate_config::OnBnClickedBBrowse()
 	TCHAR szFilters[] = _T("Text Files (*.txt)|*.txt|All Files (*.*)|*.*||");
 
 	// Create a Save dialog
-	CFileDialog fileDlg(FALSE, _T("txt"), _T("*.txt"),
+	CFileDialog fileDlg(FALSE, _T("txt"), _T("config.txt"),
 		OFN_FILEMUSTEXIST | OFN_HIDEREADONLY, szFilters);
 
 	// Display the file dialog. When user clicks OK, fileDlg.DoModal() 
@@ -137,7 +172,6 @@ void Cgenerate_config::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar
 			break;
 		}
 		m_EchoDescription.SetWindowText(policyDesc);
-		UpdateData(FALSE);
 	}
 	CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);
 }
@@ -150,6 +184,20 @@ BOOL Cgenerate_config::OnInitDialog()
 	// TODO:  Add extra initialization here
 	m_SliderPolicy.SetRange(1, 7, TRUE); // range from policies 1 to 7
 	m_EchoDescription.SetWindowText(_T("Equal Static Pricing\r\nAll lots are given the same static prices."));
+	LotCapacityBox.EnableWindow(TRUE);
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
+}
+
+
+void Cgenerate_config::OnBnClickedChecklotcaps()
+{
+	// TODO: Add your control notification handler code here
+	if (m_RLCCheckbox.GetCheck() == TRUE) {
+		GetDlgItem(IDC_LOTCAPACITY)->EnableWindow(FALSE); // disable lot capacity
+		m_Capac = 0;
+	}
+	else {
+		GetDlgItem(IDC_LOTCAPACITY)->EnableWindow(TRUE);
+	}
 }

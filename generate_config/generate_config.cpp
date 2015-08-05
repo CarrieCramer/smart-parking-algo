@@ -1,7 +1,9 @@
 #include <iostream>
 #include <limits>
 #include <string>
+#include <list>
 #include "generate_config.h"
+using namespace std;
 
 
 // Obtain the number of simulation iterations. In each iteration, the grid, lot, and destination attributes will remain the same, but there will be a different set of drivers. 
@@ -514,7 +516,7 @@ void writeAvgDemand(int avgDemand, ofstream& config) {
 }
 
 // Get driver arrival times and return them in a matrix
-list<list<double>> generateArrivals(int numIterations, int numHours, int avgDemand, ofstream& config, default_random_engine& engine) {
+list<list<double> > generateArrivals(int numIterations, int numHours, int avgDemand, ofstream& config, default_random_engine& engine) {
 
 	//Define exponential distribution with arrival rate parameter 
 	exponential_distribution<double> distribution(avgDemand);
@@ -525,7 +527,8 @@ list<list<double>> generateArrivals(int numIterations, int numHours, int avgDema
 	// Matrix that will store arrival times
 	// 1st dimension corresponds to simulation iteration number
 	// 2nd dimension corresponds to driver ID
-	list<list<double>> arrivals;
+
+	list< list<double> > arrivals;
 
 	// List of arrival times for current iteration
 	list<double> currentArrivals;

@@ -87,6 +87,9 @@
     <ClInclude Include="Cgenerate_config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\generate_config\generate_config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="smart_parking_gui.cpp">
@@ -138,6 +141,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Cgenerate_config.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\generate_config\generate_config.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

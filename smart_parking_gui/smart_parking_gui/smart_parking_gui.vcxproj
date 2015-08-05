@@ -101,6 +101,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\generate_config\generate_config.h" />
     <ClInclude Include="Cadd_Destination.h" />
     <ClInclude Include="Cadd_Driver.h" />
     <ClInclude Include="Cadd_Lot.h" />
@@ -126,6 +127,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\generate_config\generate_config.cpp" />
     <ClCompile Include="Cadd_Destination.cpp" />
     <ClCompile Include="Cadd_Driver.cpp" />
     <ClCompile Include="Cadd_Lot.cpp" />

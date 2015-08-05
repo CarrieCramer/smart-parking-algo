@@ -45,4 +45,9 @@ public:
 	
 	virtual BOOL OnInitDialog();
 	BOOL m_RandDestProbs;
+	BOOL m_RandCapacIn;
+	afx_msg void OnBnClickedChecklotcaps();
+	CEdit LotCapacityBox;
+	int m_Capac;
+	CButton m_RLCCheckbox;
 };
