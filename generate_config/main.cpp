@@ -102,7 +102,7 @@ int main() {
 	// Write random parking lot capacities to config.txt
 	int totalCapacity = writeLotCapacities(randCapacIn, capac, avgDemand, numLots, config, engine);
 	
-	writeLotTypes(numLots, config, engine);
+	writeLotTypes(numLots, pricePolicy, config, engine);
 
 	// Write the pricing policy to config.txt
 	writePricePolicy(pricePolicy, config);

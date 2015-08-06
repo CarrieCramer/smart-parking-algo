@@ -426,7 +426,7 @@ void writePricePolicy(int pricePolicy, ofstream& config) {
 	config << "4 | LA Express Park Dynamic Pricing\n";
 	config << "5 | Proportional-Derivative Dynamic Pricing\n";
 	config << "6 | Uber Dynamic Pricing\n";
-	config << "7 | Competitive Dynamic Pricing Game";
+	config << "7 | Competitive Dynamic Pricing Game\n";
 	config << asterisks;
 	config << pricePolicy <<"\n\n";
 }
