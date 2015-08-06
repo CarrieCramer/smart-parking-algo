@@ -28,8 +28,14 @@ int main() {
 	// Get average demand from user input
 	int avgDemand = getAvgDemand();
 	
-	// Get number of parking lots from user input
-	int numLots = getNumLots();
+	// Get pricing policy from user input
+	int pricePolicy = getPricePolicy();
+
+	// Get number of parking lots from user input except for Pricing Policy 7, for which the number of lots is set to two
+	int numLots = 2;
+	if (pricePolicy != 7) {
+		numLots = getNumLots();
+	}
 
 	// Get whether lot capacities should be random or equal from user input
 	bool randCapacIn = randCapac();
@@ -42,24 +48,27 @@ int main() {
 
 	// Get utilization rate from user input - avg fraction of all spots on the grid that are being utilized (reserved/occupied)
 	double utilRate = getUtilRate();
-
-	// Get pricing policy from user input
-	int pricePolicy = getPricePolicy();
 	
 	// Get max occupation rate from user input
 	double occupationRate = getOccupationRate();
 	
-	// If price policy 2 is not chosen, get initial lot price from user input
-	double price = 0;
-	if (pricePolicy != 2) {
+	// If price policies 2 & 7 are not chosen, get initial lot price from user input. 
+	double price = 0.5;
+	if ((pricePolicy != 2) && (pricePolicy != 7)) {
 		price = getLotPrice();
 	}
 	
-	// Get number of destinations from user input
-	int numDests = getNumDests();
+	// Get number of destinations from user input except for Pricing Policy 7, for which the number of destinations is set to one
+	int numDests = 1;
+	if (pricePolicy != 7) {
+		numDests = getNumDests();
+	}
 
-	// Get whether destination probabilities (prob. that each destination is chosen) should be random or equal from user input
-	bool randDestProbsIn = randDestProbs();
+	// If pricing policy 7 is not chosen, get whether destination probabilities (prob. that each destination is chosen) should be random or equal from user input
+	bool randDestProbsIn = 0;
+	if (pricePolicy != 7) {
+		bool randDestProbsIn = randDestProbs();
+	}
 
 	// Declare output stream "config" that will write to a file called "config.txt"
 	// Note: If "config.txt" does not already exist in the present working directory, it will be created automatically. Otherwise, it will be written over.

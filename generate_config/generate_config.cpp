@@ -23,7 +23,7 @@ int getNumIterations() {
 int getGridSize() {
 
 	// Prompt user to enter the grid size (length of one side of the square grid)
-	cout << "\nEnter grid size: ";
+	cout << "\nEnter grid size (length of one side of the square grid): ";
 
 	// Read in grid size
 	int gridSize = 0;
@@ -117,10 +117,11 @@ int getPricePolicy() {
 	cout << "\nPricing Policies:\n";
 	cout << "1 | Equal Static Pricing: all lots have the same price, which remains the same throughout the simulation\n";
 	cout << "2 | Random Static Pricing: lots have randomized prices, which remain the same throughout the simulation\n";
-	cout << "3 | Real-time, proportional dynamic pricing\n";
+	cout << "3 | Proportional Dynamic Pricing\n";
 	cout << "4 | LA Express Park Dynamic Pricing\n";
 	cout << "5 | Proportional-Derivative Dynamic Pricing\n";
 	cout << "6 | Uber Dynamic Pricing\n";
+	cout << "7 | Competitive Dynamic Pricing Game";
 	cout << "Enter one of the numbers above to select a lot pricing policy: ";
 
 	// Read in lot policy number
@@ -140,26 +141,11 @@ double getOccupationRate() {
 	return rate;
 }
 
-/*
-// Obtain whether lot prices are equal or random from user input
-bool randPrice() {
-
-	// Prompt user to enter 0 for equal lot prices or 1 for random
-	cout << endl << "Enter 0 for equal lot prices or 1 for random: ";
-
-	// Read in user response
-	bool randPriceIn = 0;
-	cin >> randPriceIn;
-
-	return randPriceIn;
-}
-*/
-
-// Obtain lot price if user chooses to use equal lot prices
+// Obtain lot prices
 double getLotPrice() {
 
 	// Prompt user to enter lot price
-	cout << "\nEnter lot price (real number normalized from 0 to 1). For dynamic pricing policies, this will be the initial price for all lots: ";
+	cout << "\nEnter lot price (real number in the range [0,1]). For dynamic pricing policies, this will be the initial price for all lots: ";
 
 	// Read in lot price
 	double price = 0.0;
@@ -394,7 +380,7 @@ int writeLotCapacities(bool randCapacIn, int capac, int avgDemand, int numLots, 
 }
 
 // Write the lot types to config
-void writeLotTypes(int numLots, ofstream& config, default_random_engine& engine) {
+void writeLotTypes(int numLots, int pricePolicy, ofstream& config, default_random_engine& engine) {
 	const int numOfLotTypes = 3;
 	config << asterisks;
 	config << "LOT TYPES:\n";
@@ -404,10 +390,14 @@ void writeLotTypes(int numLots, ofstream& config, default_random_engine& engine)
 	char lotType;
 	int distResult;
 	uniform_int_distribution<int> distribution(1, numOfLotTypes);
-	
+
 	for (int i = 0; i < numLots; i++) {
-		distResult = distribution(engine);
-		switch (distResult) {
+		if (pricePolicy == 7) {
+			lotType = 'r';
+		}
+		else {
+			distResult = distribution(engine);
+			switch (distResult) {
 			case 1:
 				lotType = 'r';
 				break;
@@ -416,10 +406,11 @@ void writeLotTypes(int numLots, ofstream& config, default_random_engine& engine)
 				break;
 			default:
 				lotType = 'n';
+			}
 		}
 		config << lotType << " ";
-	}
-	
+		}
+
 	config << "\n\n";
 }
 
@@ -431,8 +422,11 @@ void writePricePolicy(int pricePolicy, ofstream& config) {
 	config << "Options:\n";
 	config << "1 | Equal Static Pricing: all lots have the same price, which remains the same throughout the simulation\n";
 	config << "2 | Random Static Pricing: lots have randomized prices, which remain the same throughout the simulation\n";
-	config << "3 | Real-time, proportional dynamic pricing\n";
+	config << "3 | Proportional Dynamic Pricing\n";
 	config << "4 | LA Express Park Dynamic Pricing\n";
+	config << "5 | Proportional-Derivative Dynamic Pricing\n";
+	config << "6 | Uber Dynamic Pricing\n";
+	config << "7 | Competitive Dynamic Pricing Game";
 	config << asterisks;
 	config << pricePolicy <<"\n\n";
 }
@@ -442,41 +436,12 @@ void writeLotPrices(int pricePolicy, double price, int numLots, ofstream& config
 
 	config << asterisks;
 	config << "LOT PRICES:\n";
-	config << "Parking rate (price per unit of time) for each lot.\n";
-	config << "Note that parking rates are normalized from 0 to 1.\n";
+	config << "Parking price per hour for each lot.\n";
+	config << "Note that parking prices are normalized from 0 to 1.\n";
 	config << asterisks;
 
-	switch (pricePolicy) {
-	
-	case 1: // Equal Static Pricing 
-	case 3: // Real-time, Proportional Dynamic Pricing
+	if (pricePolicy == 2) {
 		
-		//Write equal prices to config
-		for (int i = 0; i < numLots; i++) {
-
-			config << price << " ";
-		}
-		
-		break;
-
-	case 2: //Random Static Pricing
-
-		// Define a continuous Uniform(0,1) distribution 
-		uniform_real_distribution<double> distribution(0, 1);
-
-		// Write random prices to config
-		for (int i = 0; i < numLots; i++) {
-
-			config << distribution(engine) << " ";
-		}
-
-		break;
-	}
-
-	config << "\n\n";
-
-	/*
-	if (randPriceIn) {
 		// Define a continuous Uniform(0,1) distribution 
 		uniform_real_distribution<double> distribution(0, 1);
 
@@ -487,13 +452,15 @@ void writeLotPrices(int pricePolicy, double price, int numLots, ofstream& config
 		}
 	}
 	else {
-		// Write equap prices to config
+
+		//Write equal prices to config
 		for (int i = 0; i < numLots; i++) {
 
 			config << price << " ";
 		}
 	}
-	*/
+
+	config << "\n\n";
 }
 
 void writeOccupationRate(double rate, ofstream& config) {
@@ -719,24 +686,8 @@ void writeDriverDurs(int avgDemand, double utilRate, int totalCapacity, list<int
 	config << "A duration greater than 1 means that the driver will stay beyond the end of the simulation iteration.\n";
 	config << "Each row corresponds to one simulation iteration.\n";
 	config << asterisks;
-	/*
-	// Iterate through each list of driver destinations stored in dests
-	for (list<list<int>>::iterator destsIt = dests.begin(); destsIt != dests.end(); destsIt++) {
-
-		// Iterate through *destsIt, which is the list of driver destinations for the current simulation iteration
-		for (list<int>::iterator currentDestsIt = (*destsIt).begin(); currentDestsIt != (*destsIt).end(); currentDestsIt++) {
-		
-			// Define an exponential distribution with parameter avg duration of the current destination
-			exponential_distribution<double> distribution(1 / (*(avgDurations.begin() + *currentDestsIt)));
-
-			// Write the random duration to config
-			config << distribution(engine) << " ";
-		}
-		// Go to the next line in config
-		config << "\n";
-	}
-	*/
-	exponential_distribution<double> distribution(avgDemand/(utilRate*totalCapacity)); // NEED TO NOT HARDCODE THIS
+	
+	exponential_distribution<double> distribution(avgDemand/(utilRate*totalCapacity)); 
 
 	int currentNumDrivers = 0;
 
