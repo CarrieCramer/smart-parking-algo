@@ -1,28 +1,14 @@
-﻿Build started 8/6/2015 2:53:17 PM.
-     1>Project "C:\Users\Edward\Documents\2014-2015 BU Sophomore Year\Job\Smart Parking\parkingSimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\smart_parking_gui.vcxproj" on node 2 (Rebuild target(s)).
-     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppClean.targets(76,5): warning : The process cannot access the file 'c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\debug\smart_parking_gui.ilk' because it is being used by another process.
+﻿Build started 8/6/2015 3:02:18 PM.
+     1>Project "C:\Users\Edward\Documents\2014-2015 BU Sophomore Year\Job\Smart Parking\parkingSimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\smart_parking_gui.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\DLib\dlib-18.16\\" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _UNICODE /D UNICODE /D _AFXDLL /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yc"stdafx.h" /Fp"Debug\smart_parking_gui.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt stdafx.cpp
-         stdafx.cpp
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\DLib\dlib-18.16\\" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _UNICODE /D UNICODE /D _AFXDLL /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\Data.cpp ..\..\Destination.cpp ..\..\Driver.cpp ..\..\DriveVector.cpp ..\..\Event.cpp ..\..\generate_config\generate_config.cpp ..\..\Grid.cpp ..\..\Location.cpp ..\..\Lot.cpp Cadd_Destination.cpp Cadd_Driver.cpp Cadd_Lot.cpp Cgenerate_config.cpp Commands.cpp smart_parking_gui.cpp smart_parking_guiDlg.cpp
-         smart_parking_guiDlg.cpp
-         smart_parking_gui.cpp
-         Commands.cpp
-         Cgenerate_config.cpp
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\cgenerate_config.cpp(92): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\cgenerate_config.cpp(93): warning C4800: 'BOOL' : forcing value to bool 'true' or 'false' (performance warning)
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\cgenerate_config.cpp(96): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\cgenerate_config.cpp(97): warning C4800: 'BOOL' : forcing value to bool 'true' or 'false' (performance warning)
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\cgenerate_config.cpp(106): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\cgenerate_config.cpp(109): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
-         Cadd_Lot.cpp
-         Cadd_Driver.cpp
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\cadd_driver.cpp(86): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
-         Cadd_Destination.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\DLib\dlib-18.16\\" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _UNICODE /D UNICODE /D _AFXDLL /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\Driver.cpp ..\..\Event.cpp ..\..\Grid.cpp ..\..\Lot.cpp Cadd_Driver.cpp Cadd_Lot.cpp Commands.cpp smart_parking_gui.cpp smart_parking_guiDlg.cpp
          Lot.cpp
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\lot.cpp(145): warning C4018: '>=' : signed/unsigned mismatch
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\lot.cpp(146): warning C4018: '<' : signed/unsigned mismatch
-         Location.cpp
+     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\lot.cpp(149): warning C4018: '>=' : signed/unsigned mismatch
+     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\lot.cpp(150): warning C4018: '<' : signed/unsigned mismatch
+         Generating Code...
+         Compiling...
+         smart_parking_guiDlg.cpp
+         Commands.cpp
          Grid.cpp
      1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\pricingpolicy7.h(169): warning C4018: '<' : signed/unsigned mismatch
      1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(144): warning C4018: '<' : signed/unsigned mismatch
@@ -53,17 +39,15 @@
      1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(809): warning C4018: '<' : signed/unsigned mismatch
      1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(812): warning C4018: '<' : signed/unsigned mismatch
      1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(815): warning C4018: '<' : signed/unsigned mismatch
-         generate_config.cpp
-         Event.cpp
-         DriveVector.cpp
          Driver.cpp
      1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\driver.cpp(166): warning C4018: '<' : signed/unsigned mismatch
-         Destination.cpp
-         Data.cpp
          Generating Code...
      1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\driver.cpp(294): warning C4715: 'Driver::update' : not all control paths return a value
-       ResourceCompile:
-         C:\Program Files (x86)\Windows Kits\8.1\bin\x86\rc.exe /D _DEBUG /D _UNICODE /D UNICODE /D _AFXDLL /l"0x0409" /IDebug\ /nologo /fo"Debug\smart_parking_gui.res" smart_parking_gui.rc 
+         Skipping... (no relevant changes detected)
+         smart_parking_gui.cpp
+         Cadd_Lot.cpp
+         Cadd_Driver.cpp
+         Event.cpp
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Edward\Documents\2014-2015 BU Sophomore Year\Job\Smart Parking\parkingSimulator\smart-parking-algo\smart_parking_gui\Debug\smart_parking_gui.exe" /INCREMENTAL /NOLOGO /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /manifestinput:"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\Include\Manifest\dpiaware.manifest" /DEBUG /PDB:"C:\Users\Edward\Documents\2014-2015 BU Sophomore Year\Job\Smart Parking\parkingSimulator\smart-parking-algo\smart_parking_gui\Debug\smart_parking_gui.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /ENTRY:"wWinMainCRTStartup" /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Edward\Documents\2014-2015 BU Sophomore Year\Job\Smart Parking\parkingSimulator\smart-parking-algo\smart_parking_gui\Debug\smart_parking_gui.lib" /MACHINE:X86 Debug\smart_parking_gui.res
          Debug\Data.obj
@@ -83,10 +67,9 @@
          Debug\smart_parking_gui.obj
          Debug\smart_parking_guiDlg.obj
          Debug\stdafx.obj
-         LINK : C:\Users\Edward\Documents\2014-2015 BU Sophomore Year\Job\Smart Parking\parkingSimulator\smart-parking-algo\smart_parking_gui\Debug\smart_parking_gui.exe not found or not built by the last incremental link; performing full link
          smart_parking_gui.vcxproj -> C:\Users\Edward\Documents\2014-2015 BU Sophomore Year\Job\Smart Parking\parkingSimulator\smart-parking-algo\smart_parking_gui\Debug\smart_parking_gui.exe
-     1>Done Building Project "C:\Users\Edward\Documents\2014-2015 BU Sophomore Year\Job\Smart Parking\parkingSimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\smart_parking_gui.vcxproj" (Rebuild target(s)).
+     1>Done Building Project "C:\Users\Edward\Documents\2014-2015 BU Sophomore Year\Job\Smart Parking\parkingSimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\smart_parking_gui.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:50.56
+Time Elapsed 00:00:39.50

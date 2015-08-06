@@ -58,6 +58,7 @@ class Lot { // the ID of a location
 		Location location; // location of lot
 		int capacity; // can be 1 for individual or total for parking lots
 		double cost;
+		double origCost; // original cost on startup
 		Grid * world; // full allocation system
 };
 

@@ -14,6 +14,7 @@ Lot::Lot() { // default constructor
 	this->numNotReserved = 0;
 	this->peopleLeaving = 0;
 	this->cost = 3; // arbitrary value
+	this->origCost = cost;
 	this->lotType = 'r';
 	this->world = nullptr;
 }
@@ -26,6 +27,7 @@ Lot::Lot(int ID, Location loc, int totalSpots, Grid * as) {
 	this->numNotReserved = capacity;
 	this->peopleLeaving = 0;
 	this->cost = 3; // arbitrary value
+	this->origCost = cost;
 	this->lotType = 'r';
 	this->world = as;
 }
@@ -38,6 +40,7 @@ Lot::Lot(int ID, Location loc, int totalSpots, double costPerUnit, Grid * as) {
 	this->numNotReserved = capacity;
 	this->peopleLeaving = 0;
 	this->cost = costPerUnit; // arbitrary value
+	this->origCost = cost;
 	this->lotType = 'r';
 	this->world = as;
 }
@@ -50,6 +53,7 @@ Lot::Lot(int ID, Location loc, int totalSpots, double costPerUnit, char lotType,
 	this->numNotReserved = capacity;
 	this->peopleLeaving = 0;
 	this->cost = costPerUnit; // arbitrary value
+	this->origCost = cost;
 	this->lotType = lotType;
 	this->world = as;
 }
