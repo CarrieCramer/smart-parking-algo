@@ -1,5 +1,7 @@
 #include "Destination.h"
 #include <iostream>
+#include <string>
+#include <sstream>
 using namespace std;
 
 Destination::Destination() {
@@ -25,9 +27,9 @@ bool Destination::update() { // Possibly used to change the demand of the destin
 	return true;
 }
 
-
-void Destination::show_status() { // show destination location
-	cout << "Destination " << id;
-	cout << " is located at " << location << endl;
-	return;
+string Destination::show_status() { // show destination location
+	ostringstream output;
+	output << "Destination " << id;
+	output << " is located at " << location << "\r\n";
+	return output.str();
 }

@@ -95,7 +95,7 @@ void Cgenerate_config::OnBnClickedOk()
 	writeLotCount(m_LotCount, config);
 	writeLotLocs(m_GridSize, m_LotCount, config, engine);
 	int totalCapacity = writeLotCapacities(m_RandCapacIn, m_Capac, m_AvgDemand, m_LotCount, config, engine);
-	writeLotTypes(m_LotCount, config, engine);
+	writeLotTypes(m_LotCount, pricingPolicy, config, engine);
 	writePricePolicy(pricingPolicy, config);
 	writeLotPrices(pricingPolicy, m_LotPrice, m_LotCount, config, engine);
 	writeOccupationRate(m_occuRate, config);

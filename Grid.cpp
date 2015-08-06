@@ -109,7 +109,12 @@ double Grid::getGridSize() {
 }
 
 Event Grid::getCurrentEvent() {
-	return *eventIt; // returns current event
+	if (allEvents[currentIteration].size() > 1) {
+		return *eventIt; // returns current event
+	}
+	else {
+		return Event(0, nullptr, 'z');
+	}
 }
 
 double Grid::toNextEvent() { // Moves set iterator to next event
@@ -799,18 +804,16 @@ bool Grid::update(double timing) { // Updates all elements of the grid.
 	return stateChanged;
 }
 
-void Grid::show_status() {
+string Grid::show_status() {
+	ostringstream output;
 	for (int ii = 0; ii < allUsers[currentIteration].size(); ii++) {
-		allUsers[currentIteration][ii]->show_status();
+		output << allUsers[currentIteration][ii]->show_status() << endl;
 	}
 	for (int jj = 0; jj < allLots.size(); jj++) {
-		allLots[jj]->show_status();
+		output << allLots[jj]->show_status() << endl;
 	}
 	for (int hh = 0; hh < allDestinations.size(); hh++) {
-		allDestinations[hh]->show_status();
+		output << allDestinations[hh]->show_status() << endl;
 	}
-	cout << "Iteration " << currentIteration << endl;
-	cout << "Total iterations: " << numOfIterations << endl;
-	cout << "Time: " << time << endl;
-	return;
+	return output.str();
 }

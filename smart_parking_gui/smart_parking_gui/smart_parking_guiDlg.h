@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Grid.h"
+#include "../../Grid.h"
 #include "afxcmn.h"
 #include <sstream>
 class Grid;

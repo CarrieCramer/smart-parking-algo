@@ -1,10 +1,10 @@
 #include "Commands.h"
-#include "Grid.h"
-#include "Lot.h"
-#include "Driver.h"
-#include "Destination.h"
-#include "Location.h"
-#include "InputHandling.h"
+#include "../../Grid.h"
+#include "../../Lot.h"
+#include "../../Driver.h"
+#include "../../Destination.h"
+#include "../../Location.h"
+#include "../../InputHandling.h"
 
 #include <iostream>
 #include <fstream>
@@ -90,7 +90,6 @@ void write_file(Grid & world, std::string fileName) { // write data to file
 
 void open_file(Grid & world, std::string fileName) { // read data from written file
 	// Recommended to do at start of simulation
-	OutputDebugString(_T("A"));
 	ifstream readFile;
 	world.reset(); // reset in the case that there is no error
 	readFile.open(fileName); // works in c++11 only	
@@ -99,7 +98,6 @@ void open_file(Grid & world, std::string fileName) { // read data from written f
 	} else {
 		throw InvalidInput("File does not exist.");
 	}
-	OutputDebugString(_T("B"));
 	readFile.close();
 	return;
 }

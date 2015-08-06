@@ -11,7 +11,7 @@
 #include "Cadd_Driver.h"
 #include "Cgenerate_config.h"
 #include "Commands.h" // Used to handle commands
-#include "Grid.h" // Contains the grid
+#include "../../Grid.h" // Contains the grid
 #include <string>
 #include <sstream>
 #include <cmath>

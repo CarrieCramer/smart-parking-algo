@@ -5,7 +5,7 @@
 #include "smart_parking_gui.h"
 #include "Cadd_Destination.h"
 #include "afxdialogex.h"
-#include "Destination.h"
+#include "../../Destination.h"
 
 
 // Cadd_Destination dialog

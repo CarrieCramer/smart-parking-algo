@@ -55,6 +55,7 @@ std::ostream& operator << (std::ostream &os, const Event& event) {
 	} else {
 		os << "Event 0: Start\n";
 	}
+	os << "\r\n";
 	return os;
 }
 

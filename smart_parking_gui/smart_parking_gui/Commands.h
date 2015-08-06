@@ -2,7 +2,7 @@
 
 #ifndef __Commands__
 #define __Commands__
-#include "Grid.h"
+#include "../../Grid.h"
 #include <string>
 #include <atlstr.h>
 // Processes user provided commands

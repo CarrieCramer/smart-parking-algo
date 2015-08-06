@@ -51,7 +51,7 @@ class Driver {
 		void goToPark(); // set status of drivers to head to park
 		
 		bool update(); // update driver data
-		void show_status(); // shows status of driver
+		std::string show_status(); // shows status of driver
 		void sendData(); // Adds data regarding reserved parking spot to the Driver's data attribute
 	private:
 		int id;

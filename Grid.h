@@ -59,7 +59,7 @@ class Grid {
 		vector<bool> simulationOver; // checks the finished state of iteration
 		
 		bool update(double timing = 1); // updates the entire grid
-		void show_status(); // shows status of all items
+		std::string show_status(); // shows status of all items
 
 		Data* data; // Data object that Drivers and Lots will send data to
 		

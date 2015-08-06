@@ -16,7 +16,7 @@ class Destination {
 		double getRate(); // get rate of people entering to calculate costs
 		
 		bool update();
-		void show_status(); // show status of destination
+		std::string show_status(); // show status of destination
 	private:
 		int id;
 		Location location;

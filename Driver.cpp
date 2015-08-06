@@ -5,6 +5,7 @@
 #include "Lot.h"
 #include "DriveVector.h"
 #include "Event.h"
+#include <sstream>
 #include <cmath>
 #include <iostream>
 #include <limits> // for maximum double value
@@ -95,6 +96,8 @@ void Driver::resetLocation() { // reset location and state
 	this->state = 'z';
 	this->maxWalkDist = initmaxWalk;
 	this->maxCharge = initmaxCharge;
+	this->reservingLot = false;
+	reserved = nullptr;
 }
 
 void Driver::goToPark() {
@@ -154,54 +157,55 @@ Lot* Driver::makeReservation(double timeParking) { // finds potential lots
 
 vector<Lot *> Driver::findLots(double timeParking) {
 	// initialize vars
-	vector<Lot *> lotsAvailable; 
+	vector<Lot *> lotsAvailable;
 	double distance;
 	double charge;
 	double cost;
-	
+
 	vector<Lot *> allLots = world->getAllLots();
 	for (int ii = 0; ii < allLots.size(); ii++) {
 		if (allLots[ii]->isFull() == false) { // won't add lot that has no spaces available
 			distance = dist(allLots[ii]->getLocation(), dest->getLocation()); // calculate distance
 			if (distance <= this->maxWalkDist) { // if destination within walking distance
 				switch (allLots[ii]->getLotType()) {
-					case 'r':
-						charge = allLots[ii]->getCost(timeParking + dist(this->location, allLots[ii]->getLocation())/this->speed); // calculate cost
-						if (allLots[ii]->getCost(1.0) <= this->maxCharge) { // if cost within specified range
-							lotsAvailable.push_back(allLots[ii]); // add lot to lots available
-							lotDist.push_back(distance);
-							lotCharge.push_back(charge);
-							cost = (importanceWeight*(charge)+(1 - importanceWeight)*(distance / world->getGridSize()));
-							lotCost.push_back(cost);
-							reservingLot = true;
-						}
+				case 'r':
+					charge = allLots[ii]->getCost(timeParking + dist(this->location, allLots[ii]->getLocation()) / this->speed); // calculate cost
+					if (charge / timeParking <= this->maxCharge) { // if cost within specified range
+						lotsAvailable.push_back(allLots[ii]); // add lot to lots available
+						lotDist.push_back(distance);
+						lotCharge.push_back(charge);
+						cost = (importanceWeight*(charge)+(1 - importanceWeight)*(distance / world->getGridSize()));
+						lotCost.push_back(cost);
+						reservingLot = true;
+					}
 					break;
-					case 'e':
-						if (allLots[ii]->getReservedRate() < world->occupationRate) { // placeholder 
-							charge = allLots[ii]->getCost(timeParking); // calculate cost
-							reservingLot = false;
-						} else {
-							charge = allLots[ii]->getCost(timeParking + dist(this->location, allLots[ii]->getLocation())/this->speed); // calculate cost
-							reservingLot = true;
-						}
-						if (allLots[ii]->getCost(1.0) <= this->maxCharge) { // if cost within specified range
-							lotsAvailable.push_back(allLots[ii]); // add lot to lots available
-							lotDist.push_back(distance);
-							lotCharge.push_back(charge);
-							cost = (importanceWeight*(charge)+(1 - importanceWeight)*(distance / world->getGridSize()));
-							lotCost.push_back(cost);
-						}
-						break;
-					default:
+				case 'e':
+					if (allLots[ii]->getReservedRate() < world->occupationRate) { // placeholder 
 						charge = allLots[ii]->getCost(timeParking); // calculate cost
 						reservingLot = false;
-						if (allLots[ii]->getCost(1.0) <= this->maxCharge) { // if cost within specified range
-							lotsAvailable.push_back(allLots[ii]); // add lot to lots available
-							lotDist.push_back(distance);
-							lotCharge.push_back(charge);
-							cost = (importanceWeight*(charge)+(1 - importanceWeight)*(distance / world->getGridSize()));
-							lotCost.push_back(cost);
-						}
+					}
+					else {
+						charge = allLots[ii]->getCost(timeParking + dist(this->location, allLots[ii]->getLocation()) / this->speed); // calculate cost
+						reservingLot = true;
+					}
+					if (charge / timeParking <= this->maxCharge) { // if cost within specified range
+						lotsAvailable.push_back(allLots[ii]); // add lot to lots available
+						lotDist.push_back(distance);
+						lotCharge.push_back(charge);
+						cost = (importanceWeight*(charge)+(1 - importanceWeight)*(distance / world->getGridSize()));
+						lotCost.push_back(cost);
+					}
+					break;
+				default:
+					charge = allLots[ii]->getCost(timeParking); // calculate cost
+					reservingLot = false;
+					if (charge / timeParking <= this->maxCharge) { // if cost within specified range
+						lotsAvailable.push_back(allLots[ii]); // add lot to lots available
+						lotDist.push_back(distance);
+						lotCharge.push_back(charge);
+						cost = (importanceWeight*(charge)+(1 - importanceWeight)*(distance / world->getGridSize()));
+						lotCost.push_back(cost);
+					}
 				}
 			}
 		}
@@ -290,17 +294,18 @@ bool Driver::update() { // update driver parking, returns true on state change
 }
 
 bool Driver::update_location() { // Moves towards destination. Return true if reached.
-	double totalDistance = dist(travelPoint,location);
-	DriveVector distDiff = (travelPoint-location)*(1/totalDistance);
-    if (totalDistance != 0) { // check if destination is the same place or not
-      this->driveDirection = distDiff * (this->speed*world->timeIncrement); // delta equation
-    }
+	DriveVector distDiff = travelPoint - location;
+	double totalDistance = dist(travelPoint, location);
+	if (totalDistance != 0) { // check if destination is the same place or not
+		this->driveDirection = (travelPoint - location) * ((this->speed / totalDistance)*world->timeIncrement); // delta equation
+	}
 	if (fabs(distDiff.x) <= fabs(driveDirection.x) && fabs(distDiff.y) <= fabs(driveDirection.y)) { // if driver can reach
 		location = travelPoint; // set location to destination
 		return true;
-	} else {
+	}
+	else {
 		location = location + driveDirection; // move driver closer
-		return false; 
+		return false;
 	}
 }
 
@@ -322,22 +327,28 @@ char Driver::getState() {
 	return this->state;
 }
 
-void Driver::show_status() { // output driver ID, location, destination, and lot if applicable
+string Driver::show_status() { // output driver ID, location, destination, and lot if applicable
+	ostringstream output;
+	output << "Driver " << this->id;
 	switch (this->state) {
-		case 'n': // seeking lots
-			cout << "Driver " << this->id << " located at " << this->location << " is seeking lots and heading for Destination " << dest->getID() << endl;
-			break;
-		case 'd': // heading to lot
-			cout << "Driver " << this->id << " located at " << this->location << " is heading to Lot " << reserved->getID() << endl;
-			break;
-		case 'p': // parking
-			cout << "Driver " << this->id << " located at " << this->location << " is parked at Lot " << reserved->getID() << endl;
-			break;
-		case 'g':
-			cout << "Driver " << this->id << " has left the map." << endl;
-		default:
-			break; // do nothing
+	case 'n': // seeking lots
+		output << " located at " << this->location << " is seeking lots and heading for Destination " << dest->getID();
+		break;
+	case 'd': // heading to lot
+		output << " located at " << this->location << " is heading to Lot " << reserved->getID();
+		break;
+	case 'p': // parking
+		output << " located at " << this->location << " is parked at Lot " << reserved->getID();
+		break;
+	case 'g':
+		output << " has left the map.";
+		break;
+	default:
+		output.str(std::string()); // empty string
+		break; // do nothing
 	}
+	output << "\r\n"; // newline
+	return output.str();
 }
 
 // Adds data regarding reserved parking spot to the Driver's data attribute

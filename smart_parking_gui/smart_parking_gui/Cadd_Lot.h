@@ -1,5 +1,5 @@
 #pragma once
-#include "Lot.h"
+#include "../../Lot.h"
 #include "afxcmn.h"
 
 // Cadd_Lot dialog
