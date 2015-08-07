@@ -29,6 +29,8 @@ Cgenerate_config::Cgenerate_config(CWnd* pParent /*=NULL*/)
 	engine = default_random_engine(random_device{}());
 	pricingPolicy = 1;
 	m_Capac = 0;
+	maxSlideValue = 100;
+	scrolling = false;
 }
 
 Cgenerate_config::~Cgenerate_config()
@@ -58,6 +60,10 @@ void Cgenerate_config::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LOTCAPACITY, LotCapacityBox);
 	DDX_Text(pDX, IDC_LOTCAPACITY, m_Capac);
 	DDX_Control(pDX, IDC_CHECKLOTCAPS, m_RLCCheckbox);
+	DDX_Control(pDX, IDC_SLIDE_UTILRATE, m_SlideUtilRate);
+	DDX_Control(pDX, IDC_SLIDE_OCCURATE, m_SlideOccuRate);
+	DDX_Control(pDX, IDC_UTILRATE, UtilRead);
+	DDX_Control(pDX, IDC_OCCURATE, OccuRead);
 }
 
 
@@ -66,12 +72,12 @@ BEGIN_MESSAGE_MAP(Cgenerate_config, CDialogEx)
 	ON_BN_CLICKED(IDC_B_BROWSE, &Cgenerate_config::OnBnClickedBBrowse)
 	ON_WM_HSCROLL()
 	ON_BN_CLICKED(IDC_CHECKLOTCAPS, &Cgenerate_config::OnBnClickedChecklotcaps)
+	ON_EN_CHANGE(IDC_UTILRATE, &Cgenerate_config::OnEnChangeUtilrate)
+	ON_EN_CHANGE(IDC_OCCURATE, &Cgenerate_config::OnEnChangeOccurate)
 END_MESSAGE_MAP()
 
 
 // Cgenerate_config message handlers
-
-
 
 void Cgenerate_config::OnBnClickedOk()
 {
@@ -137,6 +143,7 @@ void Cgenerate_config::OnBnClickedBBrowse()
 void Cgenerate_config::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	// Describe the current pricing policy
+	scrolling = true;
 	if (pScrollBar == (CScrollBar *)&m_SliderPolicy) {
 		pricingPolicy = m_SliderPolicy.GetPos();
 		CString policyDesc;
@@ -165,6 +172,8 @@ void Cgenerate_config::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar
 			policyDesc.Format(_T("Uber Dynamic Pricing\r\n"));
 			GetDlgItem(IDC_LOTPRICE)->EnableWindow(TRUE);
 			break;
+		case 7:
+			policyDesc.Format(_T("Competitive Pricing Game\r\n"));
 		default:
 			pricingPolicy = 1;
 			policyDesc.Format(_T("Equal Static Pricing\r\nAll lots are given the same static prices."));
@@ -173,16 +182,36 @@ void Cgenerate_config::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar
 		}
 		m_EchoDescription.SetWindowText(policyDesc);
 	}
+	else  {
+		int value;
+		if (pScrollBar == (CScrollBar *)&m_SlideUtilRate) {
+			value = m_SlideUtilRate.GetPos();
+		}
+		else if (pScrollBar == (CScrollBar *)&m_SlideOccuRate){
+			value = m_SlideOccuRate.GetPos();
+		}
+		double scrollValue = (double)value / (double)maxSlideValue;
+		CString echoScroll;
+		echoScroll.Format(_T("%.2f"), scrollValue);
+		if (pScrollBar == (CScrollBar *)&m_SlideUtilRate) {
+			UtilRead.SetWindowText(echoScroll);
+		}
+		else {
+			OccuRead.SetWindowText(echoScroll);
+		}
+	}
 	CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);
+	scrolling = false;
 }
 
 
 BOOL Cgenerate_config::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
-
 	// TODO:  Add extra initialization here
 	m_SliderPolicy.SetRange(1, 7, TRUE); // range from policies 1 to 7
+	m_SlideUtilRate.SetRange(0, maxSlideValue, TRUE);
+	m_SlideOccuRate.SetRange(0, maxSlideValue, TRUE);
 	m_EchoDescription.SetWindowText(_T("Equal Static Pricing\r\nAll lots are given the same static prices."));
 	LotCapacityBox.EnableWindow(TRUE);
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -199,5 +228,33 @@ void Cgenerate_config::OnBnClickedChecklotcaps()
 	}
 	else {
 		GetDlgItem(IDC_LOTCAPACITY)->EnableWindow(TRUE);
+	}
+}
+
+
+void Cgenerate_config::OnEnChangeUtilrate()
+{
+	// TODO:  Add your control notification handler code here
+	if (scrolling == false){
+		CString readValue;
+		UtilRead.GetWindowText(readValue);
+		m_utilRate = _wtof(readValue);
+		if (m_utilRate >= 0 && m_utilRate <= 1) {
+			m_SlideUtilRate.SetPos(m_utilRate*maxSlideValue);
+		}
+	}
+}
+
+
+void Cgenerate_config::OnEnChangeOccurate()
+{
+	// TODO:  Add your control notification handler code here
+	if (scrolling == false) {
+		CString readValue;
+		OccuRead.GetWindowText(readValue);
+		m_occuRate = _wtof(readValue);
+		if (m_occuRate >= 0 && m_occuRate <= 1) {
+			m_SlideOccuRate.SetPos(m_occuRate*maxSlideValue);
+		}
 	}
 }

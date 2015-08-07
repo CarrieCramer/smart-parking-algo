@@ -71,11 +71,6 @@ END_MESSAGE_MAP()
 
 void Cadd_Driver::OnEnChangeEtWeightedit()
 {
-	// TODO:  If this is a RICHEDIT control, the control will not
-	// send this notification unless you override the CDialogEx::OnInitDialog()
-	// function and call CRichEditCtrl().SetEventMask()
-	// with the ENM_CHANGE flag ORed into the mask.
-
 	// Check if what's entered is a number between 0 and 1
 	// and set it as the value
 	if (scrolling == false) { // check if not scrolling
@@ -97,7 +92,7 @@ void Cadd_Driver::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 		int value = m_HSliderWeight.GetPos();
 		double scrollValue = value / (double) maxSlideValue;
 		CString echoScroll;
-		echoScroll.Format(_T("%f"), scrollValue);
+		echoScroll.Format(_T("%.2f"), scrollValue);
 		ScaleRead.SetWindowText(echoScroll);
 		CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);
 		scrolling = false;

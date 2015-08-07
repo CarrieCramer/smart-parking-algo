@@ -36,6 +36,7 @@ public:
 private:
 	CSliderCtrl m_SliderPolicy;
 	CEdit m_EchoDescription;
+	int maxSlideValue; // maximum value for the two slider rates
 public:
 	double m_LotPrice;
 	afx_msg void OnBnClickedOk();
@@ -49,5 +50,12 @@ public:
 	afx_msg void OnBnClickedChecklotcaps();
 	CEdit LotCapacityBox;
 	int m_Capac;
+	bool scrolling;
 	CButton m_RLCCheckbox;
+	CSliderCtrl m_SlideUtilRate;
+	CSliderCtrl m_SlideOccuRate;
+	CEdit UtilRead;
+	CEdit OccuRead;
+	afx_msg void OnEnChangeUtilrate();
+	afx_msg void OnEnChangeOccurate();
 };
