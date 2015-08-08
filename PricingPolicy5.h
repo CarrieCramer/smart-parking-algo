@@ -8,7 +8,7 @@
 #include "Lot.h"
 using namespace std;
 
-void updatePrices5(vector<double> lotUpdateTimes, vector<Lot*> allLots, vector<vector<double>> lotReservedRates, double targetResRate = 0.85, double limit = 0) {
+void updatePrices5(vector<Lot*> allLots, vector<vector<double>> lotReservedRates, double targetResRate = 0.85, double limit = 0) {
 
 	// Static variable to count the total number of events that have occured
 	static int eventCount = 0;

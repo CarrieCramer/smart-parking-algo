@@ -791,7 +791,7 @@ bool Grid::update(double timing) { // Updates all elements of the grid.
 				updatePrices4(data->lotReservedRates, data->lotUpdateTimes, allLots, this->time, 0.1); 
 				break;
 			case 5:
-				updatePrices5(data->lotUpdateTimes, allLots, data->lotReservedRates);
+				updatePrices5(allLots, data->lotReservedRates);
 				break;
 			case 6:
 				updatePrices6(allLots);
