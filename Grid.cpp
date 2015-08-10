@@ -708,6 +708,10 @@ int Grid::getDestinationCount() {
 	return allDestinations.size();
 }
 
+int Grid::getPricingPolicy() {
+	return this->pricingPolicy;
+}
+
 int Grid::switchIteration(int newIt) { // switches iteration. Resets time. Returns iteration number.
 	if (newIt >= numOfIterations || newIt < 0) { // not an iteration
 		return -1; // doesn't count

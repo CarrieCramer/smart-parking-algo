@@ -174,7 +174,12 @@ vector<Lot *> Driver::findLots(double timeParking) {
 						lotsAvailable.push_back(allLots[ii]); // add lot to lots available
 						lotDist.push_back(distance);
 						lotCharge.push_back(charge);
-						cost = (importanceWeight*(charge)+(1 - importanceWeight)*(distance / world->getGridSize()));
+						if (this->world->getPricingPolicy() == 7) {
+							cost = charge + importanceWeight*(distance / (world->getGridSize()*sqrt(2)));
+						}
+						else {
+							cost = (importanceWeight*(charge)+(1 - importanceWeight)*(distance / world->getGridSize()));
+						}
 						lotCost.push_back(cost);
 						reservingLot = true;
 					}
@@ -192,7 +197,12 @@ vector<Lot *> Driver::findLots(double timeParking) {
 						lotsAvailable.push_back(allLots[ii]); // add lot to lots available
 						lotDist.push_back(distance);
 						lotCharge.push_back(charge);
-						cost = (importanceWeight*(charge)+(1 - importanceWeight)*(distance / world->getGridSize()));
+						if (this->world->getPricingPolicy() == 7) {
+							cost = charge + importanceWeight*(distance / (world->getGridSize()*sqrt(2)));
+						}
+						else {
+							cost = (importanceWeight*(charge)+(1 - importanceWeight)*(distance / world->getGridSize()));
+						}
 						lotCost.push_back(cost);
 					}
 					break;
@@ -203,7 +213,12 @@ vector<Lot *> Driver::findLots(double timeParking) {
 						lotsAvailable.push_back(allLots[ii]); // add lot to lots available
 						lotDist.push_back(distance);
 						lotCharge.push_back(charge);
-						cost = (importanceWeight*(charge)+(1 - importanceWeight)*(distance / world->getGridSize()));
+						if (this->world->getPricingPolicy() == 7) {
+							cost = charge + importanceWeight*(distance / (world->getGridSize()*sqrt(2)));
+						}
+						else {
+							cost = (importanceWeight*(charge)+(1 - importanceWeight)*(distance / world->getGridSize()));
+						}
 						lotCost.push_back(cost);
 					}
 				}

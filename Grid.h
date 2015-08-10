@@ -41,6 +41,7 @@ class Grid {
 		int getDriverCount(int); // get driver count for specific iteration
 		int getLotCount(); // get lot count
 		int getDestinationCount(); // get number of destinations
+		int getPricingPolicy();
 		vector<Lot *> getAllLots();
 		vector<Location> getDestLocations();
 		vector<Location> getLotLocations();
