@@ -1,7 +1,7 @@
 #ifndef PRICING_POLICY_6
 #define PRICING_POLICY_6
 
-// Pricing policy 6: Uber-like proportional dynamic pricing
+// Pricing policy 6: Uber-like dynamic pricing
 
 #include <iostream>
 #include <vector>
@@ -21,8 +21,8 @@ void updatePrices6(vector<Lot*> allLots, double targetResRate = 0.85, double bas
 		// Update the Lot's cost if its current occupancy rate is above the desired occupancy rate
 		if (currentResRate > targetResRate) {
 
-			// Calculate the new cost
-			newPrice = basePrice + basePrice*(currentResRate - targetResRate);
+			// Calculate the new cost. It is proportional to the ratio of actual demand to target demand.
+			newPrice = basePrice * (currentResRate / targetResRate) * 1.5;
 
 			// If the new cost is greater than 1, set it to 1. 
 			if (newPrice > 1) {
