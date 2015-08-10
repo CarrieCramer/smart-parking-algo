@@ -77,4 +77,5 @@ public:
 	int m_RadioTextDisplay;
 	afx_msg void OnBnClickedRadio();
 	afx_msg void OnBnClickedBGeneratedata();
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 };

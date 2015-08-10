@@ -86,11 +86,11 @@ void Cgenerate_config::OnBnClickedOk()
 	ofstream config;
 	if (newConfigFileName.IsEmpty()) {
 		config.open("config.txt");
+		newConfigFileName = _T("config.txt"); // sets name of config file
 	}
 	else {
 		config.open(newConfigFileName);
 	}
-
 	// Write information to config
 	writeIterations(m_ItNumber, config);
 	writeGridSize(m_GridSize, config);

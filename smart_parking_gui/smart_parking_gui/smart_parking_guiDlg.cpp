@@ -67,6 +67,7 @@ BEGIN_MESSAGE_MAP(Csmart_parking_guiDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_RADIO_EVENT, &Csmart_parking_guiDlg::OnBnClickedRadio)
 	ON_BN_CLICKED(IDC_RADIO_STATUS, &Csmart_parking_guiDlg::OnBnClickedRadio)
 	ON_BN_CLICKED(IDC_B_GENERATEDATA, &Csmart_parking_guiDlg::OnBnClickedBGeneratedata)
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 
@@ -168,7 +169,6 @@ void Csmart_parking_guiDlg::DrawGrid() {
 	// Draw lots.
 		CBrush brushLot(RGB(35, 62, 148));
 		gridDraw->SetTextColor(RGB(35, 62, 148));
-		// gridDraw->SetBkMode(TRANSPARENT);
 		gridBrush = gridDraw->SelectObject(&brushLot);
 		vector<Location> lotLoc = world->getLotLocations();
 		vector<int> lotSpots;
@@ -237,9 +237,8 @@ void Csmart_parking_guiDlg::OnBnClickedBOpenConfig()
 		m_GridSize = world->getGridSize(); // double
 		m_EchoSize.Format(_T("Grid size: %g"), m_GridSize);
 		//Change the window's title to the opened file's title.
-		CString fileName = fileDlg.GetFileTitle();
 
-		SetWindowText(fileName);
+		SetWindowText(m_strPathname);
 		displayText();
 		Invalidate();
 		GetDlgItem(IDC_ST_STATUS)->RedrawWindow();
@@ -362,7 +361,23 @@ void Csmart_parking_guiDlg::OnBnClickedBGeneratedata()
 	UpdateData(TRUE);
 	Cgenerate_config Dlg(this);
 	if (Dlg.DoModal() == IDOK) {
-		
+		CT2CA converter(Dlg.newConfigFileName);
+		std::string fileToOpen(converter);
+		fileOpen = fileToOpen;
+		// TODO: Open Grid file
+		open_file(*world, fileToOpen);
+		m_VSliderIteration.SetRange(0, (world->getIterationCount() - 1), TRUE);
+		m_VSliderIteration.SetPos(0);
+		m_IterationEcho.Format(_T("%d/%d"), 0, world->getIterationCount() - 1);
+		m_GridSize = world->getGridSize(); // double
+		m_EchoSize.Format(_T("Grid size: %g"), m_GridSize);
+		//Change the window's title to the opened file's title.
+		CString fileName = Dlg.newConfigFileName;
+
+		SetWindowText(fileName);
+		displayText();
+		Invalidate();
+		GetDlgItem(IDC_ST_STATUS)->RedrawWindow();
 	}
 	UpdateData(FALSE);
 }
@@ -477,4 +492,12 @@ void Csmart_parking_guiDlg::displayText() { // Displays text based on the radio 
 		pEdit->LineScroll(pEdit->GetLineCount()); // scroll to bottom to see last event
 	}
 	UpdateData(FALSE);
+}
+
+
+void Csmart_parking_guiDlg::OnSize(UINT nType, int cx, int cy)
+{
+	CDialogEx::OnSize(nType, cx, cy);
+	
+	// TODO: Add your message handler code here
 }
