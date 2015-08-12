@@ -1,51 +1,11 @@
-﻿Build started 8/11/2015 1:07:43 PM.
+﻿Build started 8/12/2015 4:15:42 PM.
      1>Project "C:\Users\Edward\Documents\2014-2015 BU Sophomore Year\Job\Smart Parking\parkingSimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\smart_parking_gui.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\DLib\dlib-18.16\\" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _UNICODE /D UNICODE /D _AFXDLL /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\Driver.cpp ..\..\Event.cpp ..\..\Grid.cpp ..\..\Lot.cpp Cadd_Driver.cpp Cadd_Lot.cpp Commands.cpp smart_parking_gui.cpp smart_parking_guiDlg.cpp
-         Grid.cpp
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\pricingpolicy7.h(169): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(144): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(152): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(161): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(172): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(182): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(226): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(242): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(251): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(260): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(279): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(308): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(321): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(333): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(347): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(359): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(372): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(385): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(721): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(724): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(739): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(744): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(748): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(773): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(779): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(784): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(813): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(816): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\grid.cpp(819): warning C4018: '<' : signed/unsigned mismatch
-         Driver.cpp
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\driver.cpp(166): warning C4018: '<' : signed/unsigned mismatch
-         Generating Code...
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\driver.cpp(309): warning C4715: 'Driver::update' : not all control paths return a value
-         Compiling...
-         smart_parking_guiDlg.cpp
-         Commands.cpp
-         Generating Code...
-         Skipping... (no relevant changes detected)
-         smart_parking_gui.cpp
-         Cadd_Lot.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\DLib\dlib-18.16\\" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _UNICODE /D UNICODE /D _AFXDLL /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Cadd_Driver.cpp
          Cadd_Driver.cpp
-         Lot.cpp
-         Event.cpp
+     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\cadd_driver.cpp(86): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+       ResourceCompile:
+         C:\Program Files (x86)\Windows Kits\8.1\bin\x86\rc.exe /D _DEBUG /D _UNICODE /D UNICODE /D _AFXDLL /l"0x0409" /IDebug\ /nologo /fo"Debug\smart_parking_gui.res" smart_parking_gui.rc 
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Edward\Documents\2014-2015 BU Sophomore Year\Job\Smart Parking\parkingSimulator\smart-parking-algo\smart_parking_gui\Debug\smart_parking_gui.exe" /INCREMENTAL /NOLOGO /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /manifestinput:"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\Include\Manifest\dpiaware.manifest" /DEBUG /PDB:"C:\Users\Edward\Documents\2014-2015 BU Sophomore Year\Job\Smart Parking\parkingSimulator\smart-parking-algo\smart_parking_gui\Debug\smart_parking_gui.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /ENTRY:"wWinMainCRTStartup" /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Edward\Documents\2014-2015 BU Sophomore Year\Job\Smart Parking\parkingSimulator\smart-parking-algo\smart_parking_gui\Debug\smart_parking_gui.lib" /MACHINE:X86 Debug\smart_parking_gui.res
          Debug\Data.obj
@@ -70,4 +30,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:58.66
+Time Elapsed 00:00:07.68

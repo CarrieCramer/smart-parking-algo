@@ -344,7 +344,7 @@ void Csmart_parking_guiDlg::OnBnClickedBNewdriver() // Opens a dialog to input a
 {
 	if (world->getDestinationCount() != 0) {
 		UpdateData(TRUE);
-		Cadd_Driver Dlg(world->getDriverCount(), this);
+		Cadd_Driver Dlg(world->getDriverCount(), world->getDestinationCount(), this);
 		if (Dlg.DoModal() == IDOK) {
 			Driver * newDriver = new Driver(world->getDriverCount(), Dlg.m_ArrivalTime, Dlg.m_WeightScale, Dlg.m_MaxDist, Dlg.m_MaxLotCharge, Location(Dlg.m_LocX, Dlg.m_LocY), Dlg.m_TimeAtPark, world->findDestinationByID(Dlg.m_DestID), world);
 			addDriver(newDriver, Dlg.m_Iteration);

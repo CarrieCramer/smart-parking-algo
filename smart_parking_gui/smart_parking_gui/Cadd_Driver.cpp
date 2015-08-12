@@ -11,7 +11,7 @@
 
 IMPLEMENT_DYNAMIC(Cadd_Driver, CDialogEx)
 
-Cadd_Driver::Cadd_Driver(int inputID, CWnd* pParent /*=NULL*/)
+Cadd_Driver::Cadd_Driver(int inputID, int destCount, CWnd* pParent /*=NULL*/)
 	: CDialogEx(Cadd_Driver::IDD, pParent)
 	, m_DestID(0)
 	, m_LocX(0)
@@ -26,6 +26,8 @@ Cadd_Driver::Cadd_Driver(int inputID, CWnd* pParent /*=NULL*/)
 {
 	this->maxSlideValue = 100;
 	scrolling = false;
+	minDestID = 0; // destination IDs start with 0
+	maxDestID = destCount-1; // so subtract 1 from destination count
 	m_EchoID.Format(_T("This driver will have ID: %d."), inputID);
 }
 
@@ -48,6 +50,8 @@ void Cadd_Driver::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_ET_ITER, m_Iteration);
 	DDX_Control(pDX, IDC_ET_WEIGHTEDIT, ScaleRead);
 	DDX_Text(pDX, IDC_DRIVERIDTEXT, m_EchoID);
+	DDX_Text(pDX, IDC_DEST_ID_MIN, minDestID);
+	DDX_Text(pDX, IDC_DEST_ID_MAX, maxDestID);
 }
 
 BOOL Cadd_Driver::OnInitDialog()
@@ -63,6 +67,7 @@ BOOL Cadd_Driver::OnInitDialog()
 BEGIN_MESSAGE_MAP(Cadd_Driver, CDialogEx)
 	ON_EN_CHANGE(IDC_ET_WEIGHTEDIT, &Cadd_Driver::OnEnChangeEtWeightedit)
 	ON_WM_HSCROLL()
+	ON_BN_CLICKED(IDOK, &Cadd_Driver::OnBnClickedOk)
 END_MESSAGE_MAP()
 
 
@@ -96,5 +101,19 @@ void Cadd_Driver::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 		ScaleRead.SetWindowText(echoScroll);
 		CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);
 		scrolling = false;
+	}
+}
+
+
+void Cadd_Driver::OnBnClickedOk()
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+	if (m_DestID < minDestID || m_DestID > maxDestID) {
+		AfxMessageBox(_T("Destination ID not valid."));
+	}
+	else {
+		CDialogEx::OnOK();
+
 	}
 }

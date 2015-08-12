@@ -10,7 +10,7 @@ class Cadd_Driver : public CDialogEx
 	DECLARE_DYNAMIC(Cadd_Driver)
 
 public:
-	Cadd_Driver(int, CWnd* pParent = NULL);   // standard constructor
+	Cadd_Driver(int, int, CWnd* pParent = NULL);   // standard constructor
 	virtual ~Cadd_Driver();
 
 // Dialog Data
@@ -28,6 +28,8 @@ private:
 	CSliderCtrl m_HSliderWeight;
 	int maxSlideValue;
 	bool scrolling;
+	int minDestID;
+	int maxDestID;
 public:
 	// should be changeable by the slider later
 	double m_WeightScale;
@@ -41,4 +43,5 @@ public:
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	virtual BOOL OnInitDialog();
 	CString m_EchoID;
+	afx_msg void OnBnClickedOk();
 };
