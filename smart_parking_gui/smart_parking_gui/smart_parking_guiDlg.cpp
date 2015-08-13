@@ -26,11 +26,12 @@
 
 Csmart_parking_guiDlg::Csmart_parking_guiDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(Csmart_parking_guiDlg::IDD, pParent)
-	, m_EchoSize(_T("Grid size: "))
+	, m_EchoSize(_T("Grid size: 50"))
 	, m_EchoTime(_T("Time: "))
 	, m_EchoStatus(_T("Open"))
 	, m_IterationEcho(_T("0/4"))
 	, m_RadioTextDisplay(0)
+	, m_EchoPolicyNumber(_T("Pricing policy: 2"))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 		this->world = new Grid(50, 5); // default grid
@@ -48,6 +49,7 @@ void Csmart_parking_guiDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_ITCOUNT, m_IterationEcho);
 	DDX_Control(pDX, IDC_SLIDE_ITER, m_VSliderIteration);
 	DDX_Radio(pDX, IDC_RADIO_EVENT, m_RadioTextDisplay);
+	DDX_Text(pDX, IDC_POLICY_NUMBER, m_EchoPolicyNumber);
 }
 
 BEGIN_MESSAGE_MAP(Csmart_parking_guiDlg, CDialogEx)
@@ -236,6 +238,8 @@ void Csmart_parking_guiDlg::OnBnClickedBOpenConfig()
 		m_IterationEcho.Format(_T("%d/%d"), 0, world->getIterationCount() - 1);
 		m_GridSize = world->getGridSize(); // double
 		m_EchoSize.Format(_T("Grid size: %g"), m_GridSize);
+		m_EchoPolicyNumber.Format(_T("Pricing policy: %d"), world->getPricingPolicy());
+		UpdateData(FALSE);
 		//Change the window's title to the opened file's title.
 
 		SetWindowText(m_strPathname);
@@ -371,6 +375,7 @@ void Csmart_parking_guiDlg::OnBnClickedBGeneratedata()
 		m_IterationEcho.Format(_T("%d/%d"), 0, world->getIterationCount() - 1);
 		m_GridSize = world->getGridSize(); // double
 		m_EchoSize.Format(_T("Grid size: %g"), m_GridSize);
+		UpdateData(FALSE);
 		//Change the window's title to the opened file's title.
 		CString fileName = Dlg.newConfigFileName;
 
@@ -431,6 +436,8 @@ void Csmart_parking_guiDlg::OnDropFiles(HDROP dropInfo)
 		m_IterationEcho.Format(_T("%d/%d"), 0, world->getIterationCount() - 1);
 		m_GridSize = world->getGridSize(); // double
 		m_EchoSize.Format(_T("Grid size: %g"), m_GridSize);
+		m_EchoPolicyNumber.Format(_T("Pricing policy: %d"), world->getPricingPolicy());
+		UpdateData(FALSE);
 		//Change the window's title to the opened file's title.
 		CString fileName = sFile;
 

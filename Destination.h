@@ -8,12 +8,12 @@
 class Destination {
 	public:
 		Destination();
-		Destination(int, Location, double weight = 10);
+		Destination(int, Location, double weight = 0.5);
 		int atDest; // number of people at destination
 		
 		int getID(); // get id of destination
 		Location getLocation();
-		double getRate(); // get rate of people entering to calculate costs
+		double getArrivalWeight(); // get weighted probability of destination
 		
 		bool update();
 		std::string show_status(); // show status of destination
@@ -21,7 +21,7 @@ class Destination {
 		int id;
 		Location location;
 		double areaReadius; // radius of major parking destination
-		double arrivalRate; // rate of entrance to destination
+		double arrivalWeight; // rate of entrance to destination
 		double avgDuration; // average duration at destination
 };
 

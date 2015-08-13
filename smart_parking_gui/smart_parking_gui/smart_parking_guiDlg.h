@@ -78,4 +78,6 @@ public:
 	afx_msg void OnBnClickedRadio();
 	afx_msg void OnBnClickedBGeneratedata();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
+private:
+	CString m_EchoPolicyNumber;
 };

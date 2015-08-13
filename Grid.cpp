@@ -228,6 +228,16 @@ void Grid::write_file(ofstream& writeFile) {
 	}
 	writeFile << endl; // end writeFile line
 	writeFile << endl; // newline
+	writeFile << asterisks << endl;
+	writeFile << "DESTINATION PROBABILITIES:" << endl;
+	writeFile << "Probability that each destination will be chosen by a particular driver." << endl;
+	writeFile << "These values must add to 1." << endl;
+	writeFile << asterisks << endl;
+	for (int ii = 0; ii < allDestinations.size(); ii++) {
+		writeFile << allDestinations[ii]->getArrivalWeight() << ' ';
+	}
+	writeFile << endl; // end writeFile line
+	writeFile << endl; // newline
 	writeFile << asterisks << endl; // skip destination probabilities and average durations for now
 	writeFile << "LOT COUNT:" << endl;
 	writeFile << "Total number of parking lots on the grid." << endl;
@@ -409,6 +419,7 @@ void Grid::read_file(ifstream& readFile) {
 	vector<Location> destLocs;
 	vector<double> destProbs;
 	vector<double> destAvgDur;
+	vector<double> destAvgWeights;
 	vector<Location> lotLocs;
 	vector<int> lotCapacities;
 	vector<double> lotPrices;
@@ -525,6 +536,10 @@ void Grid::read_file(ifstream& readFile) {
 					readVal = false;
 					break;
 				case 6: // destination probabilities (config file statistic)
+					for (int ii = 0; ii < destCount; ii++) { // iterate over previously read destination count
+						iss >> doubleRead;
+						destAvgWeights.push_back(doubleRead); // add double to vector
+					}
 					state = 0;
 					readVal = false;
 					break; // to be used
@@ -659,7 +674,7 @@ void Grid::read_file(ifstream& readFile) {
 	// now we set up almost all of the variables
 	// set up destinations
 	for (int ii = 0; ii < destCount; ii++) {
-		addDestination(new Destination(ii, destLocs[ii]));
+		addDestination(new Destination(ii, destLocs[ii], destAvgWeights[ii]));
 	}
 	destLocs.clear();
 	destProbs.clear();

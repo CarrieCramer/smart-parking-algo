@@ -146,6 +146,9 @@ bool Lot::update() { // Updates lot information
 	numFree += peopleLeaving;
 	numNotReserved += peopleLeaving;
 	// Next, check the drivers and see if they are fit.
+	if (driversToPark.size() == 0) {
+		return false; // not reserving anybody
+	}
 	if (numNotReserved >= driversToPark.size()) {
 		for (int ii = 0; ii < driversToPark.size(); ii++) {
 			driversToPark[ii]->goToPark(); // head to parking
@@ -165,7 +168,6 @@ bool Lot::update() { // Updates lot information
 	numOfReservers = 0; // reset reserving at update
 	peopleLeaving = 0; // reset number of leaving
 	return true;
-	
 }
 
 Location Lot::getLocation() {
