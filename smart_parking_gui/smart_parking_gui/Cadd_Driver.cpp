@@ -17,7 +17,7 @@ Cadd_Driver::Cadd_Driver(int inputID, int destCount, CWnd* pParent /*=NULL*/)
 	, m_LocX(0)
 	, m_LocY(0)
 	, m_WeightScale(0)
-	, m_ArrivalTime(0)
+	, m_ArrivalTime(0.001)
 	, m_TimeAtPark(0)
 	, m_MaxDist(0)
 	, m_MaxLotCharge(0)
@@ -111,6 +111,9 @@ void Cadd_Driver::OnBnClickedOk()
 	UpdateData(TRUE);
 	if (m_DestID < minDestID || m_DestID > maxDestID) {
 		AfxMessageBox(_T("Destination ID not valid."));
+	}
+	if (m_ArrivalTime <= 0) {
+		AfxMessageBox(_T("Arrival time must be greater than 0."));
 	}
 	else {
 		CDialogEx::OnOK();
