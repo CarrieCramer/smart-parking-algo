@@ -89,7 +89,9 @@ BOOL Csmart_parking_guiDlg::OnInitDialog()
 	gridDraw = gridDrawSurface->GetDC();
 	gridFont.CreatePointFont(FONT_SIZE, _T("Arial"), gridDraw);
 	pEdit = (CEdit*)GetDlgItem(IDC_ST_STATUS);
-	updateMs = 50;
+
+	updateMs = 20; // TIMER UPDATE RATE
+
 	fileOpen = ""; // empty string
 	CButton * pauseSimButton = (CButton *)this->GetDlgItem(IDC_B_SIMPAUSE);
 	pauseSimButton->EnableWindow(FALSE);
@@ -487,18 +489,20 @@ void Csmart_parking_guiDlg::OnBnClickedRadio()
 }
 
 void Csmart_parking_guiDlg::displayText() { // Displays text based on the radio button display
-	UpdateData(TRUE);
+	UpdateData(TRUE); // get value of RadioTextDisplay
 	CString c_status;
 	if (m_RadioTextDisplay == 1) { // display status if unchecked
 		c_status = (world->show_status().c_str());
 		m_EchoStatus = c_status;
+		UpdateData(FALSE);
 	}
 	else { // display events
 		c_status = (oss.str().c_str());
 		m_EchoStatus = c_status;
+		UpdateData(FALSE); // update status
 		pEdit->LineScroll(pEdit->GetLineCount()); // scroll to bottom to see last event
 	}
-	UpdateData(FALSE);
+	
 }
 
 

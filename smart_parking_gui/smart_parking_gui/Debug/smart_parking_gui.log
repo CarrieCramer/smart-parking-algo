@@ -1,10 +1,8 @@
-﻿Build started 8/13/2015 4:57:57 PM.
+﻿Build started 8/14/2015 11:06:25 AM.
      1>Project "C:\Users\Edward\Documents\2014-2015 BU Sophomore Year\Job\Smart Parking\parkingSimulator\smart-parking-algo\smart_parking_gui\smart_parking_gui\smart_parking_gui.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\DLib\dlib-18.16\\" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _UNICODE /D UNICODE /D _AFXDLL /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\Lot.cpp
-         Lot.cpp
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\lot.cpp(149): warning C4018: '>=' : signed/unsigned mismatch
-     1>c:\users\edward\documents\2014-2015 bu sophomore year\job\smart parking\parkingsimulator\smart-parking-algo\lot.cpp(150): warning C4018: '<' : signed/unsigned mismatch
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\DLib\dlib-18.16\\" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _UNICODE /D UNICODE /D _AFXDLL /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt smart_parking_guiDlg.cpp
+         smart_parking_guiDlg.cpp
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Edward\Documents\2014-2015 BU Sophomore Year\Job\Smart Parking\parkingSimulator\smart-parking-algo\smart_parking_gui\Debug\smart_parking_gui.exe" /INCREMENTAL /NOLOGO /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /manifestinput:"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\Include\Manifest\dpiaware.manifest" /DEBUG /PDB:"C:\Users\Edward\Documents\2014-2015 BU Sophomore Year\Job\Smart Parking\parkingSimulator\smart-parking-algo\smart_parking_gui\Debug\smart_parking_gui.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /ENTRY:"wWinMainCRTStartup" /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Edward\Documents\2014-2015 BU Sophomore Year\Job\Smart Parking\parkingSimulator\smart-parking-algo\smart_parking_gui\Debug\smart_parking_gui.lib" /MACHINE:X86 Debug\smart_parking_gui.res
          Debug\Data.obj
@@ -29,4 +27,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:04.02
+Time Elapsed 00:00:16.35
